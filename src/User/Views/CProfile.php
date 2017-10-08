@@ -51,7 +51,7 @@ class User_Views_CProfile
 //         }
 //         return new Pluf_HTTP_Response_Json($profile);
         $profileDoc = User_Views_CProfile::get_profile_document($userId);
-        return new Pluf_HTTP_Response_Json($profileDoc);
+        return new Pluf_HTTP_Response_Json(User_Views_CProfile::getDocumentMap($profileDoc));
     }
 
     /**
