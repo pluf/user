@@ -19,7 +19,7 @@ class User_CProfile extends Pluf_Model
      */
     function init()
     {
-        $this->_a['table'] = 'user_profile';
+        $this->_a['table'] = 'user_cprofile';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
