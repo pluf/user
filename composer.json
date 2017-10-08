@@ -2,8 +2,6 @@
 	"name" : "pluf/user",
 	"description" : "A module for Pluf to manage user profiles and user accounts",
 	"type" : "library",
-	"type" : "library",
-	"version" : "2.1.8",
 	"authors" : [{
 			"name" : "Mostafa Barmshory",
 			"email" : "mostafa.barmshory@dpq.co.ir",
