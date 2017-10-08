@@ -2,6 +2,7 @@
 	"name" : "pluf/user",
 	"description" : "A module for Pluf to manage user profiles and user accounts",
 	"type" : "library",
+	"license" : "MIT",
 	"authors" : [{
 			"name" : "Mostafa Barmshory",
 			"email" : "mostafa.barmshory@dpq.co.ir",
