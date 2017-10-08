@@ -17,10 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-Pluf::loadFunction('Pluf_HTTP_URL_urlForView');
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
-Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
-Pluf::loadFunction('User_Shortcuts_UpdateProfile');
+Pluf::loadFunction('Collection_Shortcuts_GetCollectionByName');
 
 /**
  * Manage profile information of users.
@@ -42,8 +40,6 @@ class User_Views_CProfile
      */
     public static function get($request, $match)
     {
-        // Find collection profile
-        $collection = Collection_Shortcuts_GetCollectionByNameOr404(Collection_Constants::PROFILE_COLLECTION_NAME);
         $userId = $match['userId'];
 //         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
 //         try {
@@ -58,23 +54,6 @@ class User_Views_CProfile
         return new Pluf_HTTP_Response_Json($profileDoc);
     }
 
-    private static function get_profile_document($userId){
-        $cprofile = new User_CProfile();
-        $cprofile = $cprofile->getOne('user = ' . $userId);
-        if($cprofile === null){
-            // create cprofile and document for profile of user
-            $document = new Collection_Document();
-            $document->collection = $collection->id;
-            $document->create();
-            $cprofile = new User_CProfile();
-            $cprofile->user = $userId;
-            $cprofile->profile = $document->id;
-            $cprofile->create();
-        }
-        $profileDoc = new Collection_Document($cprofile->profile);
-        return $profileDoc;
-    }
-    
     /**
      * Update profile of specified user.
      *
@@ -84,15 +63,96 @@ class User_Views_CProfile
      * @throws Pluf_Exception
      * @return Pluf_HTTP_Response_Json
      */
-    public static function update($request, $match, $p)
+    public static function update($request, $match)
     {
         $currentUser = $request->user;
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
         if($currentUser->getId() === $user->getId() || Pluf_Precondition::ownerRequired($request)){
             $profileDoc = User_Views_CProfile::get_profile_document($user->id);
-            $this->putDocumentMap($document, $request->REQUEST);
-            return new Pluf_HTTP_Response_Json($this->getDocumentMap($document));
+            User_Views_CProfile::putDocumentMap($profileDoc, $request->REQUEST);
+            return new Pluf_HTTP_Response_Json(User_Views_CProfile::getDocumentMap($profileDoc));
         }
         throw new Pluf_Exception_PermissionDenied("Permission is denied");
+    }
+    
+    private static function get_profile_document($userId){
+        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
+        // Find collection profile
+        $collection = Collection_Shortcuts_GetCollectionByName(User_Constants::PROFILE_COLLECTION_NAME);
+        if($collection === null){
+            $collection = new Collection_Collection();
+            $collection->name = User_Constants::PROFILE_COLLECTION_NAME;
+            $collection->title= 'Collection for saveing profile of users';
+            $collection->create();
+        }
+        $cprofile = new User_CProfile();
+        $cprofile = $cprofile->getOne('user = ' . $userId);
+        if($cprofile === null){
+            // create cprofile and document for profile of user
+            $document = new Collection_Document();
+            $document->collection = $collection;
+            $document->create();
+            $cprofile = new User_CProfile();
+            $cprofile->user = $user;
+            $cprofile->profile = $document;
+            $cprofile->create();
+        }
+        $profileDoc = new Collection_Document($cprofile->profile);
+        return $profileDoc;
+    }
+    
+    /**
+     * Gets all attributes of a document and return as map
+     *
+     * @param $document
+     * @return maps of attributes
+     */
+    private static function getDocumentMap($document){
+        // TODO: hadi 1396-07: It is better to move this function to Collection_Document class
+        $attr = new Collection_Attribute();
+        $map = $attr->getList(
+            array(
+                'filter' => 'document=' . $document->id
+            ));
+        $result = array();
+        $iterator = $map->getIterator();
+        while ($iterator->valid()) {
+            $attr = $iterator->current();
+            $result[$attr->key] = $attr->value;
+            $iterator->next();
+        }
+        
+        $result['id'] = $document->id;
+        $result['collection'] = $document->collection;
+        return $result;
+    }
+    
+    private static function putDocumentMap($document, $map){
+        // TODO: hadi 1396-07: It is better to move this function to Collection_Document class
+        $attrModel = new Collection_Attribute();
+        foreach ($map as $key => $value) {
+            // Ignore main attributes
+            if ($key === 'id' || $key === 'collection') {
+                continue;
+            }
+            $attr = $attrModel->getOne(
+                array(
+                    'filter' => array(
+                        '`document`=' . $document->id,
+                        "`key`='" . $key . "'"
+                    )
+                ));
+            // FIXME: maso, 2017: remove key if value is empty
+            if ($attr === null) {
+                $attr2 = new Collection_Attribute();
+                $attr2->document = $document;
+                $attr2->key = $key;
+                $attr2->value = $value;
+                $attr2->create();
+            } else {
+                $attr->value = $value;
+                $attr->update();
+            }
+        }
     }
 }
