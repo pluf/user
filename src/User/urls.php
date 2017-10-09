@@ -113,28 +113,12 @@ return array(
     //
     array( // Get profile of user (by id)
         'regex' => '#^/(?P<userId>\d+)/profile$#',
-        'model' => 'User_Views_Profile',
+        'model' => 'User_Views_CProfile',
         'method' => 'get',
         'http-method' => 'GET'
     ),
     array( // Update profile of user (by id)
         'regex' => '#^/(?P<userId>\d+)/profile$#',
-        'model' => 'User_Views_Profile',
-        'method' => 'update',
-        'precond' => array(
-            'Pluf_Precondition::loginRequired'
-        ),
-        'http-method' => 'POST'
-    ),
-    // Profile (by Collection)
-    array( // Get profile of user (by id)
-        'regex' => '#^/(?P<userId>\d+)/cprofile$#',
-        'model' => 'User_Views_CProfile',
-        'method' => 'get',
-        'http-method' => 'GET'
-    ),
-    array( // Update profile of user (by id)
-        'regex' => '#^/(?P<userId>\d+)/cprofile$#',
         'model' => 'User_Views_CProfile',
         'method' => 'update',
         'precond' => array(
@@ -142,6 +126,22 @@ return array(
         ),
         'http-method' => 'POST'
     ),
+//     // Profile (by Collection)
+//     array( // Get profile of user (by id)
+//         'regex' => '#^/(?P<userId>\d+)/cprofile$#',
+//         'model' => 'User_Views_CProfile',
+//         'method' => 'get',
+//         'http-method' => 'GET'
+//     ),
+//     array( // Update profile of user (by id)
+//         'regex' => '#^/(?P<userId>\d+)/cprofile$#',
+//         'model' => 'User_Views_CProfile',
+//         'method' => 'update',
+//         'precond' => array(
+//             'Pluf_Precondition::loginRequired'
+//         ),
+//         'http-method' => 'POST'
+//     ),
     //
     // Avatar (Current user)
     //
