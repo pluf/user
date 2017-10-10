@@ -51,7 +51,9 @@ class User_Views_CProfile
 //         }
 //         return new Pluf_HTTP_Response_Json($profile);
         $profileDoc = User_Views_CProfile::get_profile_document($userId);
-        return new Pluf_HTTP_Response_Json(User_Views_CProfile::getDocumentMap($profileDoc));
+        $docMap = User_Views_CProfile::getDocumentMap($profileDoc);
+        $docMap['user'] = $userId;
+        return new Pluf_HTTP_Response_Json($docMap);
     }
 
     /**
@@ -70,7 +72,9 @@ class User_Views_CProfile
         if($currentUser->getId() === $user->getId() || Pluf_Precondition::ownerRequired($request)){
             $profileDoc = User_Views_CProfile::get_profile_document($user->id);
             User_Views_CProfile::putDocumentMap($profileDoc, $request->REQUEST);
-            return new Pluf_HTTP_Response_Json(User_Views_CProfile::getDocumentMap($profileDoc));
+            $docMap = User_Views_CProfile::getDocumentMap($profileDoc);
+            $docMap['user'] = $user->id;
+            return new Pluf_HTTP_Response_Json($docMap);
         }
         throw new Pluf_Exception_PermissionDenied("Permission is denied");
     }
@@ -82,7 +86,7 @@ class User_Views_CProfile
         if($collection === null){
             $collection = new Collection_Collection();
             $collection->name = User_Constants::PROFILE_COLLECTION_NAME;
-            $collection->title= 'Collection for saveing profile of users';
+            $collection->title= 'Collection for saving profile of users';
             $collection->create();
         }
         $cprofile = new User_CProfile();
