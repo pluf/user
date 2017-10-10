@@ -213,7 +213,7 @@ return array(
     array(
         'regex' => '#^/(?P<userId>\d+)/group/new$#',
         'model' => 'User_Views_Group',
-        'method' => 'create',
+        'method' => 'add',
         'http-method' => 'POST',
         'precond' => array(
             'Pluf_Precondition::adminRequired'
