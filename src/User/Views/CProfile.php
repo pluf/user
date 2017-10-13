@@ -38,7 +38,7 @@ class User_Views_CProfile
      * @param Pluf_HTTP_Request $request            
      * @param array $match            
      */
-    public static function get($request, $match)
+    public function get($request, $match)
     {
         $userId = $match['userId'];
 //         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
@@ -65,7 +65,7 @@ class User_Views_CProfile
      * @throws Pluf_Exception
      * @return Pluf_HTTP_Response_Json
      */
-    public static function update($request, $match)
+    public function update($request, $match)
     {
         $currentUser = $request->user;
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
@@ -79,7 +79,14 @@ class User_Views_CProfile
         throw new Pluf_Exception_PermissionDenied("Permission is denied");
     }
     
-    private static function get_profile_document($userId){
+    /**
+     * Fetch profile of the user
+     * 
+     * If the profile does not exist then, a new profile will be crated.
+     * @param integer $userId
+     * @return Collection_Document
+     */
+    static function get_profile_document($userId){
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
         // Find collection profile
         $collection = Collection_Shortcuts_GetCollectionByName(User_Constants::PROFILE_COLLECTION_NAME);
@@ -109,9 +116,9 @@ class User_Views_CProfile
      * Gets all attributes of a document and return as map
      *
      * @param $document
-     * @return maps of attributes
+     * @return array of attributes
      */
-    private static function getDocumentMap($document){
+    static function getDocumentMap($document){
         // TODO: hadi 1396-07: It is better to move this function to Collection_Document class
         $attr = new Collection_Attribute();
         $map = $attr->getList(
@@ -131,7 +138,7 @@ class User_Views_CProfile
         return $result;
     }
     
-    private static function putDocumentMap($document, $map){
+    static function putDocumentMap($document, $map){
         // TODO: hadi 1396-07: It is better to move this function to Collection_Document class
         $attrModel = new Collection_Attribute();
         foreach ($map as $key => $value) {

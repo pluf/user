@@ -117,7 +117,7 @@ function User_Shortcuts_UpdateProfile($user, $data = array())
 /**
  * Returns information of profile of given user
  *
- * @param unknown $user            
+ * @param Pluf_User $user            
  * @throws Pluf_Exception
  * @return Pluf_HTTP_Response_Json
  */
@@ -140,7 +140,7 @@ function User_Shortcuts_GetProfile($user)
 /**
  * Deletes avatar of given user.
  *
- * @param unknown $user            
+ * @param Pluf_User $user            
  * @return Pluf_HTTP_Response_Json
  */
 function User_Shortcuts_DeleteAvatar($user)
@@ -155,7 +155,7 @@ function User_Shortcuts_DeleteAvatar($user)
 /**
  * Returns avatar of given user if is existed.
  *
- * @param unknown $user            
+ * @param Pluf_User $user            
  */
 function User_Shortcuts_GetAvatar($user)
 {
@@ -171,7 +171,7 @@ function User_Shortcuts_GetAvatar($user)
 
 /**
  * Sets (updates or creates) avatar for given user
- * @param unknown $user
+ * @param Pluf_User $user
  * @param array $data
  * @return Pluf_HTTP_Response_Json
  */
