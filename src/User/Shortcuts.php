@@ -3,15 +3,13 @@
 /**
  * مدل داده‌ای کاربر را ایجاد می‌کند.
  * 
- * @param unknown $object
+ * @param Pluf_User $object
  * @return Pluf_User
  */
 function User_Shortcuts_UserDateFactory($object)
 {
-    $user_model = Pluf::f('pluf_custom_user', 'Pluf_User');
-    // $group_model = Pluf::f ( 'pluf_custom_group', 'Pluf_Group' );
     if ($object == null || ! isset($object))
-        return new $user_model();
+        return new Pluf_User();
     return $object;
 }
 
@@ -27,114 +25,6 @@ function User_Shortcuts_CheckPassword($pass)
     if ($pass == null || ! isset($pass))
         throw new Pluf_Exception("Pasword must not be null");
     return $pass;
-}
-
-/**
- *
- * @param unknown $object            
- * @return unknown
- */
-function User_Shortcuts_UserProfileDateFactory($object)
-{
-    $user_model = Pluf::f('user_profile_class', 'User_Profile');
-    if ($object == null || ! isset($object))
-        return new $user_model();
-    return $object;
-}
-
-
-/**
- * سطح کاربر را ارتقا می‌دهد.
- *
- * نوع عمل عمل انجام شده می‌توان سطح کاربر را افزایش و یا کاهش داد. این
- * فراخوانی
- * امکان افزایش سطح کاربر را تعیین می‌کند.
- *
- * برای این کار باید یک عمل به عنوان عمل انجام شده تعیین شود. هر عمل به صورت
- * یک
- * متغیر در سیستم در نظر گرفته می‌شود، و در صورتی که یک درجه برای عمل تعیین
- * شده
- * باشد به اندازه همان درجه به کاربر اضافه یا شاید کم می‌شود.
- *
- * پارامتر بعد تعیین کاهش و یا افزایش است که با یک مقدار درستی و یا نا درستی
- * تعیین
- * می‌شود.
- *
- * @param unknown $user            
- * @param unknown $action            
- * @param string $decres            
- */
-function User_Shortcuts_UpdateLeveFor($user, $action, $decrease = true)
-{
-    try {
-        $values = Pluf::f('user_profile_level_values', array());
-        if (! array_key_exists($action, $values)) {
-            return;
-        }
-        $value = $values[$action];
-        if ($value == 0) {
-            return;
-        }
-        $profile = $user->getProfile();
-        if ($decrease) {
-            $profile->level += $value;
-        } else {
-            $profile->level -= $value;
-        }
-        $profile->update();
-    } catch (Exception $ex) {
-        // $profile = new $profile_model();
-        // $profile->user = $request->user;
-        // $profile->create();
-    }
-}
-
-/**
- * Updates or creates profile for given user by using given data.
- *
- * @param unknown $user            
- * @param array $data            
- * @throws Pluf_Exception
- * @return unknown
- */
-function User_Shortcuts_UpdateProfile($user, $data = array())
-{
-    $profileModel = Pluf::f('user_profile_class', false);
-    if ($profileModel === false) {
-        throw new Pluf_Exception(__('Profile model is not configured.'));
-    }
-    $profile = Pluf::factory($profileModel)->getOne('user=' . $user->getId());
-    if ($profile == null) {
-        $profile = Pluf::factory($profileModel);
-        $profile->__set('user', $user);
-        $profile->create();
-    }
-    $form = Pluf_Shortcuts_GetFormForModel($profile, $data, array());
-    $sf = $form->save();
-    return new Pluf_HTTP_Response_Json($sf);
-}
-
-/**
- * Returns information of profile of given user
- *
- * @param Pluf_User $user            
- * @throws Pluf_Exception
- * @return Pluf_HTTP_Response_Json
- */
-function User_Shortcuts_GetProfile($user)
-{
-    // TODO: hadi, 1395: use appropriate setting name
-    $profileModel = Pluf::f('user_profile_class', false);
-    if ($profileModel === false) {
-        throw new Pluf_Exception(__('Profile model is not configured.'));
-    }
-    $profile = Pluf::factory($profileModel)->getOne('user=' . $user->getId());
-    if ($profile == null) {
-        // throw new Pluf_Exception('User has no profile yet!');
-        return new Pluf_HTTP_Response_Json(Pluf::factory($profileModel));
-    }
-    // TODO: hadi, 1395: we should hide secure information of profile.
-    return new Pluf_HTTP_Response_Json($profile);
 }
 
 /**

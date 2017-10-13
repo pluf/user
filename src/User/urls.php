@@ -147,8 +147,8 @@ return array(
     //
     array(
         'regex' => '#^/avatar$#',
-        'model' => 'User_Views',
-        'method' => 'getAvatar',
+        'model' => 'User_Views_Avatar',
+        'method' => 'get',
         'http-method' => 'GET',
         'precond' => array(),
         // Cache apram
@@ -158,8 +158,8 @@ return array(
     ),
     array(
         'regex' => '#^/avatar$#',
-        'model' => 'User_Views',
-        'method' => 'updateAvatar',
+        'model' => 'User_Views_Avatar',
+        'method' => 'update',
         'http-method' => 'POST',
         'precond' => array(
             'Pluf_Precondition::loginRequired'
@@ -167,8 +167,8 @@ return array(
     ),
     array(
         'regex' => '#^/avatar$#',
-        'model' => 'User_Views',
-        'method' => 'deleteAvatar',
+        'model' => 'User_Views_Avatar',
+        'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
             'Pluf_Precondition::loginRequired'

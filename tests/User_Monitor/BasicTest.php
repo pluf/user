@@ -24,7 +24,7 @@ require_once 'Pluf.php';
  * @backupGlobals disabled
  * @backupStaticAttributes disabled
  */
-class User_Profile_REST_BasicsTest extends TestCase
+class User_Monitor_BasicsTest extends TestCase
 {
 
     /**
@@ -51,6 +51,7 @@ class User_Profile_REST_BasicsTest extends TestCase
             'template_folders' => array(
                 dirname(__FILE__) . '/../templates'
             ),
+            'upload_path' => dirname(__FILE__) . '/../tmp',
             'template_tags' => array(),
             'time_zone' => 'Asia/Tehran',
             'encoding' => 'UTF-8',
@@ -68,21 +69,25 @@ class User_Profile_REST_BasicsTest extends TestCase
             'db_password' => '',
             'db_server' => 'localhost',
             'db_database' => 'test',
-            'db_table_prefix' => '_tu_profile_rest_',
+            'db_table_prefix' => '_tm_',
             
-            'mail_backend' => 'mail'
+            'mail_backend' => 'mail',
+            'user_avatar_default' => dirname(__FILE__) . '/../conf/avatar.svg'
         ));
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
             'Pluf_Group',
             'Pluf_User',
             'Pluf_Permission',
+            'Pluf_RowPermission',
             'Pluf_Session',
-            'User_CProfile'
+            'Pluf_Message',
+            'Collection_Collection',
+            'Collection_Document',
+            'Collection_Attribute',
+            'User_CProfile',
+            'User_Avatar'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -99,6 +104,7 @@ class User_Profile_REST_BasicsTest extends TestCase
         $user->email = 'toto@example.com';
         $user->setPassword('test');
         $user->active = true;
+        $user->administrator = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
@@ -112,13 +118,17 @@ class User_Profile_REST_BasicsTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
             'Pluf_Group',
             'Pluf_User',
             'Pluf_Permission',
-            'User_CProfile'
+            'Pluf_RowPermission',
+            'Pluf_Session',
+            'Pluf_Message',
+            'Collection_Collection',
+            'Collection_Document',
+            'Collection_Attribute',
+            'User_CProfile',
+            'User_Avatar'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -131,75 +141,38 @@ class User_Profile_REST_BasicsTest extends TestCase
      */
     public function currentUserRest()
     {
+        
         $client = new Test_Client(array(
             array(
                 'app' => 'User',
                 'regex' => '#^/api/user#',
                 'base' => '',
                 'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->get('/api/user');
-        $this->assertNotNull($response);
-    }
-
-    /**
-     * @test
-     */
-    public function loginRestTest()
-    {
-        $client = new Test_Client(array(
+            ),
             array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
+                'regex' => '#^/monitor/(?P<property>.+)$#',
+                'model' => 'User_Monitor',
+                'method' => 'permisson',
+                'http-method' => 'GET'
             )
         ));
+        
+        // Change detail
+        $user = new Pluf_User();
+        $user = $user->getUser('test');
+        
+        // Login
         $response = $client->post('/api/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
         $this->assertNotNull($response);
-    }
-
-    /**
-     * @test
-     */
-    public function logoutRestTest()
-    {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->post('/api/user/logout');
-        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
         
-        $response = $client->get('/api/user/logout');
-        $this->assertNotNull($response);
-    }
-
-    /**
-     * @test
-     */
-    public function listUsersRestTest()
-    {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->get('/api/user/find');
+        // Login
+        $response = $client->get('/monitor/owner');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
+
 }
-
-
