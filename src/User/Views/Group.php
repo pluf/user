@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
 Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
 
@@ -31,10 +30,10 @@ class User_Views_Group extends Pluf_Views
 
     /**
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public function find ($request, $match)
+    public function find($request, $match)
     {
         $pag = new Pluf_Paginator(new Pluf_Group());
         $sql = new Pluf_SQL('pluf_user_id=%s', array(
@@ -63,18 +62,20 @@ class User_Views_Group extends Pluf_Views
 
     /**
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public function add ($request, $match)
+    public function add($request, $match)
     {
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        if (array_key_exists('group', $request->REQUEST)) {
+        if (array_key_exists('groupId', $request->REQUEST)) {
+            $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $request->REQUEST['groupId']);
+        } elseif (array_key_exists('group', $request->REQUEST)) {
             $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $request->REQUEST['group']);
         } elseif (array_key_exists('group_name', $request->REQUEST)) {
             $group = new Pluf_Group();
             $group = $group->getOne(array(
-                'filter' => 'name="' . $request->REQUEST['group_name'].'"'
+                'filter' => 'name="' . $request->REQUEST['group_name'] . '"'
             ));
             if (! isset($group) || $group->id === 0) {
                 throw new Pluf_HTTP_Error404('Group not found');
@@ -93,10 +94,10 @@ class User_Views_Group extends Pluf_Views
 
     /**
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public function get ($request, $match)
+    public function get($request, $match)
     {
         $usr = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
         $groupModel = new Pluf_Group();
@@ -108,7 +109,7 @@ class User_Views_Group extends Pluf_Views
             )
         );
         $groups = $groupModel->getList($param);
-        if($groups->count() == 0){
+        if ($groups->count() == 0) {
             throw new Pluf_Exception_DoesNotExist('User is not member of such group');
         }
         return new Pluf_HTTP_Response_Json($groups);
@@ -116,10 +117,10 @@ class User_Views_Group extends Pluf_Views
 
     /**
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public function delete ($request, $match)
+    public function delete($request, $match)
     {
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
         $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);

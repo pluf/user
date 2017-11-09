@@ -110,7 +110,7 @@ class User_Form_User extends Pluf_Form
      *
      * @param $commit داده‌ها
      *            ذخیره شود یا نه
-     * @return مدل داده‌ای ایجاد شده
+     * @return Pluf_User مدل داده‌ای ایجاد شده
      */
     function save ($commit = true)
     {
@@ -149,9 +149,9 @@ class User_Form_User extends Pluf_Form
     }
 
     /**
-     * بررسی صحت نام خانوادگی
+     * Check and clean last name
      *
-     * @return string|unknown
+     * @return string last name
      */
     function clean_last_name ()
     {
@@ -164,9 +164,9 @@ class User_Form_User extends Pluf_Form
     }
 
     /**
-     * بررسی صحت نام
+     * Check and clean first name
      *
-     * @return string|unknown
+     * @return string
      */
     function clean_first_name ()
     {
@@ -179,7 +179,7 @@ class User_Form_User extends Pluf_Form
     }
 
     /**
-     * بررسی صحت رایانامه
+     * Check and clean email
      *
      * @throws Pluf_Form_Invalid
      * @return multitype:

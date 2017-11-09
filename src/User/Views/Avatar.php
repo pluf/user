@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
 Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
 Pluf::loadFunction('User_Shortcuts_GetAvatar');
@@ -36,26 +35,30 @@ class User_Views_Avatar extends Pluf_Views
     /**
      * Returns avatar image of user.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function get($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        if (array_key_exists('userId', $match)) {
+            $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        } else {
+            $user = $request->user;
+        }
         return User_Shortcuts_GetAvatar($user);
     }
 
     /**
      * Updates avatar image of user.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function update($request, $match)
     {
         if ($request->user->getId() != $match['userId']) {
             throw new Pluf_Exception_PermissionDenied();
-        }        
+        }
         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
         return User_Shortcuts_UpdateAvatar($user, array_merge($request->REQUEST, $request->FILES));
     }
@@ -64,8 +67,8 @@ class User_Views_Avatar extends Pluf_Views
      * Deletes avatar images of user.
      * This action may set default avatar for user.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function delete($request, $match)
     {

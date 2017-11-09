@@ -53,7 +53,7 @@ class User_Views_Permission
         );
         $pag->setFromRequest($request);
         $pag->model_view = 'join_permission';
-        $pag->forced_where = new Pluf_SQL('rowpermissions.owner_id=%s AND rowpermissions.owner_class=%s', array(
+        $pag->forced_where = new Pluf_SQL('owner_id=%s AND owner_class=%s', array(
             $model->id,
             $model->_a['model']
         ));

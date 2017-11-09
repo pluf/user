@@ -3,7 +3,6 @@
 	"version": "0.1.2",
 	"title": "User Management",
 	"model": [
-		"User_Profile",
 		"User_Avatar",
 		"User_PasswordToken",
 		"User_Space",

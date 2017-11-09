@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="Pluf">
+            <directory>./User_Monitor/</directory> 
+            <directory>./User_REST/</directory> 
+            <directory>./User_Profile_API/</directory> 
+            <directory>./User_Password_Token/</directory> 
+        </testsuite>
+    </testsuites>
+    
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="./clover.xml"/>
+    </logging>
+</phpunit>
