@@ -115,8 +115,8 @@ class User_Form_User extends Pluf_Form
     function save ($commit = true)
     {
         if (! $this->isValid()) {
-            throw new Pluf_Exception(
-                    __('Cannot save the model from an invalid form.'));
+            throw new Pluf_Exception_Form(
+                    __('Cannot save the model from an invalid form.'), $this);
         }
         $this->user_data->setFromFormData($this->cleaned_data);
         $user_active = Pluf::f('user_signup_active', false);
