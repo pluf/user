@@ -6,7 +6,7 @@
  * @author hadi <mohammad.hadi.mansouri@dpq.co.ir>
  *
  */
-class User_CProfile extends Pluf_Model
+class Profile extends Pluf_Model
 {
 
     /**
