@@ -32,29 +32,15 @@ class User_Monitor_BasicsTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start();
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
-            'Pluf_Session',
-            'Pluf_Message',
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
-            'User_CProfile',
-            'User_Avatar'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-            if (true !== ($res = $schema->createTables())) {
-                throw new Exception($res);
-            }
-        }
+        Pluf::start(dirname(__FILE__) . '/../conf/conf.mysql.monitor.php');
+        $m = new Pluf_Migration(array(
+            'Pluf',
+            'User',
+            'Group',
+            'Role',
+            'Message'
+        ));
+        $m->install();
         
         $user = new User();
         $user->login = 'test';
@@ -68,33 +54,22 @@ class User_Monitor_BasicsTest extends TestCase
             throw new Exception();
         }
     }
-
+    
     /**
      * @afterClass
      */
-    public static function removeDatabses()
+    public static function uninstallApps()
     {
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
-            'Pluf_Session',
-            'Pluf_Message',
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
-            'User_CProfile',
-            'User_Avatar'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-        }
+        $m = new Pluf_Migration(array(
+            'Pluf',
+            'User',
+            'Group',
+            'Role',
+            'Message'
+        ));
+        $m->unInstall();
     }
-
+    
     /**
      * @test
      */

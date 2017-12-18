@@ -35,7 +35,7 @@ class User_Views_Permission
     public function find($request, $match)
     {
         // XXX: maso, 1395: check user access.
-        $model = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $model = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         $pag = new Pluf_Paginator(new Pluf_RowPermission());
         $pag->configure(array(), array( // search
             'name',
@@ -69,8 +69,8 @@ class User_Views_Permission
     {
         // XXX: maso, 1395: check user access.
         // Hadi, 1396: check user access
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $request->REQUEST['role']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $request->REQUEST['role']);
         Pluf_Precondition::couldAddRole($request, $user->id, $perm->id);
         Pluf_RowPermission::add($user, null, $perm, false);
         return new Pluf_HTTP_Response_Json($user);
@@ -83,7 +83,7 @@ class User_Views_Permission
      */
     public function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['roleId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
         return new Pluf_HTTP_Response_Json($perm);
     }
 
@@ -96,8 +96,8 @@ class User_Views_Permission
     {
         // XXX: maso, 1395: check user access.
         // Hadi, 1396: check user access
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['roleId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
         Pluf_Precondition::couldRemoveRole($request, $user->id, $perm->id);
         Pluf_RowPermission::remove($user, null, $perm);
         return new Pluf_HTTP_Response_Json($user);

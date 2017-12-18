@@ -29,7 +29,7 @@ return array(
             'Pluf_Precondition::ownerRequired'
         ),
         'params' => array(
-            'model' => 'Pluf_Group'
+            'model' => 'Group'
         )
     ),
     array(
@@ -39,7 +39,7 @@ return array(
         'http-method' => 'GET',
         'precond' => array(),
         'params' => array(
-            'model' => 'Pluf_Group',
+            'model' => 'Group',
             'listFilters' => array(
                 'name',
                 'description'
@@ -69,7 +69,7 @@ return array(
         'method' => 'getObject',
         'http-method' => 'GET',
         'params' => array(
-            'model' => 'Pluf_Group'
+            'model' => 'Group'
         ),
         'precond' => array()
     ),
@@ -79,7 +79,7 @@ return array(
         'method' => 'updateObject',
         'http-method' => 'POST',
         'params' => array(
-            'model' => 'Pluf_Group'
+            'model' => 'Group'
         ),
         'precond' => array(
             'Pluf_Precondition::ownerRequired'
@@ -91,7 +91,7 @@ return array(
         'method' => 'deleteObject',
         'http-method' => 'DELETE',
         'params' => array(
-            'model' => 'Pluf_Group'
+            'model' => 'Group'
         ),
         'precond' => array(
             'Pluf_Precondition::ownerRequired'

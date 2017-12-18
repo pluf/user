@@ -27,7 +27,7 @@ class User_PasswordToken extends Pluf_Model
             ),
             'user' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => 'Pluf_User',
+                'model' => 'User',
                 'blank' => false,
                 'editable' => false
             ),

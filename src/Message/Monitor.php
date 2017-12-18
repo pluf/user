@@ -44,7 +44,7 @@ class Message_Monitor
                         $request->user->id
                 ));
         
-        $message = new Pluf_Message();
+        $message = new User_Message();
         $res = $message->getList(
                 array(
                         'count' => true,

@@ -357,7 +357,7 @@ class User_Precondition
         if ($request->user->hasPerm('Pluf.owner', null, $request->tenant->id)) {
             return true;
         }
-        $perm = Pluf_Permission::getFromString('Pluf.authorized');
+        $perm = Role::getFromString('Pluf.authorized');
         if ($request->user->id === $userId && $roleId === $perm->id) {
             return true;
         }

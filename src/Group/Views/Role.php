@@ -38,8 +38,8 @@ class Group_Views_Role extends Pluf_Views
      */
     public static function add($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
-        $permission = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $request->REQUEST['role']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
+        $permission = Pluf_Shortcuts_GetObjectOr404('Role', $request->REQUEST['role']);
         $row = Pluf_RowPermission::add($group, null, $permission, false);
         // $group->setAssoc($permission);
         return new Pluf_HTTP_Response_Json($row);
@@ -55,7 +55,7 @@ class Group_Views_Role extends Pluf_Views
     public static function find($request, $match)
     {
         $pag = new Pluf_Paginator(new Pluf_RowPermission());
-//         $sql = new Pluf_SQL('pluf_group_id=%s', array(
+//         $sql = new Pluf_SQL('Group_id=%s', array(
 //             $match['groupId']
 //         ));
 //         $pag->forced_where = $sql;
@@ -82,7 +82,7 @@ class Group_Views_Role extends Pluf_Views
         $pag->model_view = 'join_permission';
         $pag->forced_where = new Pluf_SQL('rowpermissions.owner_id=%s AND rowpermissions.owner_class=%s', array(
             $match['groupId'],
-            'Pluf_Group'
+            'Group'
         ));
         return new Pluf_HTTP_Response_Json($pag->render_object());
     }
@@ -95,13 +95,13 @@ class Group_Views_Role extends Pluf_Views
      */
     public static function get($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
         $roleModel = new Pluf_RowPermission();
         $param = array(
             'view' => 'join_permission',
             'filter' => array(
                 'rowpermissions.owner_id=' . $group->id,
-                'rowpermissions.owner_class="Pluf_Group"'
+                'rowpermissions.owner_class="Group"'
             )
         );
         $roles = $roleModel->getList($param);
@@ -119,8 +119,8 @@ class Group_Views_Role extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
-        $permission = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['roleId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
+        $permission = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
         Pluf_Precondition::couldRemoveRole($request, $request->user->id, $permission->id);
         Pluf_RowPermission::remove($group, null, $permission);
         return new Pluf_HTTP_Response_Json($group);

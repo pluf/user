@@ -58,10 +58,6 @@ class User_Password_Token_ChangePassTest extends TestCase
             'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
             'user_signup_active' => true,
             'user_avatra_max_size' => 2097152,
-            'auth_backends' => array(
-                'Pluf_Auth_ModelBackend'
-            ),
-            'pluf_use_rowpermission' => true,
             'db_engine' => 'MySQL',
             'db_version' => '5.5.33',
             'db_login' => 'root',
@@ -76,11 +72,10 @@ class User_Password_Token_ChangePassTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_Message',
-            'Pluf_RowPermission',
+            'Group',
+            'User',
+            'Role',
+            'User_Message',
             'User_PasswordToken'
         );
         foreach ($models as $model) {
@@ -91,7 +86,7 @@ class User_Password_Token_ChangePassTest extends TestCase
             }
         }
         
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -111,12 +106,11 @@ class User_Password_Token_ChangePassTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
+            'Group',
+            'User',
+            'Role',
             'User_PasswordToken',
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
-            'Pluf_Message'
+            'User_Message'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -127,7 +121,7 @@ class User_Password_Token_ChangePassTest extends TestCase
     public function testChangePassByOld()
     {
         // Create user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test' . rand();
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -160,9 +154,9 @@ class User_Password_Token_ChangePassTest extends TestCase
         
         /**
          * 
-         * @var Pluf_User $newUser
+         * @var User $newUser
          */
-        $newUser = Pluf::factory('Pluf_User', $user->id);
+        $newUser = Pluf::factory('User', $user->id);
         $this->assertFalse($newUser->checkPassword('test'));
         $this->assertTrue($newUser->checkPassword($newPassword));
     }
@@ -170,7 +164,7 @@ class User_Password_Token_ChangePassTest extends TestCase
     public function testChangePassByToken()
     {
         // Create user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test' . rand();
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -209,9 +203,9 @@ class User_Password_Token_ChangePassTest extends TestCase
         
         /**
          * 
-         * @var Pluf_User $newUser
+         * @var User $newUser
          */
-        $newUser = Pluf::factory('Pluf_User', $user->id);
+        $newUser = Pluf::factory('User', $user->id);
         $this->assertFalse($newUser->checkPassword('test'));
         $this->assertTrue($newUser->checkPassword($newPassword));
     }

@@ -78,7 +78,7 @@ class Group extends Pluf_Model
         $t_group = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
             'join_role' => array(
-                'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B ' . 'ON (' . $t_group . '.id=B.owner_id AND B.owner_class="Pluf_Group")'
+                'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B ' . 'ON (' . $t_group . '.id=B.owner_id AND B.owner_class="Group")'
             ),
             'join_user' => array(
                 'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_group . '.id=group_id'

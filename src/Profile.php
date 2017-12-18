@@ -29,7 +29,7 @@ class Profile extends Pluf_Model
             ),
             'user' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => 'Pluf_User',
+                'model' => 'User',
                 'blank' => false,
                 'unique' => true,
                 'editable' => false

@@ -38,7 +38,7 @@ class Message_Views
      */
     public static function find ($request, $match)
     {
-        $content = new Pluf_Paginator(new Pluf_Message());
+        $content = new Pluf_Paginator(new User_Message());
         $sql = new Pluf_SQL('user=%s', 
                 array(
                         $request->user->id
@@ -67,7 +67,7 @@ class Message_Views
      */
     public static function get ($request, $match)
     {
-        $message = Pluf_Shortcuts_GetObjectOr404('Pluf_Message', 
+        $message = Pluf_Shortcuts_GetObjectOr404('User_Message', 
                 $match['messageId']);
         Message_Security::canAccessMessage($request, $message);
         return $message;
@@ -81,7 +81,7 @@ class Message_Views
      */
     public static function delete ($request, $match)
     {
-        $message = Pluf_Shortcuts_GetObjectOr404('Pluf_Message', 
+        $message = Pluf_Shortcuts_GetObjectOr404('User_Message', 
                 $match['messageId']);
         Message_Security::canAccessMessage($request, $message);
         $message->delete();

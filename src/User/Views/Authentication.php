@@ -35,7 +35,7 @@ class User_Views_Authentication
      *
      * @param Pluf_HTTP_Request $request
      * @param array $match
-     * @return Pluf_User
+     * @return User
      */
     public function login($request, $match)
     {
@@ -44,7 +44,7 @@ class User_Views_Authentication
         }
         
         $backends = Pluf::f('auth_backends', array(
-            'Pluf_Auth_ModelBackend'
+            'User_Auth_ModelBackend'
         ));
         foreach ($backends as $backend) {
             $user = call_user_func(array(
@@ -74,12 +74,11 @@ class User_Views_Authentication
      *
      * @param Pluf_HTTP_Request $request
      * @param array $match
-     * @return Pluf_User
+     * @return User
      */
     public function logout($request, $match)
     {
-        $user_model = Pluf::f('pluf_custom_user', 'Pluf_User');
-        $request->user = new $user_model();
+        $request->user = new User();
         $request->session->clear();
         $request->session->setData('logout_time', gmdate('Y-m-d H:i:s'));
         return $request->user;

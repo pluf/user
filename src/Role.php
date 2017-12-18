@@ -117,7 +117,7 @@ class Role extends Pluf_Model
      * Get the matching permission object from the permission string.
      *
      * @param
-     *            string Permission string, for example 'Pluf_User.create'.
+     *            string Permission string, for example 'User.create'.
      * @return false|Role The matching permission or false.
      */
     public static function getFromString($perm)

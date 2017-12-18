@@ -59,10 +59,6 @@ class User_REST_BasicsTest extends TestCase
             'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
             'user_signup_active' => true,
             'user_avatra_max_size' => 2097152,
-            'auth_backends' => array(
-                'Pluf_Auth_ModelBackend'
-            ),
-            'pluf_use_rowpermission' => true,
             'db_engine' => 'MySQL',
             'db_version' => '5.5.33',
             'db_login' => 'root',
@@ -77,12 +73,12 @@ class User_REST_BasicsTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
+            'Group',
+            'User',
+            'Role',
             'Pluf_RowPermission',
             'Pluf_Session',
-            'Pluf_Message',
+            'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
@@ -97,7 +93,7 @@ class User_REST_BasicsTest extends TestCase
             }
         }
         
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -118,12 +114,12 @@ class User_REST_BasicsTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
+            'Group',
+            'User',
+            'Role',
             'Pluf_RowPermission',
             'Pluf_Session',
-            'Pluf_Message',
+            'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
@@ -282,7 +278,7 @@ class User_REST_BasicsTest extends TestCase
             )
         ));
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Change detail
@@ -305,7 +301,7 @@ class User_REST_BasicsTest extends TestCase
             )
         ));
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Login
@@ -350,7 +346,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -392,7 +388,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -434,7 +430,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -468,7 +464,7 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Login
@@ -507,10 +503,10 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
-        $group = new Pluf_Group();
+        $group = new Group();
         $group->name = 'test:'.rand();
         $group->create();
         
@@ -569,10 +565,10 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
-        $perm = new Pluf_Permission();
+        $perm = new Role();
         $perm->app = 'test';
         $perm->code_name = 'testRest';
         $perm->create();

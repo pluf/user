@@ -38,11 +38,11 @@ class Group_Views_User extends Pluf_Views
      */
     public static function add($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
         if (array_key_exists('user', $request->REQUEST)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $request->REQUEST['user']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $request->REQUEST['user']);
         } elseif (array_key_exists('login', $request->REQUEST)) {
-            $user = new Pluf_User();
+            $user = new User();
             $user = $user->getOne(array(
                 'filter' => 'login="' . $request->REQUEST['login'].'"'
             ));
@@ -70,8 +70,8 @@ class Group_Views_User extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $pag = new Pluf_Paginator(new Pluf_User());
-        $sql = new Pluf_SQL('pluf_group_id=%s', array(
+        $pag = new Pluf_Paginator(new User());
+        $sql = new Pluf_SQL('Group_id=%s', array(
             $match['groupId']
         ));
         $pag->forced_where = $sql;
@@ -108,13 +108,13 @@ class Group_Views_User extends Pluf_Views
      */
     public static function get($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
-        $userModel = new Pluf_User();
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
+        $userModel = new User();
         $param = array(
             'view' => 'user_group',
             'filter' => array(
                 'id=' . $match['userId'],
-                'pluf_group_id=' . $group->id
+                'Group_id=' . $group->id
             )
         );
         $users = $userModel->getList($param);
@@ -133,8 +133,8 @@ class Group_Views_User extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         $group->delAssoc($user);
         return new Pluf_HTTP_Response_Json(array(
             'group_id' => $group->id,

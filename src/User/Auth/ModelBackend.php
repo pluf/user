@@ -19,20 +19,20 @@
 
 
 /**
- * Backend to authenticate against the Pluf_User model.
+ * Backend to authenticate against the User model.
  */
-class Pluf_Auth_ModelBackend
+class User_Auth_ModelBackend
 {
     /**
      * Given a user id, retrieve it.
      *
-     * In the case of the Pluf_User backend, the $user_id is the login.
+     * In the case of the User backend, the $user_id is the login.
      * 
-     * @return Pluf_User
+     * @return User
      */
     public static function getUser($user_id)
     {
-        $user_model = Pluf::f('pluf_custom_user','Pluf_User');
+        $user_model = Pluf::f('pluf_custom_user','User');
         $sql = new Pluf_SQL('login=%s', array($user_id));
         return Pluf::factory($user_model)->getOne($sql->gen());
     }

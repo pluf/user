@@ -39,11 +39,11 @@ class Role_Views_User extends Pluf_Views
      */
     public static function add($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
         if (array_key_exists('user', $request->REQUEST)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $request->REQUEST['user']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $request->REQUEST['user']);
         } elseif (array_key_exists('login', $request->REQUEST)) {
-            $user = new Pluf_User();
+            $user = new User();
             $user = $user->getOne(array(
                 'filter' => 'login="' . $request->REQUEST['login'].'"'
             ));
@@ -65,13 +65,13 @@ class Role_Views_User extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $perm = new Pluf_Permission($match['id']);
-        $pag = new Pluf_Paginator(new Pluf_User());
+        $perm = new Role($match['id']);
+        $pag = new Pluf_Paginator(new User());
         $pag->items_per_page = Role_Views::getListCount($request);
         $sql = new Pluf_SQL('permission=%s AND owner_class=%s', array(
             $perm->id,
             // XXX: maso, 1395: user type is getting from config
-            'Pluf_User'
+            'User'
         ));
         $pag->forced_where = $sql;
         $pag->list_filters = array(
@@ -121,8 +121,8 @@ class Role_Views_User extends Pluf_Views
      */
     public static function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['id']);
-        $userModel = new Pluf_User();
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
+        $userModel = new User();
         $param = array(
             'view' => 'user_permission',
             'filter' => array(
@@ -146,8 +146,8 @@ class Role_Views_User extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Pluf_Permission', $match['id']);
-        $owner = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
+        $owner = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         Pluf_Precondition::couldRemoveRole($request, $owner->id, $perm->id);
         $row = Pluf_RowPermission::remove($owner, null, $perm);
         return new Pluf_HTTP_Response_Json($row);

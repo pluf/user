@@ -26,14 +26,14 @@ class User_Middleware_BasicAuth
             return false;
         }
         
-        // $user_model = Pluf::f('pluf_custom_user', 'Pluf_User');
+        // $user_model = Pluf::f('pluf_custom_user', 'User');
         $auth = array(
                 'login' => $request->SERVER['PHP_AUTH_USER'],
                 'password' => $request->SERVER['PHP_AUTH_PW']
         );
         foreach (Pluf::f('auth_backends', 
                 array(
-                        'Pluf_Auth_ModelBackend'
+                        'User_Auth_ModelBackend'
                 )) as $backend) {
             $user = call_user_func(
                     array(

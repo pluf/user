@@ -31,11 +31,6 @@ class User extends Pluf_Model
 {
 
     /**
-     * کلد جلسه کاربر را تعیین می‌کند.
-     */
-    public $session_key = '_PX_User_auth';
-
-    /**
      * Cache of the Role.
      */
     public $_cache_perms = null;
@@ -213,11 +208,11 @@ class User extends Pluf_Model
         /**
          * [signal]
          *
-         * Pluf_User::preDelete
+         * User::preDelete
          *
          * [sender]
          *
-         * Pluf_User
+         * User
          *
          * [description]
          *
@@ -231,7 +226,7 @@ class User extends Pluf_Model
         $params = array(
             'user' => $this
         );
-        Pluf_Signal::send('Pluf_User::preDelete', 'Pluf_User', $params);
+        Pluf_Signal::send('User::preDelete', 'User', $params);
         
 //         if (Pluf::f('pluf_use_rowpermission', false)) {
 //             $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();

@@ -51,7 +51,7 @@ class User_Views_User
      */
     public static function get ($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         return $user;
     }
 
@@ -60,11 +60,11 @@ class User_Views_User
      *
      * @param Pluf_HTTP_Request $request            
      * @param array $match            
-     * @return Pluf_User
+     * @return User
      */
     public static function update ($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $model = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, 
                 array());
         $request->user->setMessage(
@@ -83,7 +83,7 @@ class User_Views_User
         // XXX: hadi, 1395-07-17: permission should be consider here
         // temporary I constrain this operation only for admin.
         Pluf_Precondition::adminRequired($request);
-        $usr = new Pluf_User($match['userId']);
+        $usr = new User($match['userId']);
         $usr->delete();
         return $usr;
     }
@@ -98,7 +98,7 @@ class User_Views_User
      */
     public static function find ($request, $match)
     {
-        $pag = new Pluf_Paginator(new Pluf_User());
+        $pag = new Pluf_Paginator(new User());
         $pag->list_filters = array(
                 'administrator',
                 'staff',
