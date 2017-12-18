@@ -23,6 +23,7 @@
  *
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
+ * @version 2.3.0 Row permsission i removed from the system model
  */
 class Group extends Pluf_Model
 {
@@ -66,77 +67,46 @@ class Group extends Pluf_Model
                 'readable' => true,
                 'editable' => true
             ),
-            // XXX: hadi 1396-07: should be deleted. we use rowpermission system.
             'permissions' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
-                'model' => 'Pluf_Permission',
+                'model' => 'Role',
                 'readable' => true
             )
         );
-        // TODO: hadi 1396-07: group name should be unique so we should define index for it.
-        
-        $hay = array(
-            strtolower('Pluf_User'),
-            strtolower($this->_a['model'])
-        );
-        sort($hay);
-        $t_asso = $this->_con->pfx . $hay[0] . '_' . $hay[1] . '_assoc';
+        $t_asso = $this->_con->pfx . 'group_role_assoc';
         $t_group = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
-            'group_permission' => array(
-                'join' => 'LEFT JOIN rowpermissions ON ' . $t_group . '.id=rowpermissions.owner_id AND rowpermissions.owner_class="' . $this->_a['model'] . '"'
-            ),
-            'roled_group' => array(
+            'join_role' => array(
                 'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B ' . 'ON (' . $t_group . '.id=B.owner_id AND B.owner_class="Pluf_Group")'
             ),
-            'group_user' => array(
-                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_group . '.id=pluf_group_id'
+            'join_user' => array(
+                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_group . '.id=group_id'
             )
         );
-        // if (Pluf::f('pluf_custom_group', false))
-        // $this->extended_init();
     }
 
     /**
-     * Hook for extended class
+     *
+     * {@inheritdoc}
+     * @see Pluf_Model::__toString()
      */
-    function extended_init()
-    {
-        return;
-    }
-
     function __toString()
     {
         return $this->name;
     }
 
     /**
-     * تمام دسترسی‌ها حذف می‌شود.
-     *
-     * تمام دسترسی‌هایی که به این گروه داده شده است از سیستم حذف می‌شود.
-     */
-    function preDelete()
-    {
-        $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();
-        $sql = new Pluf_SQL('owner_class=%s AND owner_id=%s', array(
-            $this->_a['model'],
-            $this->_data['id']
-        ));
-        $this->_con->execute('DELETE FROM ' . $_rpt . ' WHERE ' . $sql->gen());
-    }
-
-    /**
-     * تمام دسترسی‌هایی که یک گروه دارد را تعیین می‌کند.
+     * Gets all roles of a group
      *
      * این که گواهی مربوط به یک سطر است یا نه به صورت کلی تعیین شده است مهم نیست
      * و تنها وجود گواهی برای گروه در نظر گرفته می‌شود.
      *
      * @param
      *            bool Force the reload of the list of permissions (false)
-     * @return array List of permissions
+     * @return array List of roles
      */
-    function getAllPermissions($force = false)
+    function getAllRoles($force = false)
     {
         if ($force == false and ! is_null($this->_cache_perms)) {
             return $this->_cache_perms;
@@ -145,68 +115,11 @@ class Group extends Pluf_Model
         // load group permissions
         $this->_cache_perms = (array) $this->get_permissions_list();
         
-        // load row permission
-        if ($this->id) {
-            $this->loadRowPermissions();
-        }
         return $this->_cache_perms;
     }
 
     /**
-     * فهرستی از شی داده شده را برمی‌گرداند که این گروه دسترسی تعیین شده را روی
-     * آن‌ها دارد.
-     * به عنوان مثال فراخوانی این متد به صورت
-     * getAllPermittedObject('App.manage',
-     * new Pluf_Group(), 1)
-     * فهرستی از Pluf_Group هایی را برمی‌گرداند که گروه جاری روی ان‌ها دسترسی
-     * 'manage' رو در ملک با
-     * شناسه یک دارد.
-     *
-     * @param Pluf_Model $object
-     *            نمونه از شی مورد نظر
-     * @param string $permission
-     *            رشته حاوی code_name مربوط به گواهی مورد نظر
-     */
-    function getAllPermittedObject($permission, $object)
-    {
-        $permPattern = $permission . '#' . $object->_a['model'];
-        $permList = $this->getAllPermissions(false);
-        $result = array();
-        $m = array();
-        foreach ($permList as $rowPerm) {
-            try {
-                preg_match('/^(?P<perm>' . $permPattern . ')\((?P<id>\d+)\)/', $rowPerm, $m);
-                $obj = new $object->_a['model']($m['id']);
-                array_push($result, $obj);
-            } catch (Exception $e) {}
-        }
-        return $result;
-    }
-
-    /*
-     * تمام گواهی‌هایی که با جدول مشخص شده است را لود می‌کند.
-     */
-    private function loadRowPermissions()
-    {
-        $growp = new Pluf_RowPermission();
-        $sql = new Pluf_SQL('owner_id=%s AND owner_class=%s', array(
-            $this->id,
-            'Pluf_Group'
-        ));
-        $perms = $growp->getList(array(
-            'filter' => $sql->gen(),
-            'view' => 'join_permission'
-        ));
-        foreach ($perms as $perm) {
-            $perm_string = $perm->toString();
-            if (! in_array($perm_string, $this->_cache_perms)) {
-                $this->_cache_perms[] = $perm_string;
-            }
-        }
-    }
-
-    /**
-     * تعیین گواهی برای شئی تعیین شده
+     * Check role
      *
      * یگ گواهی برای یک مدل خاص است، در اینجا می‌توان تعیین کرد که آیا گروه
      * به شئی مورد نظر این گواهی را دارد.
@@ -219,27 +132,20 @@ class Group extends Pluf_Model
      */
     function hasPerm($perm, $obj = null)
     {
-        $perms = $this->getAllPermissions(false);
-        if (! is_null($obj)) {
-            $perm_row = $perm . '#' . $obj->_a['model'] . '(' . $obj->id . ')';
-            if (in_array('!' . $perm_row, $perms))
-                return false;
-            if (in_array($perm_row, $perms))
-                return true;
-        }
+        $perms = $this->getAllRoles(false);
         if (in_array($perm, $perms))
             return true;
         return false;
     }
 
     /**
-     * تعیین می‌کند که آیا گروه یکی از مجوزهای نرم افزار را دارد یا نه.
+     * Check an application role
      *
-     * @return bool درستی اگر یکی از مجوزها وجود داشته باشد.
+     * @return bool is true if ther is an application role related to the group
      */
     function hasAppPerms($app)
     {
-        foreach ($this->getAllPermissions() as $perm) {
+        foreach ($this->getAllRoles() as $perm) {
             if (0 === strpos($perm, $app . '.')) {
                 return true;
             }

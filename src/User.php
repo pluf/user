@@ -36,7 +36,7 @@ class User extends Pluf_Model
     public $session_key = '_PX_User_auth';
 
     /**
-     * Cache of the permissions.
+     * Cache of the Role.
      */
     public $_cache_perms = null;
 
@@ -111,13 +111,13 @@ class User extends Pluf_Model
             'groups' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
-                'model' => Pluf::f('pluf_custom_group', 'Pluf_Group'),
+                'model' => 'Group',
                 'relate_name' => 'users'
             ),
-            'permissions' => array(
+            'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
-                'model' => 'Pluf_Permission'
+                'model' => 'Role'
             ),
             'active' => array(
                 'type' => 'Pluf_DB_Field_Boolean',
@@ -161,31 +161,27 @@ class User extends Pluf_Model
                 'type' => 'unique'
             )
         );
-        $hay = array(
-            strtolower(Pluf::f('pluf_custom_group', 'Pluf_Group')),
-            strtolower($this->_a['model'])
-        );
-        sort($hay);
-        $t_asso = $this->_con->pfx . $hay[0] . '_' . $hay[1] . '_assoc';
+        // Assoc. table
+        $t_asso = $this->_con->pfx . 'group_user_assoc';
         $t_user = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
             'all' => array(
                 'select' => $this->getSelect()
             ),
-            'secure' => array(
-                'select' => $this->getSecureSelect()
-            ),
-            'user_permission' => array(
-                'select' => $this->getSecureSelect(),
-                'join' => 'LEFT JOIN rowpermissions ON ' . $t_user . '.id=rowpermissions.owner_id AND rowpermissions.owner_class="' . $this->_a['model'] . '"'
-            ),
-            'roled_user' => array(
-                'select' => $this->getSecureSelect(),
-                'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B '.
-                'ON (' . $t_user . '.id=B.owner_id AND B.owner_class="Pluf_User")'
-            ),
+//             'secure' => array(
+//                 'select' => $this->getSecureSelect()
+//             ),
+//             'user_role' => array(
+//                 'select' => $this->getSecureSelect(),
+//                 'join' => 'LEFT JOIN rowpermissions ON ' . $t_user . '.id=rowpermissions.owner_id AND rowpermissions.owner_class="' . $this->_a['model'] . '"'
+//             ),
+//             'roled_user' => array(
+//                 'select' => $this->getSecureSelect(),
+//                 'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B '.
+//                 'ON (' . $t_user . '.id=B.owner_id AND B.owner_class="User")'
+//             ),
             'user_group' => array(
-                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_user . '.id=pluf_user_id'
+                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_user . '.id=user_id'
             )
         );
 //         if (Pluf::f('pluf_custom_user', false))
@@ -193,35 +189,9 @@ class User extends Pluf_Model
     }
 
     /**
-     * تمام داده‌های امنیتی را از فهرست انتخاب حذف می‌کند.
-     */
-    function getSecureSelect()
-    {
-        if (isset($this->_cache['getSecureSelect']))
-            return $this->_cache['getSecureSelect'];
-        $select = array();
-        $table = $this->getSqlTable();
-        foreach ($this->_a['cols'] as $col => $val) {
-            if ($val['type'] != 'Pluf_DB_Field_Manytomany' && ! (array_key_exists('secure', $val) && $val['secure'] == true)) {
-                $select[] = $table . '.' . $this->_con->qn($col) . ' AS ' . $this->_con->qn($col);
-            }
-        }
-        $this->_cache['getSecureSelect'] = implode(', ', $select);
-        return $this->_cache['getSecureSelect'];
-    }
-
-    /**
-     * Hook for extended class
-     */
-    function extended_init()
-    {
-        return;
-    }
-
-    /**
-     * نمایش رشته‌ای از یک کاربر
-     *
-     * این کلاس یک نمایش رشته‌ای از کاربر ایجاد می‌کند.
+     * 
+     * {@inheritDoc}
+     * @see Pluf_Model::__toString()
      */
     function __toString()
     {
@@ -263,14 +233,14 @@ class User extends Pluf_Model
         );
         Pluf_Signal::send('Pluf_User::preDelete', 'Pluf_User', $params);
         
-        if (Pluf::f('pluf_use_rowpermission', false)) {
-            $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();
-            $sql = new Pluf_SQL('owner_class=%s AND owner_id=%s', array(
-                $this->_a['model'],
-                $this->_data['id']
-            ));
-            $this->_con->execute('DELETE FROM ' . $_rpt . ' WHERE ' . $sql->gen());
-        }
+//         if (Pluf::f('pluf_use_rowpermission', false)) {
+//             $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();
+//             $sql = new Pluf_SQL('owner_class=%s AND owner_id=%s', array(
+//                 $this->_a['model'],
+//                 $this->_data['id']
+//             ));
+//             $this->_con->execute('DELETE FROM ' . $_rpt . ' WHERE ' . $sql->gen());
+//         }
     }
 
     /**
@@ -370,18 +340,14 @@ class User extends Pluf_Model
     }
 
     /**
-     * تمام دسترسی‌هایی که یک کاربر دارد را تعیین می‌کند.
+     * Gets all user roles
      *
-     * این که گواهی مربوط به یک سطر است یا نه به صورت کلی تعیین شده است مهم نیست
-     * و تنها وجود گواهی برای کاربر در نظر گرفته می‌شود.
-     *
-     * گواهی می‌تواند به کاربر و یا به گروه انتصاب داده شده باشد.
      *
      * @param
-     *            bool Force the reload of the list of permissions (false)
-     * @return array List of permissions
+     *            bool Force the reload of the list of roles (false)
+     * @return array List of roles
      */
-    function getAllPermissions($force = false)
+    function getAllRoles($force = false)
     {
         if ($force == false and ! is_null($this->_cache_perms)) {
             return $this->_cache_perms;
@@ -391,7 +357,7 @@ class User extends Pluf_Model
             return $this->_cache_perms;
         }
         // load user permissions
-        $this->_cache_perms = (array) $this->get_permissions_list();
+        $this->_cache_perms = (array) $this->get_roles_list();
         
         // Load groups
         $groups = $this->get_groups_list();
@@ -401,59 +367,26 @@ class User extends Pluf_Model
         }
         // load groups permisson
         if (count($ids) > 0) {
-            $this->loadGroupPermissions($ids);
-        }
-        // load row permission
-        if (Pluf::f('pluf_use_rowpermission', false) and $this->id) {
-            $this->loadRowPermissions($ids);
+            $this->loadGroupRoles($ids);
         }
         return $this->_cache_perms;
     }
 
+    
     /**
-     * فهرستی از شی داده شده را برمی‌گرداند که این کاربر دسترسی تعیین شده را روی
-     * آن‌ها دارد.
-     * به عنوان مثال فراخوانی این متد به صورت
-     * getAllPermittedObject('App.manage',
-     * new Pluf_Group(), 1)
-     * فهرستی از Pluf_Group هایی را برمی‌گرداند که کاربر جاری روی ان‌ها دسترسی
-     * 'manage' رو در ملک با
-     * شناسه یک دارد.
-     *
-     * @param Pluf_Model $object
-     *            نمونه از شی مورد نظر
-     * @param string $permission
-     *            رشته حاوی code_name مربوط به گواهی مورد نظر
+     * Gets list of roles of groups
+     * 
+     * @param array $ids is list of group ids
      */
-    function getAllPermittedObject($permission, $object)
-    {
-        $permPattern = $permission . '#' . $object->_a['model'];
-        $permList = $this->getAllPermissions(false);
-        $result = array();
-        $m = array();
-        foreach ($permList as $rowPerm) {
-            try {
-                preg_match('/^(?P<perm>' . $permPattern . ')\((?P<id>\d+)\)/', $rowPerm, $m);
-                $obj = new $object->_a['model']($m['id']);
-                array_push($result, $obj);
-            } catch (Exception $e) {}
-        }
-        return $result;
-    }
-
-    /*
-     * فهرست گروه‌ها را لود می‌کند.
-     */
-    private function loadGroupPermissions($ids)
+    private function loadGroupRoles($ids)
     {
         $gperm = new Role();
-        $f_name = 'group_id';
-        $perms = (array) $gperm->getList(array(
-            'filter' => $f_name . ' IN (' . join(', ', $ids) . ')',
+        $roles = (array) $gperm->getList(array(
+            'filter' => 'group_id IN (' . join(', ', $ids) . ')',
             'view' => 'join_group'
         ));
-        foreach ($perms as $perm) {
-            $tos = $perm->toString();
+        foreach ($roles as $role) {
+            $tos = $role->__toString();
             if (! in_array($tos, $this->_cache_perms)) {
                 $this->_cache_perms[] = $tos;
             }
@@ -480,9 +413,9 @@ class User extends Pluf_Model
     {
         if (! $this->active)
             return false;
-        if ($this->administrator)
-            return true;
-        $perms = $this->getAllPermissions(false);
+//         if ($this->administrator)
+//             return true;
+        $perms = $this->getAllRoles(false);
 //         if (! is_null($obj)) {
 //             $perm_row = $perm . '#' . $obj->_a['model'] . '(' . $obj->id . ')';
 //             if (in_array('!' . $perm_row, $perms))
@@ -502,9 +435,7 @@ class User extends Pluf_Model
      */
     function hasAppPerms($app)
     {
-        if ($this->administrator)
-            return true;
-        foreach ($this->getAllPermissions() as $perm) {
+        foreach ($this->getAllRoles() as $perm) {
             if (0 === strpos($perm, $app . '.')) {
                 return true;
             }
@@ -527,7 +458,7 @@ class User extends Pluf_Model
         if ($this->isAnonymous()) {
             throw new Pluf_Exception_DoesNotExist(__("User not exist, while you are trying to add message?!"));
         }
-        $m = new Pluf_Message();
+        $m = new User_Message();
         $m->user = $this;
         $m->message = $message;
         if (! $m->create()) {

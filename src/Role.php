@@ -104,9 +104,9 @@ class Role extends Pluf_Model
         $t_perm = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
             'join_group' => array(
-                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_perm . '.id=pluf_permission_id'
+                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_perm . '.id=role_id'
             ),
-            'join_row_permission' => array(
+            'join_user' => array(
                 'join' => 'LEFT JOIN rowpermissions ON permissions.id=rowpermissions.permission'
             )
         );        

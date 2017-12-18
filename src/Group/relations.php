@@ -16,4 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-return array ();
+return array (
+    /*
+     * NOTE: relations MUST be defined in just one relations.php file.
+     */
+    'Group' => array(
+        'relate_to_many' => array(
+            'Role',
+        )
+    ),
+);

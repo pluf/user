@@ -47,7 +47,7 @@ class User_Monitor
         }
         
         // Get permission
-        $per = new Pluf_Permission();
+        $per = new Role();
         $sql = new Pluf_SQL('code_name=%s', 
                 array(
                         $match['property']

@@ -2,16 +2,21 @@
 <phpunit colors="true">
     <testsuites>
         <testsuite name="Pluf">
-            <directory>./User_Monitor/</directory> 
-            <directory>./User_REST/</directory> 
-            <directory>./User_Profile_API/</directory> 
-            <directory>./User_Password_Token/</directory> 
+            <directory>tests/Group/</directory> 
+
+            <directory>tests/Role/</directory> 
+            
+            <directory>tests/User/</directory> 
+<!--             <directory>tests/User_Monitor/</directory>  -->
+<!--             <directory>tests/User_REST/</directory>  -->
+<!--             <directory>tests/User_Profile_API/</directory>  -->
+<!--             <directory>tests/User_Password_Token/</directory>  -->
         </testsuite>
     </testsuites>
     
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">../src</directory>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
     <logging>

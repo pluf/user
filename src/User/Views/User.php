@@ -39,9 +39,6 @@ class User_Views_User
         $form = new User_Form_User(
                 array_merge($request->REQUEST, $request->FILES), $extra);
         $cuser = $form->save();
-        $perm = Pluf_Permission::getFromString('Pluf.authorized');
-        Pluf_RowPermission::add($cuser, null, $perm, false);
-        
         // Return response
         return $cuser;
     }

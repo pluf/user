@@ -20,7 +20,10 @@ Pluf::loadFunction('Pluf_HTTP_URL_urlForView');
 Pluf::loadFunction('User_Shortcuts_UserDateFactory');
 
 /**
- * فرم به روز رسانی اطلاعات کاربر را ایجاد می‌کند.
+ * Update user info
+ * 
+ * @author maso
+ *
  */
 class User_Form_User extends Pluf_Form
 {
@@ -110,7 +113,7 @@ class User_Form_User extends Pluf_Form
      *
      * @param $commit داده‌ها
      *            ذخیره شود یا نه
-     * @return Pluf_User مدل داده‌ای ایجاد شده
+     * @return User مدل داده‌ای ایجاد شده
      */
     function save ($commit = true)
     {
