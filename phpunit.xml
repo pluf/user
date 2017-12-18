@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true">
-    <testsuites>
-        <testsuite name="Pluf">
-<!--             <directory>tests/Group/</directory>  -->
+	<testsuites>
+		<testsuite name="Pluf">
+			<!-- Groups -->
+			<directory>tests/Group/</directory>
+			<!-- Roles -->
+			<directory>tests/Role/</directory>
+			<!-- Users -->
+			<directory>tests/User/</directory>
+			<directory>tests/User_Monitor/</directory>
+			<directory>tests/User_Password_Token/</directory>
+			<directory>tests/User_REST/</directory>
+			<directory>tests/User_Profile_API/</directory>
+		</testsuite>
+	</testsuites>
 
-<!--             <directory>tests/Role/</directory>  -->
-            
-<!--             <directory>tests/User/</directory>  -->
-<!--             <directory>tests/User_Monitor/</directory>  -->
-<!--             <directory>tests/User_Password_Token/</directory>  -->
-            <directory>tests/User_REST/</directory> 
-<!--             <directory>tests/User_Profile_API/</directory>  -->
-        </testsuite>
-    </testsuites>
-    
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-clover" target="./clover.xml"/>
-    </logging>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src</directory>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-clover" target="./clover.xml" />
+	</logging>
 </phpunit>

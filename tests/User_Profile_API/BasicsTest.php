@@ -79,7 +79,7 @@ class User_Profile_API_BasicsTest extends TestCase
             'Group',
             'User',
             'Role',
-            'User_CProfile'
+            'Profile'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -115,7 +115,7 @@ class User_Profile_API_BasicsTest extends TestCase
             'Group',
             'User',
             'Role',
-            'User_CProfile'
+            'Profile'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);

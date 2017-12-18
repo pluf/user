@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1513596187">
-  <project timestamp="1513596187">
+<coverage generated="1513596456">
+  <project timestamp="1513596456">
     <file name="/home/maso/git/pluf/user/src/Group.php">
       <class name="Group" namespace="global">
         <metrics complexity="10" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="0" elements="29" coveredelements="0"/>
@@ -482,16 +482,16 @@
       <line num="23" type="stmt" count="0"/>
       <line num="58" type="stmt" count="0"/>
       <line num="68" type="stmt" count="0"/>
-      <line num="81" type="method" name="preSave" complexity="2" crap="2" count="2"/>
-      <line num="83" type="stmt" count="2"/>
-      <line num="84" type="stmt" count="2"/>
-      <line num="86" type="stmt" count="2"/>
-      <line num="87" type="stmt" count="2"/>
+      <line num="81" type="method" name="preSave" complexity="2" crap="2" count="3"/>
+      <line num="83" type="stmt" count="3"/>
+      <line num="84" type="stmt" count="3"/>
+      <line num="86" type="stmt" count="3"/>
+      <line num="87" type="stmt" count="3"/>
       <metrics loc="87" ncloc="58" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="4" elements="10" coveredelements="5"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/Role.php">
       <class name="Role" namespace="global">
-        <metrics complexity="7" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="3" elements="47" coveredelements="3"/>
+        <metrics complexity="7" methods="3" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="4" elements="47" coveredelements="5"/>
       </class>
       <line num="31" type="method" name="init" complexity="1" crap="2" count="0"/>
       <line num="33" type="stmt" count="0"/>
@@ -535,12 +535,12 @@
       <line num="139" type="stmt" count="0"/>
       <line num="141" type="stmt" count="0"/>
       <line num="143" type="stmt" count="0"/>
-      <line num="151" type="method" name="__toString" visibility="public" complexity="2" crap="2.06" count="3"/>
-      <line num="153" type="stmt" count="3"/>
-      <line num="154" type="stmt" count="0"/>
-      <line num="156" type="stmt" count="3"/>
-      <line num="157" type="stmt" count="3"/>
-      <metrics loc="160" ncloc="117" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="3" elements="47" coveredelements="3"/>
+      <line num="151" type="method" name="__toString" visibility="public" complexity="2" crap="2" count="6"/>
+      <line num="153" type="stmt" count="6"/>
+      <line num="154" type="stmt" count="3"/>
+      <line num="156" type="stmt" count="6"/>
+      <line num="157" type="stmt" count="6"/>
+      <metrics loc="160" ncloc="117" classes="1" methods="3" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="4" elements="47" coveredelements="5"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/Role/Views.php">
       <class name="Role_Views" namespace="global" fullPackage="Role">
@@ -918,7 +918,7 @@
     </file>
     <file name="/home/maso/git/pluf/user/src/User.php">
       <class name="User" namespace="global">
-        <metrics complexity="39" methods="14" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="129" coveredstatements="39" elements="143" coveredelements="42"/>
+        <metrics complexity="39" methods="14" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="129" coveredstatements="60" elements="143" coveredelements="66"/>
       </class>
       <line num="38" type="method" name="init" complexity="1" crap="2" count="0"/>
       <line num="40" type="stmt" count="0"/>
@@ -974,17 +974,17 @@
       <line num="231" type="stmt" count="1"/>
       <line num="233" type="stmt" count="1"/>
       <line num="243" type="stmt" count="1"/>
-      <line num="256" type="method" name="setPassword" complexity="1" crap="2" count="0"/>
-      <line num="259" type="stmt" count="0"/>
-      <line num="260" type="stmt" count="0"/>
-      <line num="261" type="stmt" count="0"/>
-      <line num="275" type="method" name="checkPassword" complexity="3" crap="3.33" count="9"/>
-      <line num="277" type="stmt" count="9"/>
+      <line num="256" type="method" name="setPassword" complexity="1" crap="1" count="7"/>
+      <line num="259" type="stmt" count="7"/>
+      <line num="260" type="stmt" count="7"/>
+      <line num="261" type="stmt" count="7"/>
+      <line num="275" type="method" name="checkPassword" complexity="3" crap="3.04" count="12"/>
+      <line num="277" type="stmt" count="12"/>
       <line num="278" type="stmt" count="0"/>
-      <line num="280" type="stmt" count="9"/>
-      <line num="281" type="stmt" count="9"/>
-      <line num="282" type="stmt" count="9"/>
-      <line num="284" type="stmt" count="0"/>
+      <line num="280" type="stmt" count="12"/>
+      <line num="281" type="stmt" count="12"/>
+      <line num="282" type="stmt" count="12"/>
+      <line num="284" type="stmt" count="2"/>
       <line num="297" type="method" name="checkCreditentials" complexity="5" crap="30" count="0"/>
       <line num="299" type="stmt" count="0"/>
       <line num="300" type="stmt" count="0"/>
@@ -994,53 +994,53 @@
       <line num="306" type="stmt" count="0"/>
       <line num="307" type="stmt" count="0"/>
       <line num="309" type="stmt" count="0"/>
-      <line num="318" type="method" name="getUser" complexity="3" crap="3.04" count="8"/>
-      <line num="320" type="stmt" count="8"/>
-      <line num="321" type="stmt" count="8"/>
-      <line num="322" type="stmt" count="8"/>
-      <line num="324" type="stmt" count="8"/>
+      <line num="318" type="method" name="getUser" complexity="3" crap="3.04" count="11"/>
+      <line num="320" type="stmt" count="11"/>
+      <line num="321" type="stmt" count="11"/>
+      <line num="322" type="stmt" count="11"/>
+      <line num="324" type="stmt" count="11"/>
       <line num="325" type="stmt" count="0"/>
-      <line num="327" type="stmt" count="8"/>
-      <line num="333" type="method" name="preSave" complexity="2" crap="2" count="10"/>
-      <line num="335" type="stmt" count="10"/>
-      <line num="336" type="stmt" count="4"/>
-      <line num="337" type="stmt" count="4"/>
-      <line num="339" type="stmt" count="10"/>
-      <line num="349" type="method" name="getAllRoles" complexity="6" crap="7.05" count="3"/>
-      <line num="351" type="stmt" count="3"/>
-      <line num="352" type="stmt" count="0"/>
-      <line num="354" type="stmt" count="3"/>
-      <line num="355" type="stmt" count="3"/>
+      <line num="327" type="stmt" count="11"/>
+      <line num="333" type="method" name="preSave" complexity="2" crap="2" count="19"/>
+      <line num="335" type="stmt" count="19"/>
+      <line num="336" type="stmt" count="12"/>
+      <line num="337" type="stmt" count="12"/>
+      <line num="339" type="stmt" count="19"/>
+      <line num="349" type="method" name="getAllRoles" complexity="6" crap="6.02" count="7"/>
+      <line num="351" type="stmt" count="7"/>
+      <line num="352" type="stmt" count="2"/>
+      <line num="354" type="stmt" count="7"/>
+      <line num="355" type="stmt" count="7"/>
       <line num="356" type="stmt" count="0"/>
-      <line num="359" type="stmt" count="3"/>
-      <line num="362" type="stmt" count="3"/>
-      <line num="363" type="stmt" count="3"/>
-      <line num="364" type="stmt" count="3"/>
-      <line num="365" type="stmt" count="0"/>
-      <line num="368" type="stmt" count="3"/>
-      <line num="369" type="stmt" count="0"/>
-      <line num="371" type="stmt" count="3"/>
-      <line num="380" type="method" name="loadGroupRoles" visibility="private" complexity="3" crap="12" count="0"/>
-      <line num="382" type="stmt" count="0"/>
-      <line num="383" type="stmt" count="0"/>
-      <line num="384" type="stmt" count="0"/>
-      <line num="385" type="stmt" count="0"/>
-      <line num="387" type="stmt" count="0"/>
-      <line num="388" type="stmt" count="0"/>
-      <line num="389" type="stmt" count="0"/>
-      <line num="390" type="stmt" count="0"/>
-      <line num="393" type="stmt" count="0"/>
-      <line num="411" type="method" name="hasPerm" complexity="3" crap="3.33" count="3"/>
-      <line num="413" type="stmt" count="3"/>
-      <line num="414" type="stmt" count="0"/>
-      <line num="415" type="stmt" count="3"/>
-      <line num="416" type="stmt" count="3"/>
-      <line num="417" type="stmt" count="3"/>
-      <line num="418" type="stmt" count="0"/>
-      <line num="426" type="method" name="hasAppPerms" complexity="3" crap="12" count="0"/>
-      <line num="428" type="stmt" count="0"/>
-      <line num="429" type="stmt" count="0"/>
-      <line num="430" type="stmt" count="0"/>
+      <line num="359" type="stmt" count="7"/>
+      <line num="362" type="stmt" count="7"/>
+      <line num="363" type="stmt" count="7"/>
+      <line num="364" type="stmt" count="7"/>
+      <line num="365" type="stmt" count="3"/>
+      <line num="368" type="stmt" count="7"/>
+      <line num="369" type="stmt" count="3"/>
+      <line num="371" type="stmt" count="7"/>
+      <line num="380" type="method" name="loadGroupRoles" visibility="private" complexity="3" crap="3" count="3"/>
+      <line num="382" type="stmt" count="3"/>
+      <line num="383" type="stmt" count="3"/>
+      <line num="384" type="stmt" count="3"/>
+      <line num="385" type="stmt" count="3"/>
+      <line num="387" type="stmt" count="3"/>
+      <line num="388" type="stmt" count="3"/>
+      <line num="389" type="stmt" count="3"/>
+      <line num="390" type="stmt" count="3"/>
+      <line num="393" type="stmt" count="3"/>
+      <line num="411" type="method" name="hasPerm" complexity="3" crap="3" count="6"/>
+      <line num="413" type="stmt" count="6"/>
+      <line num="414" type="stmt" count="1"/>
+      <line num="415" type="stmt" count="6"/>
+      <line num="416" type="stmt" count="6"/>
+      <line num="417" type="stmt" count="4"/>
+      <line num="418" type="stmt" count="3"/>
+      <line num="426" type="method" name="hasAppPerms" complexity="3" crap="3.14" count="1"/>
+      <line num="428" type="stmt" count="1"/>
+      <line num="429" type="stmt" count="1"/>
+      <line num="430" type="stmt" count="1"/>
       <line num="433" type="stmt" count="0"/>
       <line num="446" type="method" name="setMessage" complexity="3" crap="3.14" count="1"/>
       <line num="448" type="stmt" count="1"/>
@@ -1063,7 +1063,7 @@
       <line num="482" type="stmt" count="0"/>
       <line num="483" type="stmt" count="0"/>
       <line num="485" type="stmt" count="0"/>
-      <metrics loc="487" ncloc="270" classes="1" methods="14" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="129" coveredstatements="39" elements="143" coveredelements="42"/>
+      <metrics loc="487" ncloc="270" classes="1" methods="14" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="129" coveredstatements="60" elements="143" coveredelements="66"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Auth/LdapBackend.php">
       <class name="Pluf_Auth_LdapBackend" namespace="global" fullPackage="Pluf.Auth">
@@ -1151,19 +1151,19 @@
       <class name="User_Auth_ModelBackend" namespace="global" fullPackage="User.Auth">
         <metrics complexity="5" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="9" elements="13" coveredelements="10"/>
       </class>
-      <line num="33" type="method" name="getUser" visibility="public" complexity="1" crap="1" count="9"/>
-      <line num="35" type="stmt" count="9"/>
-      <line num="36" type="stmt" count="9"/>
-      <line num="37" type="stmt" count="9"/>
-      <line num="43" type="method" name="authenticate" visibility="public" complexity="4" crap="4.25" count="9"/>
-      <line num="45" type="stmt" count="9"/>
-      <line num="46" type="stmt" count="9"/>
-      <line num="47" type="stmt" count="9"/>
-      <line num="48" type="stmt" count="9"/>
+      <line num="33" type="method" name="getUser" visibility="public" complexity="1" crap="1" count="10"/>
+      <line num="35" type="stmt" count="10"/>
+      <line num="36" type="stmt" count="10"/>
+      <line num="37" type="stmt" count="10"/>
+      <line num="43" type="method" name="authenticate" visibility="public" complexity="4" crap="4.25" count="10"/>
+      <line num="45" type="stmt" count="10"/>
+      <line num="46" type="stmt" count="10"/>
+      <line num="47" type="stmt" count="10"/>
+      <line num="48" type="stmt" count="10"/>
       <line num="49" type="stmt" count="0"/>
-      <line num="51" type="stmt" count="9"/>
+      <line num="51" type="stmt" count="10"/>
       <line num="52" type="stmt" count="0"/>
-      <line num="54" type="stmt" count="9"/>
+      <line num="54" type="stmt" count="10"/>
       <metrics loc="57" ncloc="27" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="9" elements="13" coveredelements="10"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Avatar.php">
@@ -1434,25 +1434,25 @@
       <class name="User_Middleware_Session" namespace="global" fullPackage="User.Middleware">
         <metrics complexity="6" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="15" elements="19" coveredelements="16"/>
       </class>
-      <line num="32" type="method" name="process_request" complexity="4" crap="4.05" count="14"/>
-      <line num="34" type="stmt" count="14"/>
-      <line num="35" type="stmt" count="14"/>
-      <line num="36" type="stmt" count="14"/>
-      <line num="38" type="stmt" count="8"/>
-      <line num="39" type="stmt" count="8"/>
-      <line num="40" type="stmt" count="8"/>
-      <line num="42" type="stmt" count="8"/>
-      <line num="45" type="stmt" count="8"/>
-      <line num="46" type="stmt" count="8"/>
+      <line num="32" type="method" name="process_request" complexity="4" crap="4.05" count="15"/>
+      <line num="34" type="stmt" count="15"/>
+      <line num="35" type="stmt" count="15"/>
+      <line num="36" type="stmt" count="15"/>
+      <line num="38" type="stmt" count="9"/>
+      <line num="39" type="stmt" count="9"/>
+      <line num="40" type="stmt" count="9"/>
+      <line num="42" type="stmt" count="9"/>
+      <line num="45" type="stmt" count="9"/>
+      <line num="46" type="stmt" count="9"/>
       <line num="47" type="stmt" count="0"/>
       <line num="48" type="stmt" count="0"/>
-      <line num="50" type="stmt" count="8"/>
-      <line num="53" type="stmt" count="14"/>
-      <line num="54" type="stmt" count="14"/>
-      <line num="69" type="method" name="process_response" complexity="2" crap="2" count="14"/>
-      <line num="71" type="stmt" count="14"/>
-      <line num="72" type="stmt" count="9"/>
-      <line num="74" type="stmt" count="14"/>
+      <line num="50" type="stmt" count="9"/>
+      <line num="53" type="stmt" count="15"/>
+      <line num="54" type="stmt" count="15"/>
+      <line num="69" type="method" name="process_response" complexity="2" crap="2" count="15"/>
+      <line num="71" type="stmt" count="15"/>
+      <line num="72" type="stmt" count="10"/>
+      <line num="74" type="stmt" count="15"/>
       <metrics loc="77" ncloc="33" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="15" elements="19" coveredelements="16"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Middleware/Space.php">
@@ -1492,35 +1492,24 @@
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Monitor.php">
       <class name="User_Monitor" namespace="global" fullPackage="User">
-        <metrics complexity="3" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="0" elements="26" coveredelements="0"/>
+        <metrics complexity="3" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="10" elements="15" coveredelements="10"/>
       </class>
-      <line num="36" type="method" name="permisson" visibility="public" complexity="3" crap="12" count="0"/>
-      <line num="37" type="stmt" count="0"/>
-      <line num="38" type="stmt" count="0"/>
-      <line num="39" type="stmt" count="0"/>
-      <line num="40" type="stmt" count="0"/>
-      <line num="41" type="stmt" count="0"/>
-      <line num="44" type="stmt" count="0"/>
+      <line num="36" type="method" name="permisson" visibility="public" complexity="3" crap="3.21" count="1"/>
+      <line num="39" type="stmt" count="1"/>
+      <line num="44" type="stmt" count="1"/>
       <line num="45" type="stmt" count="0"/>
       <line num="46" type="stmt" count="0"/>
-      <line num="47" type="stmt" count="0"/>
-      <line num="50" type="stmt" count="0"/>
-      <line num="51" type="stmt" count="0"/>
-      <line num="52" type="stmt" count="0"/>
-      <line num="53" type="stmt" count="0"/>
-      <line num="54" type="stmt" count="0"/>
-      <line num="55" type="stmt" count="0"/>
-      <line num="56" type="stmt" count="0"/>
-      <line num="57" type="stmt" count="0"/>
-      <line num="58" type="stmt" count="0"/>
-      <line num="59" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="1"/>
+      <line num="51" type="stmt" count="1"/>
+      <line num="53" type="stmt" count="1"/>
+      <line num="55" type="stmt" count="1"/>
+      <line num="57" type="stmt" count="1"/>
+      <line num="59" type="stmt" count="1"/>
       <line num="60" type="stmt" count="0"/>
       <line num="61" type="stmt" count="0"/>
-      <line num="62" type="stmt" count="0"/>
-      <line num="65" type="stmt" count="0"/>
-      <line num="66" type="stmt" count="0"/>
-      <line num="67" type="stmt" count="0"/>
-      <metrics loc="68" ncloc="33" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="0" elements="26" coveredelements="0"/>
+      <line num="65" type="stmt" count="1"/>
+      <line num="66" type="stmt" count="1"/>
+      <metrics loc="68" ncloc="33" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="10" elements="15" coveredelements="10"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Notify.php">
       <class name="User_Notify" namespace="global" fullPackage="User">
@@ -1566,63 +1555,22 @@
     </file>
     <file name="/home/maso/git/pluf/user/src/User/PasswordToken.php">
       <class name="User_PasswordToken" namespace="global" fullPackage="User">
-        <metrics complexity="4" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="0" elements="54" coveredelements="0"/>
+        <metrics complexity="4" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="6" elements="13" coveredelements="8"/>
       </class>
       <line num="19" type="method" name="init" complexity="1" crap="2" count="0"/>
-      <line num="20" type="stmt" count="0"/>
       <line num="21" type="stmt" count="0"/>
       <line num="22" type="stmt" count="0"/>
-      <line num="23" type="stmt" count="0"/>
-      <line num="24" type="stmt" count="0"/>
-      <line num="25" type="stmt" count="0"/>
-      <line num="26" type="stmt" count="0"/>
-      <line num="27" type="stmt" count="0"/>
-      <line num="28" type="stmt" count="0"/>
-      <line num="29" type="stmt" count="0"/>
-      <line num="30" type="stmt" count="0"/>
-      <line num="31" type="stmt" count="0"/>
-      <line num="32" type="stmt" count="0"/>
-      <line num="33" type="stmt" count="0"/>
-      <line num="34" type="stmt" count="0"/>
-      <line num="35" type="stmt" count="0"/>
-      <line num="36" type="stmt" count="0"/>
-      <line num="37" type="stmt" count="0"/>
-      <line num="38" type="stmt" count="0"/>
-      <line num="39" type="stmt" count="0"/>
-      <line num="40" type="stmt" count="0"/>
-      <line num="41" type="stmt" count="0"/>
-      <line num="42" type="stmt" count="0"/>
-      <line num="43" type="stmt" count="0"/>
-      <line num="44" type="stmt" count="0"/>
-      <line num="45" type="stmt" count="0"/>
-      <line num="46" type="stmt" count="0"/>
-      <line num="47" type="stmt" count="0"/>
-      <line num="48" type="stmt" count="0"/>
-      <line num="49" type="stmt" count="0"/>
-      <line num="50" type="stmt" count="0"/>
-      <line num="51" type="stmt" count="0"/>
-      <line num="52" type="stmt" count="0"/>
-      <line num="53" type="stmt" count="0"/>
-      <line num="54" type="stmt" count="0"/>
       <line num="56" type="stmt" count="0"/>
-      <line num="57" type="stmt" count="0"/>
-      <line num="58" type="stmt" count="0"/>
-      <line num="59" type="stmt" count="0"/>
-      <line num="60" type="stmt" count="0"/>
-      <line num="61" type="stmt" count="0"/>
       <line num="62" type="stmt" count="0"/>
-      <line num="69" type="method" name="preSave" complexity="2" crap="6" count="0"/>
-      <line num="70" type="stmt" count="0"/>
-      <line num="71" type="stmt" count="0"/>
-      <line num="72" type="stmt" count="0"/>
-      <line num="73" type="stmt" count="0"/>
-      <line num="74" type="stmt" count="0"/>
-      <line num="75" type="stmt" count="0"/>
-      <line num="76" type="stmt" count="0"/>
-      <line num="83" type="method" name="isExpired" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="84" type="stmt" count="0"/>
-      <line num="85" type="stmt" count="0"/>
-      <metrics loc="85" ncloc="62" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="0" elements="54" coveredelements="0"/>
+      <line num="69" type="method" name="preSave" complexity="2" crap="2" count="5"/>
+      <line num="71" type="stmt" count="5"/>
+      <line num="72" type="stmt" count="5"/>
+      <line num="73" type="stmt" count="5"/>
+      <line num="74" type="stmt" count="5"/>
+      <line num="76" type="stmt" count="5"/>
+      <line num="83" type="method" name="isExpired" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="84" type="stmt" count="1"/>
+      <metrics loc="85" ncloc="62" classes="1" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="6" elements="13" coveredelements="8"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Precondition.php">
       <class name="User_Precondition" namespace="global" fullPackage="User">
@@ -1747,74 +1695,44 @@
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Space.php">
       <class name="User_Space" namespace="global" fullPackage="User">
-        <metrics complexity="9" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="65" coveredelements="0"/>
+        <metrics complexity="9" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="35" coveredelements="0"/>
       </class>
       <line num="48" type="method" name="init" complexity="1" crap="2" count="0"/>
-      <line num="49" type="stmt" count="0"/>
       <line num="50" type="stmt" count="0"/>
       <line num="52" type="stmt" count="0"/>
       <line num="53" type="stmt" count="0"/>
       <line num="54" type="stmt" count="0"/>
       <line num="55" type="stmt" count="0"/>
       <line num="57" type="stmt" count="0"/>
-      <line num="58" type="stmt" count="0"/>
-      <line num="60" type="stmt" count="0"/>
-      <line num="61" type="stmt" count="0"/>
-      <line num="62" type="stmt" count="0"/>
-      <line num="63" type="stmt" count="0"/>
-      <line num="64" type="stmt" count="0"/>
-      <line num="65" type="stmt" count="0"/>
-      <line num="66" type="stmt" count="0"/>
       <line num="67" type="stmt" count="0"/>
       <line num="68" type="stmt" count="0"/>
-      <line num="69" type="stmt" count="0"/>
-      <line num="70" type="stmt" count="0"/>
-      <line num="71" type="stmt" count="0"/>
-      <line num="72" type="stmt" count="0"/>
-      <line num="73" type="stmt" count="0"/>
       <line num="74" type="stmt" count="0"/>
-      <line num="75" type="stmt" count="0"/>
-      <line num="76" type="stmt" count="0"/>
-      <line num="77" type="stmt" count="0"/>
-      <line num="78" type="stmt" count="0"/>
-      <line num="79" type="stmt" count="0"/>
       <line num="81" type="stmt" count="0"/>
       <line num="82" type="stmt" count="0"/>
       <line num="83" type="stmt" count="0"/>
       <line num="98" type="method" name="setData" complexity="2" crap="6" count="0"/>
-      <line num="99" type="stmt" count="0"/>
       <line num="100" type="stmt" count="0"/>
       <line num="101" type="stmt" count="0"/>
-      <line num="102" type="stmt" count="0"/>
       <line num="103" type="stmt" count="0"/>
-      <line num="104" type="stmt" count="0"/>
       <line num="105" type="stmt" count="0"/>
       <line num="106" type="stmt" count="0"/>
       <line num="115" type="method" name="getData" complexity="3" crap="12" count="0"/>
-      <line num="116" type="stmt" count="0"/>
       <line num="117" type="stmt" count="0"/>
       <line num="118" type="stmt" count="0"/>
-      <line num="119" type="stmt" count="0"/>
       <line num="120" type="stmt" count="0"/>
       <line num="121" type="stmt" count="0"/>
-      <line num="122" type="stmt" count="0"/>
       <line num="123" type="stmt" count="0"/>
-      <line num="124" type="stmt" count="0"/>
-      <line num="125" type="stmt" count="0"/>
       <line num="132" type="method" name="clear" complexity="1" crap="2" count="0"/>
-      <line num="133" type="stmt" count="0"/>
       <line num="134" type="stmt" count="0"/>
       <line num="135" type="stmt" count="0"/>
       <line num="136" type="stmt" count="0"/>
       <line num="141" type="method" name="preSave" complexity="1" crap="2" count="0"/>
-      <line num="142" type="stmt" count="0"/>
       <line num="143" type="stmt" count="0"/>
       <line num="144" type="stmt" count="0"/>
       <line num="149" type="method" name="restore" complexity="1" crap="2" count="0"/>
-      <line num="150" type="stmt" count="0"/>
       <line num="151" type="stmt" count="0"/>
       <line num="152" type="stmt" count="0"/>
-      <metrics loc="153" ncloc="72" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="65" coveredelements="0"/>
+      <metrics loc="153" ncloc="72" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="35" coveredelements="0"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Views.php">
       <class name="User_Views" namespace="global" fullPackage="User">
@@ -1843,25 +1761,25 @@
       <class name="User_Views_Authentication" namespace="global" fullPackage="User.Views">
         <metrics complexity="6" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="20" elements="24" coveredelements="21"/>
       </class>
-      <line num="40" type="method" name="login" visibility="public" complexity="5" crap="5.03" count="9"/>
-      <line num="42" type="stmt" count="9"/>
+      <line num="40" type="method" name="login" visibility="public" complexity="5" crap="5.03" count="10"/>
+      <line num="42" type="stmt" count="10"/>
       <line num="43" type="stmt" count="0"/>
-      <line num="46" type="stmt" count="9"/>
-      <line num="47" type="stmt" count="9"/>
-      <line num="49" type="stmt" count="9"/>
-      <line num="51" type="stmt" count="9"/>
-      <line num="52" type="stmt" count="9"/>
-      <line num="53" type="stmt" count="9"/>
-      <line num="54" type="stmt" count="9"/>
-      <line num="55" type="stmt" count="9"/>
-      <line num="59" type="stmt" count="9"/>
+      <line num="46" type="stmt" count="10"/>
+      <line num="47" type="stmt" count="10"/>
+      <line num="49" type="stmt" count="10"/>
+      <line num="51" type="stmt" count="10"/>
+      <line num="52" type="stmt" count="10"/>
+      <line num="53" type="stmt" count="10"/>
+      <line num="54" type="stmt" count="10"/>
+      <line num="55" type="stmt" count="10"/>
+      <line num="59" type="stmt" count="10"/>
       <line num="60" type="stmt" count="0"/>
-      <line num="63" type="stmt" count="9"/>
-      <line num="64" type="stmt" count="9"/>
-      <line num="65" type="stmt" count="9"/>
-      <line num="66" type="stmt" count="9"/>
-      <line num="67" type="stmt" count="9"/>
-      <line num="69" type="stmt" count="9"/>
+      <line num="63" type="stmt" count="10"/>
+      <line num="64" type="stmt" count="10"/>
+      <line num="65" type="stmt" count="10"/>
+      <line num="66" type="stmt" count="10"/>
+      <line num="67" type="stmt" count="10"/>
+      <line num="69" type="stmt" count="10"/>
       <line num="79" type="method" name="logout" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="81" type="stmt" count="1"/>
       <line num="82" type="stmt" count="1"/>
@@ -1917,26 +1835,26 @@
       <line num="76" type="stmt" count="1"/>
       <line num="77" type="stmt" count="1"/>
       <line num="79" type="stmt" count="0"/>
-      <line num="89" type="method" name="get_profile_document" complexity="3" crap="3" count="2"/>
-      <line num="90" type="stmt" count="2"/>
-      <line num="92" type="stmt" count="2"/>
-      <line num="93" type="stmt" count="2"/>
-      <line num="94" type="stmt" count="1"/>
-      <line num="95" type="stmt" count="1"/>
-      <line num="96" type="stmt" count="1"/>
-      <line num="97" type="stmt" count="1"/>
-      <line num="99" type="stmt" count="2"/>
-      <line num="100" type="stmt" count="2"/>
-      <line num="101" type="stmt" count="2"/>
-      <line num="103" type="stmt" count="2"/>
-      <line num="104" type="stmt" count="2"/>
-      <line num="105" type="stmt" count="2"/>
-      <line num="106" type="stmt" count="2"/>
-      <line num="107" type="stmt" count="2"/>
-      <line num="108" type="stmt" count="2"/>
-      <line num="109" type="stmt" count="2"/>
-      <line num="111" type="stmt" count="2"/>
-      <line num="112" type="stmt" count="2"/>
+      <line num="89" type="method" name="get_profile_document" complexity="3" crap="3" count="3"/>
+      <line num="90" type="stmt" count="3"/>
+      <line num="92" type="stmt" count="3"/>
+      <line num="93" type="stmt" count="3"/>
+      <line num="94" type="stmt" count="2"/>
+      <line num="95" type="stmt" count="2"/>
+      <line num="96" type="stmt" count="2"/>
+      <line num="97" type="stmt" count="2"/>
+      <line num="99" type="stmt" count="3"/>
+      <line num="100" type="stmt" count="3"/>
+      <line num="101" type="stmt" count="3"/>
+      <line num="103" type="stmt" count="3"/>
+      <line num="104" type="stmt" count="3"/>
+      <line num="105" type="stmt" count="3"/>
+      <line num="106" type="stmt" count="3"/>
+      <line num="107" type="stmt" count="3"/>
+      <line num="108" type="stmt" count="3"/>
+      <line num="109" type="stmt" count="3"/>
+      <line num="111" type="stmt" count="3"/>
+      <line num="112" type="stmt" count="3"/>
       <line num="121" type="method" name="getDocumentMap" complexity="2" crap="2" count="2"/>
       <line num="123" type="stmt" count="2"/>
       <line num="124" type="stmt" count="2"/>
@@ -2058,104 +1976,77 @@
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Views/Password.php">
       <class name="User_Views_Password" namespace="global" fullPackage="User.Views">
-        <metrics complexity="19" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="98" coveredstatements="0" elements="102" coveredelements="0"/>
+        <metrics complexity="19" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="70" coveredstatements="44" elements="74" coveredelements="44"/>
       </class>
-      <line num="19" type="stmt" count="0"/>
-      <line num="20" type="stmt" count="0"/>
+      <line num="19" type="stmt" count="1"/>
+      <line num="20" type="stmt" count="1"/>
       <line num="40" type="method" name="update" visibility="public" complexity="3" crap="12" count="0"/>
-      <line num="41" type="stmt" count="0"/>
       <line num="42" type="stmt" count="0"/>
       <line num="43" type="stmt" count="0"/>
       <line num="44" type="stmt" count="0"/>
       <line num="45" type="stmt" count="0"/>
       <line num="46" type="stmt" count="0"/>
-      <line num="47" type="stmt" count="0"/>
       <line num="48" type="stmt" count="0"/>
-      <line num="49" type="stmt" count="0"/>
       <line num="50" type="stmt" count="0"/>
-      <line num="51" type="stmt" count="0"/>
-      <line num="59" type="method" name="password" visibility="public" complexity="11" crap="132" count="0"/>
-      <line num="60" type="stmt" count="0"/>
-      <line num="61" type="stmt" count="0"/>
-      <line num="62" type="stmt" count="0"/>
-      <line num="63" type="stmt" count="0"/>
-      <line num="65" type="stmt" count="0"/>
-      <line num="66" type="stmt" count="0"/>
-      <line num="67" type="stmt" count="0"/>
-      <line num="68" type="stmt" count="0"/>
-      <line num="69" type="stmt" count="0"/>
-      <line num="70" type="stmt" count="0"/>
-      <line num="71" type="stmt" count="0"/>
-      <line num="72" type="stmt" count="0"/>
-      <line num="73" type="stmt" count="0"/>
-      <line num="74" type="stmt" count="0"/>
-      <line num="76" type="stmt" count="0"/>
-      <line num="77" type="stmt" count="0"/>
-      <line num="78" type="stmt" count="0"/>
-      <line num="79" type="stmt" count="0"/>
-      <line num="80" type="stmt" count="0"/>
-      <line num="81" type="stmt" count="0"/>
-      <line num="82" type="stmt" count="0"/>
-      <line num="83" type="stmt" count="0"/>
-      <line num="84" type="stmt" count="0"/>
-      <line num="85" type="stmt" count="0"/>
-      <line num="87" type="stmt" count="0"/>
-      <line num="88" type="stmt" count="0"/>
-      <line num="89" type="stmt" count="0"/>
-      <line num="90" type="stmt" count="0"/>
-      <line num="91" type="stmt" count="0"/>
-      <line num="92" type="stmt" count="0"/>
-      <line num="93" type="stmt" count="0"/>
+      <line num="59" type="method" name="password" visibility="public" complexity="11" crap="11.08" count="5"/>
+      <line num="62" type="stmt" count="5"/>
+      <line num="65" type="stmt" count="5"/>
+      <line num="66" type="stmt" count="1"/>
+      <line num="67" type="stmt" count="1"/>
+      <line num="69" type="stmt" count="1"/>
+      <line num="70" type="stmt" count="1"/>
+      <line num="71" type="stmt" count="1"/>
+      <line num="73" type="stmt" count="1"/>
+      <line num="76" type="stmt" count="4"/>
+      <line num="77" type="stmt" count="2"/>
+      <line num="78" type="stmt" count="2"/>
+      <line num="80" type="stmt" count="2"/>
+      <line num="81" type="stmt" count="2"/>
+      <line num="82" type="stmt" count="2"/>
+      <line num="84" type="stmt" count="2"/>
+      <line num="87" type="stmt" count="2"/>
+      <line num="88" type="stmt" count="1"/>
+      <line num="89" type="stmt" count="1"/>
+      <line num="90" type="stmt" count="1"/>
+      <line num="92" type="stmt" count="1"/>
+      <line num="93" type="stmt" count="1"/>
       <line num="94" type="stmt" count="0"/>
-      <line num="95" type="stmt" count="0"/>
-      <line num="96" type="stmt" count="0"/>
-      <line num="97" type="stmt" count="0"/>
-      <line num="98" type="stmt" count="0"/>
-      <line num="99" type="stmt" count="0"/>
-      <line num="100" type="stmt" count="0"/>
-      <line num="101" type="stmt" count="0"/>
-      <line num="103" type="stmt" count="0"/>
-      <line num="104" type="stmt" count="0"/>
+      <line num="96" type="stmt" count="1"/>
+      <line num="97" type="stmt" count="1"/>
+      <line num="98" type="stmt" count="1"/>
+      <line num="99" type="stmt" count="1"/>
+      <line num="100" type="stmt" count="1"/>
+      <line num="103" type="stmt" count="1"/>
+      <line num="104" type="stmt" count="1"/>
       <line num="105" type="stmt" count="0"/>
-      <line num="106" type="stmt" count="0"/>
-      <line num="107" type="stmt" count="0"/>
-      <line num="108" type="stmt" count="0"/>
-      <line num="109" type="stmt" count="0"/>
-      <line num="110" type="stmt" count="0"/>
+      <line num="107" type="stmt" count="1"/>
+      <line num="108" type="stmt" count="1"/>
+      <line num="109" type="stmt" count="1"/>
       <line num="112" type="stmt" count="0"/>
-      <line num="113" type="stmt" count="0"/>
-      <line num="120" type="method" name="sendPasswordToken" visibility="private" complexity="3" crap="12" count="0"/>
-      <line num="121" type="stmt" count="0"/>
-      <line num="122" type="stmt" count="0"/>
-      <line num="124" type="stmt" count="0"/>
-      <line num="125" type="stmt" count="0"/>
-      <line num="126" type="stmt" count="0"/>
-      <line num="127" type="stmt" count="0"/>
-      <line num="128" type="stmt" count="0"/>
-      <line num="129" type="stmt" count="0"/>
-      <line num="130" type="stmt" count="0"/>
-      <line num="133" type="stmt" count="0"/>
-      <line num="134" type="stmt" count="0"/>
-      <line num="136" type="stmt" count="0"/>
-      <line num="139" type="stmt" count="0"/>
-      <line num="140" type="stmt" count="0"/>
-      <line num="141" type="stmt" count="0"/>
+      <line num="120" type="method" name="sendPasswordToken" visibility="private" complexity="3" crap="3.82" count="3"/>
+      <line num="122" type="stmt" count="3"/>
+      <line num="124" type="stmt" count="3"/>
+      <line num="125" type="stmt" count="3"/>
+      <line num="127" type="stmt" count="3"/>
+      <line num="128" type="stmt" count="3"/>
+      <line num="129" type="stmt" count="1"/>
+      <line num="133" type="stmt" count="3"/>
+      <line num="134" type="stmt" count="3"/>
+      <line num="136" type="stmt" count="3"/>
+      <line num="139" type="stmt" count="3"/>
+      <line num="140" type="stmt" count="3"/>
       <line num="142" type="stmt" count="0"/>
-      <line num="143" type="stmt" count="0"/>
       <line num="144" type="stmt" count="0"/>
       <line num="145" type="stmt" count="0"/>
       <line num="146" type="stmt" count="0"/>
       <line num="147" type="stmt" count="0"/>
-      <line num="148" type="stmt" count="0"/>
       <line num="149" type="stmt" count="0"/>
       <line num="150" type="stmt" count="0"/>
       <line num="151" type="stmt" count="0"/>
       <line num="152" type="stmt" count="0"/>
-      <line num="168" type="method" name="generateCallback" visibility="private" complexity="2" crap="6" count="0"/>
-      <line num="169" type="stmt" count="0"/>
-      <line num="170" type="stmt" count="0"/>
-      <line num="171" type="stmt" count="0"/>
-      <line num="172" type="stmt" count="0"/>
+      <line num="168" type="method" name="generateCallback" visibility="private" complexity="2" crap="3.88" count="3"/>
+      <line num="170" type="stmt" count="3"/>
+      <line num="171" type="stmt" count="3"/>
       <line num="173" type="stmt" count="0"/>
       <line num="175" type="stmt" count="0"/>
       <line num="176" type="stmt" count="0"/>
@@ -2163,8 +2054,7 @@
       <line num="178" type="stmt" count="0"/>
       <line num="179" type="stmt" count="0"/>
       <line num="180" type="stmt" count="0"/>
-      <line num="181" type="stmt" count="0"/>
-      <metrics loc="182" ncloc="113" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="100" coveredstatements="0" elements="104" coveredelements="0"/>
+      <metrics loc="182" ncloc="113" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="72" coveredstatements="46" elements="76" coveredelements="46"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/Views/Permission.php">
       <class name="User_Views_Permission" namespace="global" fullPackage="User.Views">
@@ -2261,9 +2151,9 @@
       <metrics loc="15" ncloc="15" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="12" coveredelements="0"/>
     </file>
     <file name="/home/maso/git/pluf/user/src/User/urls.php">
-      <line num="24" type="stmt" count="14"/>
+      <line num="24" type="stmt" count="15"/>
       <metrics loc="291" ncloc="172" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="1" coveredelements="1"/>
     </file>
-    <metrics files="49" loc="5231" ncloc="3056" classes="38" methods="135" coveredmethods="26" conditionals="0" coveredconditionals="0" statements="1859" coveredstatements="338" elements="1994" coveredelements="364"/>
+    <metrics files="49" loc="5231" ncloc="3056" classes="38" methods="135" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="1749" coveredstatements="422" elements="1884" coveredelements="454"/>
   </project>
 </coverage>
