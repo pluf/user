@@ -23,7 +23,7 @@ return array(
                 'method' => 'find',
                 'http-method' => 'GET',
                 'precond' => array(
-                        'Pluf_Precondition::loginRequired'
+                        'User_Precondition::loginRequired'
                 ),
         ),
         array(
@@ -32,7 +32,7 @@ return array(
                 'method' => 'get',
                 'http-method' => 'GET',
                 'precond' => array(
-                        'Pluf_Precondition::loginRequired'
+                        'User_Precondition::loginRequired'
                 ),
         ),
         array(
@@ -41,7 +41,7 @@ return array(
                 'method' => 'delete',
                 'http-method' => 'DELETE',
                 'precond' => array(
-                        'Pluf_Precondition::loginRequired'
+                        'User_Precondition::loginRequired'
                 ),
         )
 );

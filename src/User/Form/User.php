@@ -82,18 +82,6 @@ class User_Form_User extends Pluf_Form
                         'label' => __('Email address'),
                         'initial' => $this->user_data->email
                 ));
-        $this->fields['administrator'] = new Pluf_Form_Field_Boolean(
-                array(
-                        'required' => false,
-                        'label' => __('administrator'),
-                        'initial' => $this->user_data->administrator
-                ));
-        $this->fields['staff'] = new Pluf_Form_Field_Boolean(
-                array(
-                        'required' => false,
-                        'label' => __('staff'),
-                        'initial' => $this->user_data->staff
-                ));
         $this->fields['active'] = new Pluf_Form_Field_Boolean(
                 array(
                         'required' => false,

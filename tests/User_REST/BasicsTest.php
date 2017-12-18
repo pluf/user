@@ -39,7 +39,8 @@ class User_REST_BasicsTest extends TestCase
             ),
             'general_from_email' => 'test@localhost',
             'middleware_classes' => array(
-                'Pluf_Middleware_Session'
+                'Pluf_Middleware_Session',
+                'User_Middleware_Session',
             ),
             'debug' => true,
             'test_unit' => true,
@@ -76,13 +77,12 @@ class User_REST_BasicsTest extends TestCase
             'Group',
             'User',
             'Role',
-            'Pluf_RowPermission',
+            'Profile',
             'Pluf_Session',
             'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'User_CProfile',
             'User_Avatar'
         );
         foreach ($models as $model) {
@@ -100,10 +100,15 @@ class User_REST_BasicsTest extends TestCase
         $user->email = 'toto@example.com';
         $user->setPassword('test');
         $user->active = true;
-        $user->administrator = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
+        
+        $rol = Role::getFromString('Pluf.owner');
+        $user->setAssoc($rol);
+        
+        $t = new User(1);
+        Test_Assert::assertTrue($t->hasPerm('Pluf.owner'));
     }
 
     /**
@@ -117,13 +122,12 @@ class User_REST_BasicsTest extends TestCase
             'Group',
             'User',
             'Role',
-            'Pluf_RowPermission',
+            'Profile',
             'Pluf_Session',
             'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'User_CProfile',
             'User_Avatar'
         );
         foreach ($models as $model) {

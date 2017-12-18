@@ -80,9 +80,6 @@ class User_Views_User
      */
     public static function delete ($request, $match)
     {
-        // XXX: hadi, 1395-07-17: permission should be consider here
-        // temporary I constrain this operation only for admin.
-        Pluf_Precondition::adminRequired($request);
         $usr = new User($match['userId']);
         $usr->delete();
         return $usr;
@@ -118,16 +115,16 @@ class User_Views_User
                 'date_joined',
                 'last_login'
         );
-        if (! Pluf_Precondition::isStaff($request) &&
-                 Pluf::f('multitenant', false)) {
-            $pag->model_view = 'roled_user';
-            $pag->forced_where = new Pluf_SQL('tenant=%s', 
-                    array(
-                            Pluf_Tenant::current()->id
-                    ));
-        } else {
-            $pag->model_view = 'secure';
-        }
+        
+        // XXX: maso, 2017: owner can do that
+//         if (! Pluf_Precondition::isStaff($request) &&
+//                  Pluf::f('multitenant', false)) {
+//             $pag->model_view = 'roled_user';
+//             $pag->forced_where = new Pluf_SQL('tenant=%s', 
+//                     array(
+//                             Pluf_Tenant::current()->id
+//                     ));
+//         }
         $pag->sort_order = array('id', 'DESC');
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->items_per_page = User_Views_User::getListCount($request);

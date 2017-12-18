@@ -100,14 +100,15 @@ class Role extends Pluf_Model
                 'lock_option' => ''
             )
         );
-        $t_asso = $this->_con->pfx . 'group_role_assoc';
+        $g_asso = $this->_con->pfx . 'group_role_assoc';
+        $u_asso = $this->_con->pfx . 'role_user_assoc';
         $t_perm = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
             'join_group' => array(
-                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_perm . '.id=role_id'
+                'join' => 'LEFT JOIN '.$g_asso.' ON ' . $t_perm . '.id=role_id'
             ),
             'join_user' => array(
-                'join' => 'LEFT JOIN rowpermissions ON permissions.id=rowpermissions.permission'
+                'join' => 'LEFT JOIN '.$u_asso.' ON ' . $t_perm . '.id=role_id'
             )
         );        
     }

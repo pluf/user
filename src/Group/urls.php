@@ -161,7 +161,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     )
 );

@@ -33,7 +33,7 @@ class User_Middleware_Session
     {
         $session = $request->session;
         $set_lang = false;
-        if ($request->session . isset($this->session_key)) {
+        if ($request->session->isset($this->session_key)) {
             // We can get the corresponding user
             $id = $request->session->getData($this->session_key);
             $found_user = new User($id);
@@ -68,8 +68,8 @@ class User_Middleware_Session
      */
     function process_response($request, $response)
     {
-        if ($request->user->id > 0) {
-            $data[$this->session_key] = $request->user->id;
+        if (! $request->user->isAnonymous()) {
+            $request->session->setData($this->session_key, $request->user->id);
         }
         return $response;
     }

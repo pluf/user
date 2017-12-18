@@ -54,7 +54,7 @@ class User_Views_Group extends Pluf_Views
             'name',
             'version'
         );
-        $pag->model_view = 'group_user';
+        $pag->model_view = 'join_user';
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
         return new Pluf_HTTP_Response_Json($pag->render_object());
@@ -102,7 +102,7 @@ class User_Views_Group extends Pluf_Views
         $usr = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         $groupModel = new Group();
         $param = array(
-            'view' => 'group_user',
+            'view' => 'join_user',
             'filter' => array(
                 'id=' . $match['groupId'],
                 'User_id=' . $usr->id

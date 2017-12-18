@@ -31,7 +31,7 @@ return array(
         'model' => 'User_Views',
         'method' => 'updateAccount',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         ),
         'http-method' => 'POST'
     ),
@@ -40,7 +40,7 @@ return array(
         'model' => 'User_Views',
         'method' => 'deleteAccount',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         ),
         'http-method' => 'DELETE'
     ),
@@ -95,7 +95,7 @@ return array(
         'model' => 'User_Views_User',
         'method' => 'update',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         ),
         'http-method' => 'POST'
     ),
@@ -104,7 +104,7 @@ return array(
         'model' => 'User_Views_User',
         'method' => 'delete',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         ),
         'http-method' => 'DELETE'
     ),
@@ -122,7 +122,7 @@ return array(
         'model' => 'User_Views_CProfile',
         'method' => 'update',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         ),
         'http-method' => 'POST'
     ),
@@ -138,7 +138,7 @@ return array(
 //         'model' => 'User_Views_CProfile',
 //         'method' => 'update',
 //         'precond' => array(
-//             'Pluf_Precondition::loginRequired'
+//             'User_Precondition::loginRequired'
 //         ),
 //         'http-method' => 'POST'
 //     ),
@@ -162,7 +162,7 @@ return array(
         'method' => 'update',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     array(
@@ -171,7 +171,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     /*
@@ -194,7 +194,7 @@ return array(
         'method' => 'update',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     array(
@@ -203,7 +203,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     // XXX: Hadi, 1395-07-08: I believe that following RESTs are redundant.
@@ -216,7 +216,7 @@ return array(
         'method' => 'add',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -252,7 +252,7 @@ return array(
         'method' => 'create',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     array(
@@ -267,22 +267,13 @@ return array(
         'method' => 'get',
         'http-method' => 'GET'
     ),
-    // array(
-    // 'regex' => '#^/(?P<userId>\d+)/role/(?P<roleId>\d+)$#',
-    // 'model' => 'User_Views_Permission',
-    // 'method' => 'POST',
-    // 'http-method' => 'update',
-    // 'precond' => array(
-    // 'Pluf_Precondition::ownerRequired'
-    // )
-    // ),
     array(
         'regex' => '#^/(?P<userId>\d+)/role/(?P<roleId>\d+)$#',
         'model' => 'User_Views_Permission',
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     //
@@ -293,7 +284,7 @@ return array(
         'model' => 'User_Views_Password',
         'method' => 'update',
         'precond' => array(
-            'Pluf_Precondition::loginRequired'
+            'User_Precondition::loginRequired'
         ),
         'http-method' => 'POST'
     )

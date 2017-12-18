@@ -107,11 +107,15 @@ class User extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
                 'model' => 'Group',
-                'relate_name' => 'users'
+                'relate_name' => 'users',
+                'editable' => false,
+                'readable' => false,
             ),
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
+                'editable' => false,
+                'readable' => false,
                 'model' => 'Role'
             ),
             'active' => array(
@@ -404,20 +408,11 @@ class User extends Pluf_Model
      *            string Permission
      * @return bool true if user has the permission
      */
-    function hasPerm($perm/* , $obj = null */)
+    function hasPerm($perm)
     {
         if (! $this->active)
             return false;
-//         if ($this->administrator)
-//             return true;
         $perms = $this->getAllRoles(false);
-//         if (! is_null($obj)) {
-//             $perm_row = $perm . '#' . $obj->_a['model'] . '(' . $obj->id . ')';
-//             if (in_array('!' . $perm_row, $perms))
-//                 return false;
-//             if (in_array($perm_row, $perms))
-//                 return true;
-//         }
         if (in_array($perm, $perms))
             return true;
         return false;
