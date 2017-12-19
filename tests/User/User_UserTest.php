@@ -33,7 +33,7 @@ class User_UserTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(dirname(__FILE__) . '/../conf/pluf.config.php');
+        Pluf::start(dirname(__FILE__) . '/../conf/mysql.user.config.php');
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(

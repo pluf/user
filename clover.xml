@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1513596456">
-  <project timestamp="1513596456">
+<coverage generated="1513646754">
+  <project timestamp="1513646754">
     <file name="/home/maso/git/pluf/user/src/Group.php">
       <class name="Group" namespace="global">
         <metrics complexity="10" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="0" elements="29" coveredelements="0"/>
