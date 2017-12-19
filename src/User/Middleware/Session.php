@@ -33,7 +33,7 @@ class User_Middleware_Session
     {
         $session = $request->session;
         $set_lang = false;
-        if ($request->session->isset($this->session_key)) {
+        if ($request->session->containsKey($this->session_key)) {
             // We can get the corresponding user
             $id = $request->session->getData($this->session_key);
             $found_user = new User($id);
