@@ -39,7 +39,8 @@ class User_REST_BasicsTest extends TestCase
             ),
             'general_from_email' => 'test@localhost',
             'middleware_classes' => array(
-                'Pluf_Middleware_Session'
+                'Pluf_Middleware_Session',
+                'User_Middleware_Session',
             ),
             'debug' => true,
             'test_unit' => true,
@@ -59,10 +60,6 @@ class User_REST_BasicsTest extends TestCase
             'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
             'user_signup_active' => true,
             'user_avatra_max_size' => 2097152,
-            'auth_backends' => array(
-                'Pluf_Auth_ModelBackend'
-            ),
-            'pluf_use_rowpermission' => true,
             'db_engine' => 'MySQL',
             'db_version' => '5.5.33',
             'db_login' => 'root',
@@ -77,16 +74,15 @@ class User_REST_BasicsTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
+            'Group',
+            'User',
+            'Role',
+            'Profile',
             'Pluf_Session',
-            'Pluf_Message',
+            'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'User_CProfile',
             'User_Avatar'
         );
         foreach ($models as $model) {
@@ -97,17 +93,22 @@ class User_REST_BasicsTest extends TestCase
             }
         }
         
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
         $user->email = 'toto@example.com';
         $user->setPassword('test');
         $user->active = true;
-        $user->administrator = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
+        
+        $rol = Role::getFromString('Pluf.owner');
+        $user->setAssoc($rol);
+        
+        $t = new User(1);
+        Test_Assert::assertTrue($t->hasPerm('Pluf.owner'));
     }
 
     /**
@@ -118,16 +119,15 @@ class User_REST_BasicsTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
+            'Group',
+            'User',
+            'Role',
+            'Profile',
             'Pluf_Session',
-            'Pluf_Message',
+            'User_Message',
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'User_CProfile',
             'User_Avatar'
         );
         foreach ($models as $model) {
@@ -282,7 +282,7 @@ class User_REST_BasicsTest extends TestCase
             )
         ));
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Change detail
@@ -305,7 +305,7 @@ class User_REST_BasicsTest extends TestCase
             )
         ));
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Login
@@ -350,7 +350,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -392,7 +392,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -434,7 +434,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser($form['login']);
         
         // Login
@@ -468,7 +468,7 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // Login
@@ -507,10 +507,10 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
-        $group = new Pluf_Group();
+        $group = new Group();
         $group->name = 'test:'.rand();
         $group->create();
         
@@ -569,10 +569,10 @@ class User_REST_BasicsTest extends TestCase
         ));
         
         // Change detail
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
-        $perm = new Pluf_Permission();
+        $perm = new Role();
         $perm->app = 'test';
         $perm->code_name = 'testRest';
         $perm->create();

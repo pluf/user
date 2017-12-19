@@ -39,9 +39,6 @@ class User_Views_User
         $form = new User_Form_User(
                 array_merge($request->REQUEST, $request->FILES), $extra);
         $cuser = $form->save();
-        $perm = Pluf_Permission::getFromString('Pluf.authorized');
-        Pluf_RowPermission::add($cuser, null, $perm, false);
-        
         // Return response
         return $cuser;
     }
@@ -54,7 +51,7 @@ class User_Views_User
      */
     public static function get ($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         return $user;
     }
 
@@ -63,11 +60,11 @@ class User_Views_User
      *
      * @param Pluf_HTTP_Request $request            
      * @param array $match            
-     * @return Pluf_User
+     * @return User
      */
     public static function update ($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $model = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, 
                 array());
         $request->user->setMessage(
@@ -83,10 +80,7 @@ class User_Views_User
      */
     public static function delete ($request, $match)
     {
-        // XXX: hadi, 1395-07-17: permission should be consider here
-        // temporary I constrain this operation only for admin.
-        Pluf_Precondition::adminRequired($request);
-        $usr = new Pluf_User($match['userId']);
+        $usr = new User($match['userId']);
         $usr->delete();
         return $usr;
     }
@@ -101,7 +95,7 @@ class User_Views_User
      */
     public static function find ($request, $match)
     {
-        $pag = new Pluf_Paginator(new Pluf_User());
+        $pag = new Pluf_Paginator(new User());
         $pag->list_filters = array(
                 'administrator',
                 'staff',
@@ -121,16 +115,16 @@ class User_Views_User
                 'date_joined',
                 'last_login'
         );
-        if (! Pluf_Precondition::isStaff($request) &&
-                 Pluf::f('multitenant', false)) {
-            $pag->model_view = 'roled_user';
-            $pag->forced_where = new Pluf_SQL('tenant=%s', 
-                    array(
-                            Pluf_Tenant::current()->id
-                    ));
-        } else {
-            $pag->model_view = 'secure';
-        }
+        
+        // XXX: maso, 2017: owner can do that
+//         if (! Pluf_Precondition::isStaff($request) &&
+//                  Pluf::f('multitenant', false)) {
+//             $pag->model_view = 'roled_user';
+//             $pag->forced_where = new Pluf_SQL('tenant=%s', 
+//                     array(
+//                             Pluf_Tenant::current()->id
+//                     ));
+//         }
         $pag->sort_order = array('id', 'DESC');
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->items_per_page = User_Views_User::getListCount($request);

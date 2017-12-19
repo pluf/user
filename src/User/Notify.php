@@ -12,7 +12,7 @@ class User_Notify
     /**
      * Push message for the user
      *
-     * @param Pluf_User $user
+     * @param User $user
      * @param array $templates
      * @param array $context
      */

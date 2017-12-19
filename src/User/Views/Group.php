@@ -35,8 +35,8 @@ class User_Views_Group extends Pluf_Views
      */
     public function find($request, $match)
     {
-        $pag = new Pluf_Paginator(new Pluf_Group());
-        $sql = new Pluf_SQL('pluf_user_id=%s', array(
+        $pag = new Pluf_Paginator(new Group());
+        $sql = new Pluf_SQL('User_id=%s', array(
             $match['userId']
         ));
         $pag->forced_where = $sql;
@@ -54,7 +54,7 @@ class User_Views_Group extends Pluf_Views
             'name',
             'version'
         );
-        $pag->model_view = 'group_user';
+        $pag->model_view = 'join_user';
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
         return new Pluf_HTTP_Response_Json($pag->render_object());
@@ -67,13 +67,13 @@ class User_Views_Group extends Pluf_Views
      */
     public function add($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         if (array_key_exists('groupId', $request->REQUEST)) {
-            $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $request->REQUEST['groupId']);
+            $group = Pluf_Shortcuts_GetObjectOr404('Group', $request->REQUEST['groupId']);
         } elseif (array_key_exists('group', $request->REQUEST)) {
-            $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $request->REQUEST['group']);
+            $group = Pluf_Shortcuts_GetObjectOr404('Group', $request->REQUEST['group']);
         } elseif (array_key_exists('group_name', $request->REQUEST)) {
-            $group = new Pluf_Group();
+            $group = new Group();
             $group = $group->getOne(array(
                 'filter' => 'name="' . $request->REQUEST['group_name'] . '"'
             ));
@@ -99,13 +99,13 @@ class User_Views_Group extends Pluf_Views
      */
     public function get($request, $match)
     {
-        $usr = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        $groupModel = new Pluf_Group();
+        $usr = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $groupModel = new Group();
         $param = array(
-            'view' => 'group_user',
+            'view' => 'join_user',
             'filter' => array(
                 'id=' . $match['groupId'],
-                'pluf_user_id=' . $usr->id
+                'User_id=' . $usr->id
             )
         );
         $groups = $groupModel->getList($param);
@@ -122,8 +122,8 @@ class User_Views_Group extends Pluf_Views
      */
     public function delete($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        $group = Pluf_Shortcuts_GetObjectOr404('Pluf_Group', $match['groupId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
         $user->delAssoc($group);
         return new Pluf_HTTP_Response_Json(array(
             'group_id' => $group->id,

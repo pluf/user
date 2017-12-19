@@ -58,10 +58,6 @@ class User_Password_Token_MainTest extends TestCase
             'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
             'user_signup_active' => true,
             'user_avatra_max_size' => 2097152,
-            'auth_backends' => array(
-                'Pluf_Auth_ModelBackend'
-            ),
-            'pluf_use_rowpermission' => true,
             'db_engine' => 'MySQL',
             'db_version' => '5.5.33',
             'db_login' => 'root',
@@ -76,11 +72,10 @@ class User_Password_Token_MainTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_Message',
-            'Pluf_RowPermission',
+            'Group',
+            'User',
+            'Role',
+            'User_Message',
             'User_PasswordToken'
         );
         foreach ($models as $model) {
@@ -91,7 +86,7 @@ class User_Password_Token_MainTest extends TestCase
             }
         }
         
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -112,11 +107,10 @@ class User_Password_Token_MainTest extends TestCase
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
             'User_PasswordToken',
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'Pluf_RowPermission',
-            'Pluf_Message'
+            'Group',
+            'User',
+            'Role',
+            'User_Message'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -129,7 +123,7 @@ class User_Password_Token_MainTest extends TestCase
      */
     public function testCreateToken()
     {
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         // creates new
@@ -149,7 +143,7 @@ class User_Password_Token_MainTest extends TestCase
     public function testCreateTokenForMail()
     {
         // Create user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test' . rand();
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -173,7 +167,7 @@ class User_Password_Token_MainTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $request = new Pluf_HTTP_Request('/');
-        $request->user = new Pluf_User();
+        $request->user = new User();
         
         $res = $view->password($request, $match);
         $this->assertNotNull($res);
@@ -189,7 +183,7 @@ class User_Password_Token_MainTest extends TestCase
     public function testCreateTokenForLogin()
     {
         // Create user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test' . rand();
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -213,7 +207,7 @@ class User_Password_Token_MainTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $request = new Pluf_HTTP_Request('/');
-        $request->user = new Pluf_User();
+        $request->user = new User();
         
         $res = $view->password($request, $match);
         $this->assertNotNull($res);
@@ -229,7 +223,7 @@ class User_Password_Token_MainTest extends TestCase
     public function testCreateDoubleTokenForLogin()
     {
         // Create user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test' . rand();
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -253,7 +247,7 @@ class User_Password_Token_MainTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $request = new Pluf_HTTP_Request('/');
-        $request->user = new Pluf_User();
+        $request->user = new User();
         
         for($i = 1; $i < 4; $i++){
             $res = $view->password($request, $match);

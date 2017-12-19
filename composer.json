@@ -16,11 +16,11 @@
 		}
 	],
 	"require" : {
-		"pluf/core" : "^2.1.0",
-		"pluf/collection" : "^2.1.0"
+		"pluf/core" : "^3.0.0",
+		"pluf/collection" : "^3.0.0"
 	},
 	"require-dev" : {
-		"pluf/test" : "^2.1.0"
+		"pluf/test" : "^3.0.0"
 	},
 	"include-path" : [
 		"src/"

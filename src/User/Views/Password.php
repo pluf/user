@@ -39,7 +39,7 @@ class User_Views_Password extends Pluf_Views
      */
     public function update($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         if ($request->user->administrator || $user->id === $request->user->id) {
             $pass = User_Shortcuts_CheckPassword($request->REQUEST['password']);
             $user->setPassword($pass);
@@ -115,7 +115,7 @@ class User_Views_Password extends Pluf_Views
     /**
      *
      * @param Pluf_HTTP_Request $request
-     * @param Pluf_User $user
+     * @param User $user
      */
     private function sendPasswordToken($request, $user)
     {

@@ -41,7 +41,7 @@ class User_Views_CProfile
     public function get($request, $match)
     {
         $userId = $match['userId'];
-//         $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
+//         $user = Pluf_Shortcuts_GetObjectOr404('User', $userId);
 //         try {
 //             $profile = $user->getProfile();
 //         } catch (Pluf_Exception_DoesNotExist $ex) {
@@ -68,8 +68,8 @@ class User_Views_CProfile
     public function update($request, $match)
     {
         $currentUser = $request->user;
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $match['userId']);
-        if($currentUser->getId() === $user->getId() || Pluf_Precondition::ownerRequired($request)){
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        if($currentUser->getId() === $user->getId() || User_Precondition::ownerRequired($request)){
             $profileDoc = User_Views_CProfile::get_profile_document($user->id);
             User_Views_CProfile::putDocumentMap($profileDoc, $request->REQUEST);
             $docMap = User_Views_CProfile::getDocumentMap($profileDoc);
@@ -87,7 +87,7 @@ class User_Views_CProfile
      * @return Collection_Document
      */
     static function get_profile_document($userId){
-        $user = Pluf_Shortcuts_GetObjectOr404('Pluf_User', $userId);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $userId);
         // Find collection profile
         $collection = Collection_Shortcuts_GetCollectionByName(User_Constants::PROFILE_COLLECTION_NAME);
         if($collection === null){
@@ -96,14 +96,14 @@ class User_Views_CProfile
             $collection->title= 'Collection for saving profile of users';
             $collection->create();
         }
-        $cprofile = new User_CProfile();
+        $cprofile = new Profile();
         $cprofile = $cprofile->getOne('user = ' . $userId);
         if($cprofile === null){
             // create cprofile and document for profile of user
             $document = new Collection_Document();
             $document->collection = $collection;
             $document->create();
-            $cprofile = new User_CProfile();
+            $cprofile = new Profile();
             $cprofile->user = $user;
             $cprofile->profile = $document;
             $cprofile->create();

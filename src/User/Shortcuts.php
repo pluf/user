@@ -3,13 +3,13 @@
 /**
  * مدل داده‌ای کاربر را ایجاد می‌کند.
  * 
- * @param Pluf_User $object
- * @return Pluf_User
+ * @param User $object
+ * @return User
  */
 function User_Shortcuts_UserDateFactory($object)
 {
     if ($object == null || ! isset($object))
-        return new Pluf_User();
+        return new User();
     return $object;
 }
 
@@ -30,7 +30,7 @@ function User_Shortcuts_CheckPassword($pass)
 /**
  * Deletes avatar of given user.
  *
- * @param Pluf_User $user            
+ * @param User $user            
  * @return Pluf_HTTP_Response_Json
  */
 function User_Shortcuts_DeleteAvatar($user)
@@ -45,7 +45,7 @@ function User_Shortcuts_DeleteAvatar($user)
 /**
  * Returns avatar of given user if is existed.
  *
- * @param Pluf_User $user            
+ * @param User $user            
  */
 function User_Shortcuts_GetAvatar($user)
 {
@@ -61,7 +61,7 @@ function User_Shortcuts_GetAvatar($user)
 
 /**
  * Sets (updates or creates) avatar for given user
- * @param Pluf_User $user
+ * @param User $user
  * @param array $data
  * @return Pluf_HTTP_Response_Json
  */

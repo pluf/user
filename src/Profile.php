@@ -6,7 +6,7 @@
  * @author hadi <mohammad.hadi.mansouri@dpq.co.ir>
  *
  */
-class User_CProfile extends Pluf_Model
+class Profile extends Pluf_Model
 {
 
     /**
@@ -29,7 +29,7 @@ class User_CProfile extends Pluf_Model
             ),
             'user' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => 'Pluf_User',
+                'model' => 'User',
                 'blank' => false,
                 'unique' => true,
                 'editable' => false

@@ -60,10 +60,6 @@ class User_Profile_API_BasicsTest extends TestCase
             'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
             'user_signup_active' => true,
             'user_avatra_max_size' => 2097152,
-            'auth_backends' => array(
-                'Pluf_Auth_ModelBackend'
-            ),
-            'pluf_use_rowpermission' => true,
             'db_engine' => 'MySQL',
             'db_version' => '5.5.33',
             'db_login' => 'root',
@@ -80,10 +76,10 @@ class User_Profile_API_BasicsTest extends TestCase
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'User_CProfile'
+            'Group',
+            'User',
+            'Role',
+            'Profile'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -93,7 +89,7 @@ class User_Profile_API_BasicsTest extends TestCase
             }
         }
         
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -116,10 +112,10 @@ class User_Profile_API_BasicsTest extends TestCase
             'Collection_Collection',
             'Collection_Document',
             'Collection_Attribute',
-            'Pluf_Group',
-            'Pluf_User',
-            'Pluf_Permission',
-            'User_CProfile'
+            'Group',
+            'User',
+            'Role',
+            'Profile'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -134,7 +130,7 @@ class User_Profile_API_BasicsTest extends TestCase
     {
         
         // Get a suer
-        $user = new Pluf_User();
+        $user = new User();
         $user = $user->getUser('test');
         
         $profile = User_Views_CProfile::get_profile_document($user->id);

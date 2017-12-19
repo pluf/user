@@ -47,7 +47,7 @@ class User_Space extends Pluf_Model
      */
     function init()
     {
-        $user_model = Pluf::f('pluf_custom_user', 'Pluf_User');
+        $user_model = Pluf::f('pluf_custom_user', 'User');
         
         $this->_a['table'] = 'user_space';
         $this->_a['verbose'] = 'user_space';
