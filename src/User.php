@@ -297,7 +297,7 @@ class User extends Pluf_Model
      * خصوصیت‌های کاربر را استخراج کرده و در اختیار قرار می دهد.
      *
      * @param string $login            
-     * @return boolean|ArrayObject
+     * @return User
      */
     function getUser($login)
     {
