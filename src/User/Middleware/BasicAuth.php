@@ -26,7 +26,6 @@ class User_Middleware_BasicAuth
             return false;
         }
         
-        // $user_model = Pluf::f('pluf_custom_user', 'User');
         $auth = array(
                 'login' => $request->SERVER['PHP_AUTH_USER'],
                 'password' => $request->SERVER['PHP_AUTH_PW']

@@ -9,7 +9,7 @@ return array(
         'method' => 'create',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -30,7 +30,7 @@ return array(
         'method' => 'update',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -39,7 +39,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     /*
@@ -86,7 +86,7 @@ return array(
         'method' => 'add',
         'http-method' => 'POST',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -109,7 +109,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'Pluf_Precondition::adminRequired'
+            'User_Precondition::ownerRequired'
         )
     )
 )

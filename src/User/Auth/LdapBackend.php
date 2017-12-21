@@ -32,9 +32,8 @@ class Pluf_Auth_LdapBackend
      */
     public static function getUser($user_id)
     {
-        $user_model = Pluf::f('pluf_custom_user','User');
         $sql = new Pluf_SQL('login=%s', array($user_id));
-        return Pluf::factory($user_model)->getOne($sql->gen());
+        return Pluf::factory('User')->getOne($sql->gen());
     }
 
     /**
@@ -121,8 +120,7 @@ class Pluf_Auth_LdapBackend
         }
         // Need to create it
         ldap_close($ldap);
-        $user_model = Pluf::f('pluf_custom_user','User');
-        $user = new $user_model();
+        $user = new User();
         $user->active = true;
         $user->login = $login;
         $user->password = $password;
