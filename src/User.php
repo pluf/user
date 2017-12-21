@@ -40,7 +40,7 @@ class User extends Pluf_Model
         $langs = Pluf::f('languages', array(
             'en'
         ));
-        $this->_a['verbose'] = 'user';
+        $this->_a['verbose'] = 'users';
         $this->_a['table'] = 'users';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
@@ -97,9 +97,6 @@ class User extends Pluf_Model
                 'verbose' => __('password'),
                 'size' => 150,
                 'help_text' => __('Format: [algo]:[salt]:[hash]'),
-                'secure' => true,
-                // @note: hadi, 1395-07-14: change password is done by
-                // another process.
                 'editable' => false,
                 'readable' => false
             ),
@@ -161,30 +158,17 @@ class User extends Pluf_Model
             )
         );
         // Assoc. table
-        $t_asso = $this->_con->pfx . 'group_user_assoc';
+        $g_asso = $this->_con->pfx . 'group_user_assoc';
+        $r_asso = $this->_con->pfx . 'role_user_assoc';
         $t_user = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
-            'all' => array(
-                'select' => $this->getSelect()
+            'join_role' => array(
+                'join' => 'LEFT JOIN '. $r_asso .' ON ' . $t_user . '.id=user_id'
             ),
-//             'secure' => array(
-//                 'select' => $this->getSecureSelect()
-//             ),
-//             'user_role' => array(
-//                 'select' => $this->getSecureSelect(),
-//                 'join' => 'LEFT JOIN rowpermissions ON ' . $t_user . '.id=rowpermissions.owner_id AND rowpermissions.owner_class="' . $this->_a['model'] . '"'
-//             ),
-//             'roled_user' => array(
-//                 'select' => $this->getSecureSelect(),
-//                 'join' => 'JOIN (SELECT DISTINCT owner_id, owner_class, tenant FROM rowpermissions) AS B '.
-//                 'ON (' . $t_user . '.id=B.owner_id AND B.owner_class="User")'
-//             ),
-            'user_group' => array(
-                'join' => 'LEFT JOIN ' . $t_asso . ' ON ' . $t_user . '.id=user_id'
+            'join_group' => array(
+                'join' => 'LEFT JOIN ' . $g_asso . ' ON ' . $t_user . '.id=user_id'
             )
         );
-//         if (Pluf::f('pluf_custom_user', false))
-//             $this->extended_init();
     }
 
     /**

@@ -47,8 +47,6 @@ class User_Space extends Pluf_Model
      */
     function init()
     {
-        $user_model = Pluf::f('pluf_custom_user', 'User');
-        
         $this->_a['table'] = 'user_space';
         $this->_a['verbose'] = 'user_space';
         $this->_a['multitenant'] = true;
@@ -65,7 +63,7 @@ class User_Space extends Pluf_Model
             ),
             'user' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => $user_model,
+                'model' => 'User',
                 'blank' => false,
                 'unique' => true,
                 'editable' => false

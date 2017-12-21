@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,24 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * Backend to authenticate against the User model.
  */
 class User_Auth_ModelBackend
 {
+
     /**
      * Given a user id, retrieve it.
      *
      * In the case of the User backend, the $user_id is the login.
-     * 
+     *
      * @return User
      */
     public static function getUser($user_id)
     {
-        $user_model = Pluf::f('pluf_custom_user','User');
-        $sql = new Pluf_SQL('login=%s', array($user_id));
-        return Pluf::factory($user_model)->getOne($sql->gen());
+        $sql = new Pluf_SQL('login=%s', array(
+            $user_id
+        ));
+        return Pluf::factory('User')->getOne($sql->gen());
     }
 
     /**
@@ -45,10 +47,10 @@ class User_Auth_ModelBackend
         $password = $auth_data['password'];
         $login = $auth_data['login'];
         $user = self::getUser($login);
-        if (!$user) {
+        if (! $user) {
             return false;
         }
-        if (!$user->active) {
+        if (! $user->active) {
             return false;
         }
         return ($user->checkPassword($password)) ? $user : false;
