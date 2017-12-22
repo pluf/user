@@ -62,7 +62,7 @@ class User_Monitor
         }
         
         // Check permission
-        $result['value'] = $request->user->hasPerm($items[0]);
+        $result['value'] = $request->user->hasPerm($items[0].'');
         return $result;
     }
 }
