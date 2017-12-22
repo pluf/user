@@ -1,27 +1,5 @@
 {
 	"name": "Role",
 	"version": "0.1.0",
-	"title": "Role Management",
-	"init": {
-		"Role": [
-			{
-				"name": "ownership",
-				"application": "Pluf",
-				"code_name": "owner",
-				"description": "Permission given to software owners."
-			},
-			{
-				"name": "membership",
-				"application": "Pluf",
-				"code_name": "member",
-				"description": "Permission given to software members."
-			},
-			{
-				"name": "authorized users",
-				"application": "Pluf",
-				"code_name": "authorized",
-				"description": "Permission given to users allowed to access a tenant."
-			}
-		]
-	}
+	"title": "Role Management"
 }
