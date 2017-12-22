@@ -40,7 +40,7 @@ class Group_Views_Role extends Pluf_Views
     {
         $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
         $permission = Pluf_Shortcuts_GetObjectOr404('Role', $request->REQUEST['role']);
-        $row = Pluf_RowPermission::add($group, null, $permission, false);
+//         $row = Pluf_RowPermission::add($group, null, $permission, false);
         // $group->setAssoc($permission);
         return new Pluf_HTTP_Response_Json($row);
     }
@@ -54,7 +54,7 @@ class Group_Views_Role extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $pag = new Pluf_Paginator(new Pluf_RowPermission());
+        $pag = new Pluf_Paginator(new Role());
 //         $sql = new Pluf_SQL('Group_id=%s', array(
 //             $match['groupId']
 //         ));
@@ -96,9 +96,9 @@ class Group_Views_Role extends Pluf_Views
     public static function get($request, $match)
     {
         $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $roleModel = new Pluf_RowPermission();
+        $roleModel = new Role();
         $param = array(
-            'view' => 'join_permission',
+            'view' => 'join_role',
             'filter' => array(
                 'rowpermissions.owner_id=' . $group->id,
                 'rowpermissions.owner_class="Group"'
@@ -108,7 +108,7 @@ class Group_Views_Role extends Pluf_Views
         if ($roles->count() == 0) {
             throw new Pluf_Exception_DoesNotExist('Group has not such role');
         }
-        return new Pluf_HTTP_Response_Json($roles);
+        return $roles;
     }
 
     /**
@@ -120,9 +120,8 @@ class Group_Views_Role extends Pluf_Views
     public static function delete($request, $match)
     {
         $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $permission = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
-        Pluf_Precondition::couldRemoveRole($request, $request->user->id, $permission->id);
-        Pluf_RowPermission::remove($group, null, $permission);
-        return new Pluf_HTTP_Response_Json($group);
+        $role = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
+        $group->delAssoc($role);
+        return $group;
     }
 }
