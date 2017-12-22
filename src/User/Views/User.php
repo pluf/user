@@ -117,7 +117,7 @@ class User_Views_User
         );
         
         // XXX: maso, 2017: owner can do that
-//         if (! Pluf_Precondition::isStaff($request) &&
+//         if (! ::isStaff($request) &&
 //                  Pluf::f('multitenant', false)) {
 //             $pag->model_view = 'roled_user';
 //             $pag->forced_where = new Pluf_SQL('tenant=%s', 

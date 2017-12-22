@@ -40,7 +40,7 @@ class Role_Views_Group extends Pluf_Views
     {
         $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
         $group = Pluf_Shortcuts_GetObjectOr404('Group', $request->REQUEST['group']);
-        $row = Pluf_RowPermission::add($group, null, $perm, false);
+//         $row = Pluf_RowPermission::add($group, null, $perm, false);
         return new Pluf_HTTP_Response_Json($row);
     }
 
@@ -126,7 +126,7 @@ class Role_Views_Group extends Pluf_Views
     {
         $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
         $owner = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $row = Pluf_RowPermission::remove($owner, null, $perm);
+//         $row = Pluf_RowPermission::remove($owner, null, $perm);
         return new Pluf_HTTP_Response_Json($row);
     }
 }
