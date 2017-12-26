@@ -33,7 +33,7 @@ class User_Middleware_BasicAuthTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(dirname(__FILE__) . '/../conf/mysql.user.config.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $m = new Pluf_Migration(array(
             'Pluf',
             'User',
@@ -87,7 +87,7 @@ class User_Middleware_BasicAuthTest extends TestCase
     public function shouldHandleLoginInHeader()
     {
         $query = '/example/resource';
-        $_SERVER = array();
+//         $_SERVER = array();
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = 'http://localhost/example/resource';
         $_SERVER['REMOTE_ADDR'] = 'not set';
@@ -115,13 +115,13 @@ class User_Middleware_BasicAuthTest extends TestCase
     public function shouldNotLoginIfNoItemExist()
     {
         $query = '/example/resource';
-        $_SERVER = array();
+//         $_SERVER = array();
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = 'http://localhost/example/resource';
         $_SERVER['REMOTE_ADDR'] = 'not set';
         $_SERVER['HTTP_HOST'] = 'localhost';
-        // $_SERVER['PHP_AUTH_USER'] = 'test';
-        // $_SERVER['PHP_AUTH_PW'] = 'test';
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
         $GLOBALS['_PX_uniqid'] = 'example';
         
         $ba = new User_Middleware_BasicAuth();
@@ -144,7 +144,7 @@ class User_Middleware_BasicAuthTest extends TestCase
     public function shouldIgnoreUnauthorizedUser()
     {
         $query = '/example/resource';
-        $_SERVER = array();
+//         $_SERVER = array();
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = 'http://localhost/example/resource';
         $_SERVER['REMOTE_ADDR'] = 'not set';

@@ -31,15 +31,15 @@ class Group_ModelTest extends TestCase
     /**
      * @beforeClass
      */
-    public static function createDataBase ()
+    public static function createDataBase()
     {
-        Pluf::start(__DIR__ . '/../mysql.config.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role'
+            'Group',
+            'User',
+            'Role'
         );
         
         foreach ($models as $model) {
@@ -54,14 +54,14 @@ class Group_ModelTest extends TestCase
     /**
      * @afterClass
      */
-    public static function removeDatabses ()
+    public static function removeDatabses()
     {
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role',
+            'Group',
+            'User',
+            'Role'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -72,10 +72,10 @@ class Group_ModelTest extends TestCase
     /**
      * @test
      */
-    public function shouldPossibleCreateNew ()
+    public function shouldPossibleCreateNew()
     {
         $group = new Group();
-        $group->name = 'Random'.rand();
+        $group->name = 'Random' . rand();
         $group->description = 'Hi@test.com';
         Test_Assert::assertTrue($group->create(), 'Impossible to create group');
     }

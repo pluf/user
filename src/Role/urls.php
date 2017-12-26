@@ -46,12 +46,12 @@ return array(
      * Users of role
      */
     array(
-        'regex' => '#^/(?P<id>\d+)/user$#',
+        'regex' => '#^/(?P<id>\d+)/user/new$#',
         'model' => 'Role_Views_User',
         'method' => 'add',
         'http-method' => 'POST',
         'precond' => array(
-            'User_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -74,7 +74,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'User_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     /*

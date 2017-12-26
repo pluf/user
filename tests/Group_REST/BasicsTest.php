@@ -34,7 +34,7 @@ class Group_REST_BasicsTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(__DIR__ . '/../conf/sqlite.config.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         $m->init();

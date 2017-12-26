@@ -25,6 +25,8 @@ $cfg['timezone'] = 'Europe/Berlin';
 $cfg['debug'] = true;
 $cfg['installed_apps'] = array(
     'Pluf',
+    'Setting',
+    'Collection',
     'User',
     'Group',
     'Role'
@@ -38,25 +40,25 @@ $cfg['middleware_classes'] = array(
     'User_Middleware_Session'
 );
 
+$cfg['secret_key'] = '5a8d7e0f2aad8bdab8f6eef725412850';
+
 // Temporary folder where the script is writing the compiled templates,
 // cached data and other temporary resources.
 // It must be writeable by your webserver instance.
 // It is mandatory if you are using the template system.
-$cfg['tmp_folder'] = dirname(__FILE__) . '/../tmp';
+$cfg['tmp_folder'] = __DIR__ . '/../tmp';
 
 // The folder in which the templates of the application are located.
-$cfg['templates_folder'] = array(
-    dirname(__FILE__) . '/../templates'
+$cfg['template_folders'] = array(
+    __DIR__ . '/../templates'
 );
-
-$cfg['pluf_use_rowpermission'] = true;
 
 // Default mimetype of the document your application is sending.
 // It can be overwritten for a given response if needed.
 $cfg['mimetype'] = 'text/html';
 
-// Some views for testing.
-$cfg['app_views'] = dirname(__FILE__) . '/views.php';
+// Default user avatar
+$cfg['user_avatar_default'] = __DIR__ . '/avatar.svg';
 
 // Default database configuration. The database defined here will be
 // directly accessible from Pluf::db() of course it is still possible

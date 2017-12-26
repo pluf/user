@@ -126,22 +126,22 @@ return array(
         ),
         'http-method' => 'POST'
     ),
-//     // Profile (by Collection)
-//     array( // Get profile of user (by id)
-//         'regex' => '#^/(?P<userId>\d+)/cprofile$#',
-//         'model' => 'User_Views_CProfile',
-//         'method' => 'get',
-//         'http-method' => 'GET'
-//     ),
-//     array( // Update profile of user (by id)
-//         'regex' => '#^/(?P<userId>\d+)/cprofile$#',
-//         'model' => 'User_Views_CProfile',
-//         'method' => 'update',
-//         'precond' => array(
-//             'User_Precondition::loginRequired'
-//         ),
-//         'http-method' => 'POST'
-//     ),
+    // // Profile (by Collection)
+    // array( // Get profile of user (by id)
+    // 'regex' => '#^/(?P<userId>\d+)/cprofile$#',
+    // 'model' => 'User_Views_CProfile',
+    // 'method' => 'get',
+    // 'http-method' => 'GET'
+    // ),
+    // array( // Update profile of user (by id)
+    // 'regex' => '#^/(?P<userId>\d+)/cprofile$#',
+    // 'model' => 'User_Views_CProfile',
+    // 'method' => 'update',
+    // 'precond' => array(
+    // 'User_Precondition::loginRequired'
+    // ),
+    // 'http-method' => 'POST'
+    // ),
     //
     // Avatar (Current user)
     //
@@ -235,13 +235,19 @@ return array(
         'regex' => '#^/(?P<userId>\d+)/group/(?P<groupId>\d+)$#',
         'model' => 'User_Views_Group',
         'method' => 'update',
-        'http-method' => 'POST'
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
     ),
     array(
         'regex' => '#^/(?P<userId>\d+)/group/(?P<groupId>\d+)$#',
         'model' => 'User_Views_Group',
         'method' => 'delete',
-        'http-method' => 'DELETE'
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
     ),
     /*
      * Role
@@ -252,7 +258,7 @@ return array(
         'method' => 'create',
         'http-method' => 'POST',
         'precond' => array(
-            'User_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     array(
@@ -273,7 +279,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'User_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         )
     ),
     //
@@ -284,7 +290,7 @@ return array(
         'model' => 'User_Views_Password',
         'method' => 'update',
         'precond' => array(
-            'User_Precondition::loginRequired'
+            'User_Precondition::ownerRequired'
         ),
         'http-method' => 'POST'
     )

@@ -32,59 +32,14 @@ class User_Password_Token_MainTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(array(
-            'general_domain' => 'localhost',
-            'general_admin_email' => array(
-                'root@localhost'
-            ),
-            'general_from_email' => 'test@localhost',
-            'installed_apps' => array(),
-            'middleware_classes' => array(),
-            'debug' => true,
-            'test_unit' => true,
-            
-            'languages' => array(
-                'fa',
-                'en'
-            ),
-            'tmp_folder' => dirname(__FILE__) . '/../tmp',
-            'template_folders' => array(
-                dirname(__FILE__) . '/../templates'
-            ),
-            'template_tags' => array(),
-            'time_zone' => 'Asia/Tehran',
-            'encoding' => 'UTF-8',
-            
-            'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
-            'user_signup_active' => true,
-            'user_avatra_max_size' => 2097152,
-            'db_engine' => 'MySQL',
-            'db_version' => '5.5.33',
-            'db_login' => 'root',
-            'db_password' => '',
-            'db_server' => 'localhost',
-            'db_database' => 'test',
-            'db_table_prefix' => '_test_user_',
-            
-            'mail_backend' => 'mail',
-            'user_profile_class' => 'User_Profile'
-        ));
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'Group',
-            'User',
-            'Role',
-            'User_Message',
-            'User_PasswordToken'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-            if (true !== ($res = $schema->createTables())) {
-                throw new Exception($res);
-            }
-        }
+        Pluf::start(__DIR__ . '/../conf/config.php');
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m->install();
+        $m->init();
+        
+        $user = new User(1);
+        $rol = Role::getFromString('Pluf.owner');
+        $user->setAssoc($rol);
         
         $user = new User();
         $user->login = 'test';
@@ -103,19 +58,8 @@ class User_Password_Token_MainTest extends TestCase
      */
     public static function removeDatabses()
     {
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'User_PasswordToken',
-            'Group',
-            'User',
-            'Role',
-            'User_Message'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-        }
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m->unInstall();
     }
 
     /**
@@ -134,10 +78,8 @@ class User_Password_Token_MainTest extends TestCase
         
         // get tokne user
         $tokenStored = new User_PasswordToken($token->id);
-        $value = $tokenStored->id;
-        $this->assertEquals($value, $user->id);
-        $value = $tokenStored->token;
-        $this->assertNotNull($value);
+        $this->assertEquals($tokenStored->user, $user->id);
+        $this->assertNotNull($tokenStored->token);
     }
 
     public function testCreateTokenForMail()
@@ -249,7 +191,7 @@ class User_Password_Token_MainTest extends TestCase
         $request = new Pluf_HTTP_Request('/');
         $request->user = new User();
         
-        for($i = 1; $i < 4; $i++){
+        for ($i = 1; $i < 4; $i ++) {
             $res = $view->password($request, $match);
             $this->assertNotNull($res);
             
