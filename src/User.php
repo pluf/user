@@ -111,6 +111,7 @@ class User extends Pluf_Model
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'blank' => true,
+                'relate_name' => 'users',
                 'editable' => false,
                 'readable' => false,
                 'model' => 'Role'

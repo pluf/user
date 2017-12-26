@@ -72,7 +72,8 @@ class Group extends Pluf_Model
                 'model' => 'Role',
                 'blank' => true,
                 'readable' => false,
-                'editable' => false
+                'editable' => false,
+                'relate_name' => 'groups'
             )
         );
         $r_asso = $this->_con->pfx . 'group_role_assoc';

@@ -117,13 +117,13 @@ return array(
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<group_id>\d+)/role/(?P<roleId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/(?P<role_id>\d+)$#',
         'model' => 'Group_Views_Role',
         'method' => 'get',
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<group_id>\d+)/role/(?P<roleId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/(?P<role_id>\d+)$#',
         'model' => 'Group_Views_Role',
         'method' => 'delete',
         'http-method' => 'DELETE',
@@ -135,7 +135,7 @@ return array(
     // Group users
     // --------------------------------------------------------------
     array(
-        'regex' => '#^/(?P<group_id>\d+)/user/new$#',
+        'regex' => '#^/(?P<group_id>\d+)/user/((?P<user_id>\d+)|new)$#',
         'model' => 'Group_Views_User',
         'method' => 'add',
         'http-method' => 'POST',

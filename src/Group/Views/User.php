@@ -33,46 +33,39 @@ class Group_Views_User extends Pluf_Views
      * Adds new user to list of users of a group.
      * Id of added user should be specified in request.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match           
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function add($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        if (array_key_exists('user', $request->REQUEST)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $request->REQUEST['user']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        if (array_key_exists('user_id', $match)) {
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['user_id']);
+        } elseif (array_key_exists('user_id', $request->REQUEST)) {
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $request->REQUEST['user_id']);
         } elseif (array_key_exists('login', $request->REQUEST)) {
             $user = new User();
-            $user = $user->getOne(array(
-                'filter' => 'login="' . $request->REQUEST['login'].'"'
-            ));
-            if (! isset($user) || $user->isAnonymous()) {
-                throw new Pluf_HTTP_Error404(__('User not found'));
-            }
+            $user = $user->getUser($request->REQUEST['login']);
+        }
+        if (! isset($user) || $user->isAnonymous()) {
+            throw new Pluf_HTTP_Error404(__('User not found'));
         }
         $group->setAssoc($user);
-        return new Pluf_HTTP_Response_Json(array(
-            'group_id' => $group->id,
-            'group_name' => $group->name,
-            'user_id' => $user->id,
-            'user_login' => $user->login,
-            'user_first_name' => $user->first_name,
-            'user_last_name' => $user->last_name
-        ));
+        return $user;
     }
 
     /**
      * Returns list of users of a group.
      * Resulted list can be customized by using filters, conditions and sort rules.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match           
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function find($request, $match)
     {
         $pag = new Pluf_Paginator(new User());
-        $sql = new Pluf_SQL('Group_id=%s', array(
-            $match['groupId']
+        $sql = new Pluf_SQL('group_id=%s', array(
+            $match['group_id']
         ));
         $pag->forced_where = $sql;
         $pag->list_filters = array(
@@ -94,55 +87,48 @@ class Group_Views_User extends Pluf_Views
             'date_joined',
             'last_login'
         );
-        $pag->model_view = 'user_group';
+        $pag->model_view = 'join_group';
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        return $pag->render_object();
     }
 
     /**
      * Returns information of a user of a group.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match           
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function get($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
         $userModel = new User();
         $param = array(
-            'view' => 'user_group',
+            'view' => 'join_group',
             'filter' => array(
-                'id=' . $match['userId'],
-                'Group_id=' . $group->id
+                'id=' . $match['user_id'],
+                'group_id=' . $group->id
             )
         );
         $users = $userModel->getList($param);
-        if($users->count() == 0){
+        if ($users->count() == 0) {
             throw new Pluf_Exception_DoesNotExist('Group has not such user');
         }
-        return new Pluf_HTTP_Response_Json($users);
+        return $users[0];
     }
 
     /**
      * Deletes a user from a group.
      * Id of deleted user should be specified in the match.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function delete($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['user_id']);
         $group->delAssoc($user);
-        return new Pluf_HTTP_Response_Json(array(
-            'group_id' => $group->id,
-            'group_name' => $group->name,
-            'user_id' => $user->id,
-            'user_login' => $user->login,
-            'user_first_name' => $user->first_name,
-            'user_last_name' => $user->last_name
-        ));
+        return $user;
     }
 }

@@ -78,7 +78,7 @@ class Group_Views_Role extends Pluf_Views
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
         $pag->model_view = 'join_group';
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        return $pag->render_object();
     }
 
     /**
