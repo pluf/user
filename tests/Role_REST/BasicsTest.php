@@ -77,9 +77,9 @@ class Group_REST_BasicsTest extends TestCase
     /**
      * @test
      */
-    public function anonymousCanGetListOfGroups()
+    public function anonymousCanGetListOfRoles()
     {
-        $response = self::$client->get('/api/group/find');
+        $response = self::$client->get('/api/role/find');
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         Test_Assert::assertResponsePaginateList($response, 'Find result is not JSON paginated list');
@@ -90,7 +90,7 @@ class Group_REST_BasicsTest extends TestCase
      *
      * @test
      */
-    public function adminCanGetListOfListOfGroups()
+    public function adminCanGetListOfRoles()
     {
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -100,7 +100,7 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Getting list
-        $response = self::$client->get('/api/group/find');
+        $response = self::$client->get('/api/role/find');
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         Test_Assert::assertResponsePaginateList($response, 'Find result is not JSON paginated list');
@@ -109,7 +109,7 @@ class Group_REST_BasicsTest extends TestCase
     /**
      * @test
      */
-    public function adminCanCreateAGroup()
+    public function adminCanCreateARole()
     {
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -119,36 +119,35 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Getting list
-        $response = self::$client->post('/api/group/new', array(
+        $data = array(
             'name' => 'Group name',
-            'descritpion' => 'Descritpion'
-        ));
+            'descritpion' => 'Descritpion',
+            'application' => 'test',
+            'code_name' => 'test-' . rand()
+        );
+        $response = self::$client->post('/api/role/new', $data);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         Test_Assert::assertResponseNotAnonymousModel($response, 'Fail to create a group');
         
-        $group = new Group();
-        $list = $group->getList();
-        Test_Assert::assertTrue(sizeof($list) > 0, 'Group is not created in db');
+        $role = Role::getFromString($data['application'] . '.' . $data['code_name']);
+        Test_Assert::assertFalse($role->isAnonymous(), 'Role is not created in db');
         
-        // Delete all groups
-        foreach ($list as $g) {
-            $g->delete();
-        }
+        // Delete
+        $role->delete();
     }
 
     /**
      * @test
      */
-    public function shouldGetGroup()
+    public function shouldGetRole()
     {
-        $group = new Group();
-        $group->name = 'Group-' . rand();
-        $group->description = 'Descritpion';
-        $group->create();
-        
-        $role = Role::getFromString('Pluf.owner');
-        $group->setAssoc($role);
+        $role = new Role();
+        $role->name = 'Group-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -157,12 +156,12 @@ class Group_REST_BasicsTest extends TestCase
         ));
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
-        // Get list of roles
-        $response = self::$client->get('/api/group/' . $group->id);
+        // Get
+        $response = self::$client->get('/api/role/' . $role->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $group->delete();
+        $role->delete();
     }
 
     /**
@@ -170,13 +169,12 @@ class Group_REST_BasicsTest extends TestCase
      */
     public function shouldDeleteAGroup()
     {
-        $group = new Group();
-        $group->name = 'Group-' . rand();
-        $group->description = 'Descritpion';
-        $group->create();
-        
-        $role = Role::getFromString('Pluf.owner');
-        $group->setAssoc($role);
+        $role = new Role();
+        $role->name = 'Group-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -186,23 +184,32 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Get list of roles
-        $response = self::$client->delete('/api/group/' . $group->id);
+        $response = self::$client->delete('/api/role/' . $role->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
+        
+        $role2 = new Role($role->id);
+        Test_Assert::assertTrue($role2->isAnonymous(), 'Role exist!?');
     }
 
     /**
      * @test
      */
-    public function shoudGetListOfRolesOfGroup()
+    public function shoudGetListOfGroupOfTheRole()
     {
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
+        
         $group = new Group();
         $group->name = 'Group-' . rand();
         $group->description = 'Descritpion';
         $group->create();
         
-        $role = Role::getFromString('Pluf.owner');
-        $group->setAssoc($role);
+        $role->setAssoc($group);
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -212,27 +219,32 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Get list of roles
-        $response = self::$client->get('/api/group/' . $group->id . '/role/find');
+        $response = self::$client->get('/api/role/' . $role->id . '/group/find');
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         Test_Assert::assertResponsePaginateList($response, 'Find result is not JSON paginated list');
         Test_Assert::assertResponseNonEmptyPaginateList($response, 'No role is in group');
         
+        $role->delete();
         $group->delete();
     }
 
     /**
      * @test
      */
-    public function shoudAddARoleToAGroup()
+    public function shoudAddAGroupToTheRole()
     {
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
+        
         $group = new Group();
         $group->name = 'Group-' . rand();
         $group->description = 'Descritpion';
         $group->create();
-        
-        $role = Role::getFromString('Pluf.owner');
-        $group->setAssoc($role);
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -242,37 +254,42 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Add role
-        $response = self::$client->post('/api/group/' . $group->id . '/role/new', array(
-            'role_id' => $role->id
+        $response = self::$client->post('/api/role/' . $role->id . '/group/new', array(
+            'group_id' => $group->id
         ));
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_roles_list();
-        Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
-        $group->delAssoc($role);
+        $list = $role->get_groups_list();
+        Test_Assert::assertTrue(sizeof($list) > 0, 'No group in list');
+        $role->delAssoc($group);
         
-        $response = self::$client->post('/api/group/' . $group->id . '/role/' . $role->id, array());
+        $response = self::$client->post('/api/role/' . $role->id . '/group/' . $group->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_roles_list();
-        Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
+        $list = $role->get_groups_list();
+        Test_Assert::assertTrue(sizeof($list) > 0, 'No group in list');
         $group->delete();
+        $role->delete();
     }
 
     /**
      * @test
      */
-    public function shouldDeleteRoleOfAGroup()
+    public function shouldDeleteGropOfTheRole()
     {
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
+        
         $group = new Group();
         $group->name = 'Group-' . rand();
         $group->description = 'Descritpion';
         $group->create();
-        
-        $role = Role::getFromString('Pluf.owner');
-        $group->setAssoc($role);
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -282,33 +299,36 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Add role
-        $response = self::$client->post('/api/group/' . $group->id . '/role/new', array(
-            'role_id' => $role->id
+        $response = self::$client->post('/api/role/' . $role->id . '/group/new', array(
+            'group_id' => $group->id
         ));
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_roles_list();
-        Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
+        $list = $role->get_groups_list();
+        Test_Assert::assertTrue(sizeof($list) > 0, 'No group in list');
         
-        $response = self::$client->delete('/api/group/' . $group->id . '/role/' . $role->id);
+        $response = self::$client->delete('/api/role/' . $role->id . '/group/' . $group->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_roles_list();
-        Test_Assert::assertTrue(sizeof($list) == 0, 'No role is in list');
+        $list = $role->get_groups_list();
+        Test_Assert::assertTrue(sizeof($list) == 0, 'Group is still in list');
         $group->delete();
+        $role->delete();
     }
 
     /**
      * @test
      */
-    public function shoudGetListOfUsersOfGroup()
+    public function shoudGetListOfUsersOfTheRole()
     {
-        $group = new Group();
-        $group->name = 'Group-' . rand();
-        $group->description = 'Descritpion';
-        $group->create();
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
         
         // Login
         $response = self::$client->post('/api/user/login', array(
@@ -318,23 +338,25 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Get list of roles
-        $response = self::$client->get('/api/group/' . $group->id . '/user/find');
+        $response = self::$client->get('/api/role/' . $role->id . '/user/find');
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         Test_Assert::assertResponsePaginateList($response, 'Find result is not JSON paginated list');
         
-        $group->delete();
+        $role->delete();
     }
 
     /**
      * @test
      */
-    public function shoudAddAUserToAGroup()
+    public function shoudAddAUserToAThe()
     {
-        $group = new Group();
-        $group->name = 'Group-' . rand();
-        $group->description = 'Descritpion';
-        $group->create();
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
         
         $user = new User();
         $user = $user->getUser('admin');
@@ -346,24 +368,24 @@ class Group_REST_BasicsTest extends TestCase
         ));
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
-        // Add role
-        $response = self::$client->post('/api/group/' . $group->id . '/user/new', array(
+        // Add
+        $response = self::$client->post('/api/role/' . $role->id . '/user/new', array(
             'user_id' => $user->id
         ));
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_users_list();
+        $list = $role->get_users_list();
         Test_Assert::assertTrue(sizeof($list) > 0, 'No user in list');
-        $group->delAssoc($user);
+        $role->delAssoc($user);
         
-        $response = self::$client->post('/api/group/' . $group->id . '/user/' . $user->id);
+        $response = self::$client->post('/api/role/' . $role->id . '/user/' . $user->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_users_list();
+        $list = $role->get_users_list();
         Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
-        $group->delete();
+        $role->delete();
     }
 
     /**
@@ -371,10 +393,12 @@ class Group_REST_BasicsTest extends TestCase
      */
     public function shouldDeleteUsersOfAGroup()
     {
-        $group = new Group();
-        $group->name = 'Group-' . rand();
-        $group->description = 'Descritpion';
-        $group->create();
+        $role = new Role();
+        $role->name = 'role-' . rand();
+        $role->description = 'Descritpion';
+        $role->code_name = 'test' . rand();
+        $role->application = 'test';
+        $role->create();
         
         $user = new User();
         $user = $user->getUser('admin');
@@ -387,22 +411,22 @@ class Group_REST_BasicsTest extends TestCase
         Test_Assert::assertResponseStatusCode($response, 200, 'Fail to login');
         
         // Add role
-        $response = self::$client->post('/api/group/' . $group->id . '/user/new', array(
+        $response = self::$client->post('/api/role/' . $role->id . '/user/new', array(
             'user_id' => $user->id
         ));
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_users_list();
+        $list = $role->get_users_list();
         Test_Assert::assertTrue(sizeof($list) > 0, 'No user in list');
         
-        $response = self::$client->delete('/api/group/' . $group->id . '/user/' . $user->id);
+        $response = self::$client->delete('/api/role/' . $role->id . '/user/' . $user->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
         
-        $list = $group->get_users_list();
+        $list = $role->get_users_list();
         Test_Assert::assertTrue(sizeof($list) == 0, 'No user is in list');
-        $group->delete();
+        $role->delete();
     }
 }
 

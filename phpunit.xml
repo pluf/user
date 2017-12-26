@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true">
 	<testsuites>
-		<testsuite name="Group">
-			<directory>tests/Group/</directory>
-			<directory>tests/Group_REST/</directory>
-		</testsuite>
+<!-- 		<testsuite name="Group"> -->
+<!-- 			<directory>tests/Group/</directory> -->
+<!-- 			<directory>tests/Group_REST/</directory> -->
+<!-- 		</testsuite> -->
 		<testsuite name="Role">
-			<directory>tests/Role/</directory>
+<!-- 			<directory>tests/Role/</directory> -->
+			<directory>tests/Role_REST/</directory>
 		</testsuite>
-		<testsuite name="User">
-			<directory>tests/User/</directory>
-			<directory>tests/User_Monitor/</directory>
-			<directory>tests/User_Password_Token/</directory>
-			<directory>tests/User_REST/</directory>
-			<directory>tests/User_Profile_API/</directory>
-			<directory>tests/User_Middleware/</directory>
-		</testsuite>
+<!-- 		<testsuite name="User"> -->
+<!-- 			<directory>tests/User/</directory> -->
+<!-- 			<directory>tests/User_Monitor/</directory> -->
+<!-- 			<directory>tests/User_Password_Token/</directory> -->
+<!-- 			<directory>tests/User_REST/</directory> -->
+<!-- 			<directory>tests/User_Profile_API/</directory> -->
+<!-- 			<directory>tests/User_Middleware/</directory> -->
+<!-- 		</testsuite> -->
 	</testsuites>
 
 	<filter>
