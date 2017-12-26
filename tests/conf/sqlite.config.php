@@ -35,8 +35,10 @@ $cfg['installed_apps'] = array(
  */
 $cfg['middleware_classes'] = array(
     'Pluf_Middleware_Session',
-    'User_Middleware_Session',
+    'User_Middleware_Session'
 );
+
+$cfg['secret_key'] = 'SECRET-KEY';
 
 // Temporary folder where the script is writing the compiled templates,
 // cached data and other temporary resources.
@@ -48,8 +50,6 @@ $cfg['tmp_folder'] = dirname(__FILE__) . '/../tmp';
 $cfg['templates_folder'] = array(
     dirname(__FILE__) . '/../templates'
 );
-
-$cfg['pluf_use_rowpermission'] = true;
 
 // Default mimetype of the document your application is sending.
 // It can be overwritten for a given response if needed.
@@ -64,21 +64,18 @@ $cfg['app_views'] = dirname(__FILE__) . '/views.php';
 $cfg['db_login'] = 'root';
 $cfg['db_password'] = '';
 $cfg['db_server'] = 'localhost';
-$cfg['db_database'] = 'test';
-
-$cfg['app_base'] = '/testapp';
-$cfg['url_format'] = 'simple';
+$cfg['db_database'] = dirname(__FILE__) . '/../tmp/test.sqlite.db';
 
 $cfg['template_tags'] = array();
 
 // Must be shared by all the installed_apps and the core framework.
 // That way you can have several installations of the core framework.
-$cfg['db_table_prefix'] = 'group_unit_tests_';
+$cfg['db_table_prefix'] = 'user_unit_tests_';
 
 // Starting version 4.1 of MySQL the utf-8 support is "correct".
 // The reason of the db_version for MySQL is only for that.
-$cfg['db_version'] = '5.5.33';
-$cfg['db_engine'] = 'MySQL';
+$cfg['db_version'] = '5.0';
+$cfg['db_engine'] = 'SQLite';
 
 return $cfg;
 

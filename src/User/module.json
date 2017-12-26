@@ -3,9 +3,9 @@
 	"version": "0.1.2",
 	"title": "User Management",
 	"model": [
-		"User",
-		"Group",
 		"Role",
+		"Group",
+		"User",
 		"Profile",
 		"User_Message",
 		"User_Avatar",

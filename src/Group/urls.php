@@ -102,7 +102,7 @@ return array(
     // Group rolses
     // --------------------------------------------------------------
     array(
-        'regex' => '#^/(?P<groupId>\d+)/role/new$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/((?P<role_id>\d+)|new)$#',
         'model' => 'Group_Views_Role',
         'method' => 'add',
         'http-method' => 'POST',
@@ -111,19 +111,19 @@ return array(
         )
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/role/find$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/find$#',
         'model' => 'Group_Views_Role',
         'method' => 'find',
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/role/(?P<roleId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/(?P<roleId>\d+)$#',
         'model' => 'Group_Views_Role',
         'method' => 'get',
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/role/(?P<roleId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/role/(?P<roleId>\d+)$#',
         'model' => 'Group_Views_Role',
         'method' => 'delete',
         'http-method' => 'DELETE',
@@ -135,7 +135,7 @@ return array(
     // Group users
     // --------------------------------------------------------------
     array(
-        'regex' => '#^/(?P<groupId>\d+)/user/new$#',
+        'regex' => '#^/(?P<group_id>\d+)/user/new$#',
         'model' => 'Group_Views_User',
         'method' => 'add',
         'http-method' => 'POST',
@@ -144,19 +144,19 @@ return array(
         )
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/user/find$#',
+        'regex' => '#^/(?P<group_id>\d+)/user/find$#',
         'model' => 'Group_Views_User',
         'method' => 'find',
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/user/(?P<userId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/user/(?P<user_id>\d+)$#',
         'model' => 'Group_Views_User',
         'method' => 'get',
         'http-method' => 'GET'
     ),
     array(
-        'regex' => '#^/(?P<groupId>\d+)/user/(?P<userId>\d+)$#',
+        'regex' => '#^/(?P<group_id>\d+)/user/(?P<user_id>\d+)$#',
         'model' => 'Group_Views_User',
         'method' => 'delete',
         'http-method' => 'DELETE',
