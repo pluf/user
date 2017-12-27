@@ -32,7 +32,7 @@ class User_Monitor_BasicsTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(dirname(__FILE__) . '/../conf/conf.mysql.monitor.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $m = new Pluf_Migration(array(
             'Pluf',
             'User',

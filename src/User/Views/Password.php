@@ -29,7 +29,7 @@ Pluf::loadFunction('User_Shortcuts_CheckPassword');
 class User_Views_Password extends Pluf_Views
 {
     
-    const SETTING_KEY_RESET_PASSWORD_EMAIL_TITLE = 'user.reset_pass_email_title';
+    const EMAIL_TITLE = 'user.reset_pass_email_title';
 
     /**
      * Updates passwrod
@@ -139,9 +139,9 @@ class User_Views_Password extends Pluf_Views
         if (Pluf::f('test_unit', false)) {
             return;
         }
-        $mailSubject = Setting_Service::get(SETTING_KEY_RESET_PASSWORD_EMAIL_TITLE, 'Reset password');
+        $mailSubject = Setting_Service::get(User_Views_Password::EMAIL_TITLE, 'Reset password');
         $context = array(
-            'subject' => mailSubject,
+            'subject' => $mailSubject,
             'user' => $user,
             'token' => $token,
             'callback' => $callback

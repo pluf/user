@@ -56,10 +56,11 @@ class User_Views_Avatar extends Pluf_Views
      */
     public static function update($request, $match)
     {
-        if ($request->user->getId() != $match['userId']) {
-            throw new Pluf_Exception_PermissionDenied();
+        if (array_key_exists('userId', $match)) {
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        } else {
+            $user = $request->user;
         }
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         return User_Shortcuts_UpdateAvatar($user, array_merge($request->REQUEST, $request->FILES));
     }
 
@@ -72,10 +73,11 @@ class User_Views_Avatar extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        if ($request->user->getId() != $match['userId']) {
-            return new Pluf_Exception_PermissionDenied();
+        if (array_key_exists('userId', $match)) {
+            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        } else {
+            $user = $request->user;
         }
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
         return User_Shortcuts_DeleteAvatar($user);
     }
 }

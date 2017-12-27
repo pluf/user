@@ -31,15 +31,15 @@ class Role_ModelTest extends TestCase
     /**
      * @beforeClass
      */
-    public static function createDataBase ()
+    public static function createDataBase()
     {
-        Pluf::start(dirname(__FILE__) . '/../conf/mysql.role.config.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role'
+            'Group',
+            'User',
+            'Role'
         );
         
         foreach ($models as $model) {
@@ -54,14 +54,14 @@ class Role_ModelTest extends TestCase
     /**
      * @afterClass
      */
-    public static function removeDatabses ()
+    public static function removeDatabses()
     {
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role',
+            'Group',
+            'User',
+            'Role'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -72,12 +72,12 @@ class Role_ModelTest extends TestCase
     /**
      * @test
      */
-    public function shouldPossibleCreateNew ()
+    public function shouldPossibleCreateNew()
     {
         $role = new Role();
-        $role->name = 'Random'.rand();
+        $role->name = 'Random' . rand();
         $role->application = 'test';
-        $role->code_name = 'codename_'.rand();
+        $role->code_name = 'codename_' . rand();
         $role->description = 'Hi@test.com';
         Test_Assert::assertTrue($role->create(), 'Impossible to create role');
     }

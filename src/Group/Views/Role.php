@@ -33,32 +33,27 @@ class Group_Views_Role extends Pluf_Views
      * Adds a role to list of roles of a group.
      * Id of added role should be specified in request.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match       
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function add($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $permission = Pluf_Shortcuts_GetObjectOr404('Role', $request->REQUEST['role']);
-//         $row = Pluf_RowPermission::add($group, null, $permission, false);
-        // $group->setAssoc($permission);
-        return new Pluf_HTTP_Response_Json($row);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $role = Pluf_Shortcuts_GetObjectOr404('Role', (isset($match['role_id'])) ? $match['role_id'] : $request->REQUEST['role_id']);
+        $group->setAssoc($role);
+        return $role;
     }
 
     /**
      * Returns list of roles of a group.
      * Returned list can be customized with some filter, condition and sort.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function find($request, $match)
     {
         $pag = new Pluf_Paginator(new Role());
-//         $sql = new Pluf_SQL('Group_id=%s', array(
-//             $match['groupId']
-//         ));
-//         $pag->forced_where = $sql;
         $pag->list_filters = array(
             'name',
             'code_name',
@@ -77,50 +72,47 @@ class Group_Views_Role extends Pluf_Views
             'application',
             'description'
         );
+        $pag->forced_where = new Pluf_SQL('group_id=%s', array(
+            $match['group_id']
+        ));
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        $pag->model_view = 'join_permission';
-        $pag->forced_where = new Pluf_SQL('rowpermissions.owner_id=%s AND rowpermissions.owner_class=%s', array(
-            $match['groupId'],
-            'Group'
-        ));
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        $pag->model_view = 'join_group';
+        return $pag->render_object();
     }
 
     /**
      * Returns information of a role of a group.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function get($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $roleModel = new Role();
-        $param = array(
-            'view' => 'join_role',
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $role = new Role();
+        $roles = $role->getList(array(
+            'view' => 'join_group',
             'filter' => array(
-                'rowpermissions.owner_id=' . $group->id,
-                'rowpermissions.owner_class="Group"'
+                'group_id=' . $group->id
             )
-        );
-        $roles = $roleModel->getList($param);
+        ));
         if ($roles->count() == 0) {
             throw new Pluf_Exception_DoesNotExist('Group has not such role');
         }
-        return $roles;
+        return $roles[0];
     }
 
     /**
      * Deletes a role from roles of a group.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match         
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function delete($request, $match)
     {
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-        $role = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $role = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
         $group->delAssoc($role);
         return $group;
     }

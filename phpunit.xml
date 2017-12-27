@@ -3,9 +3,11 @@
 	<testsuites>
 		<testsuite name="Group">
 			<directory>tests/Group/</directory>
+			<directory>tests/Group_REST/</directory>
 		</testsuite>
 		<testsuite name="Role">
 			<directory>tests/Role/</directory>
+			<directory>tests/Role_REST/</directory>
 		</testsuite>
 		<testsuite name="User">
 			<directory>tests/User/</directory>

@@ -32,66 +32,14 @@ class User_REST_BasicsTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(array(
-            'general_domain' => 'localhost',
-            'general_admin_email' => array(
-                'root@localhost'
-            ),
-            'general_from_email' => 'test@localhost',
-            'middleware_classes' => array(
-                'Pluf_Middleware_Session',
-                'User_Middleware_Session',
-            ),
-            'debug' => true,
-            'test_unit' => true,
-            'languages' => array(
-                'fa',
-                'en'
-            ),
-            'tmp_folder' => dirname(__FILE__) . '/../tmp',
-            'template_folders' => array(
-                dirname(__FILE__) . '/../templates'
-            ),
-            'upload_path' => dirname(__FILE__) . '/../tmp',
-            'template_tags' => array(),
-            'time_zone' => 'Asia/Tehran',
-            'encoding' => 'UTF-8',
-            
-            'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
-            'user_signup_active' => true,
-            'user_avatra_max_size' => 2097152,
-            'db_engine' => 'MySQL',
-            'db_version' => '5.5.33',
-            'db_login' => 'root',
-            'db_password' => '',
-            'db_server' => 'localhost',
-            'db_database' => 'test',
-            'db_table_prefix' => '_tu_profile_rest_',
-            
-            'mail_backend' => 'mail',
-            'user_avatar_default' => dirname(__FILE__) . '/../conf/avatar.svg'
-        ));
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'Group',
-            'User',
-            'Role',
-            'Profile',
-            'Pluf_Session',
-            'User_Message',
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
-            'User_Avatar'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-            if (true !== ($res = $schema->createTables())) {
-                throw new Exception($res);
-            }
-        }
+        Pluf::start(__DIR__ . '/../conf/config.php');
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m->install();
+        $m->init();
+        
+        $user = new User(1);
+        $rol = Role::getFromString('Pluf.owner');
+        $user->setAssoc($rol);
         
         $user = new User();
         $user->login = 'test';
@@ -116,24 +64,8 @@ class User_REST_BasicsTest extends TestCase
      */
     public static function removeDatabses()
     {
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'Group',
-            'User',
-            'Role',
-            'Profile',
-            'Pluf_Session',
-            'User_Message',
-            'Collection_Collection',
-            'Collection_Document',
-            'Collection_Attribute',
-            'User_Avatar'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-        }
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m->unInstall();
     }
 
     /**
@@ -511,7 +443,7 @@ class User_REST_BasicsTest extends TestCase
         $user = $user->getUser('test');
         
         $group = new Group();
-        $group->name = 'test:'.rand();
+        $group->name = 'test:' . rand();
         $group->create();
         
         // Login
@@ -530,21 +462,20 @@ class User_REST_BasicsTest extends TestCase
         // create
         $response = $client->post('/api/user/' . $user->id . '/group/new', array(
             'groupId' => $group->id,
-            'group' => $group->id,
+            'group' => $group->id
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // get
-        $response = $client->get('/api/user/' . $user->id . '/group/'. $group->id);
+        $response = $client->get('/api/user/' . $user->id . '/group/' . $group->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // delete
-        $response = $client->delete('/api/user/' . $user->id . '/group/'. $group->id);
+        $response = $client->delete('/api/user/' . $user->id . '/group/' . $group->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
-        
         
         // create
         $response = $client->post('/api/user/' . $user->id . '/group/new', array(
@@ -593,18 +524,18 @@ class User_REST_BasicsTest extends TestCase
         // get
         $response = $client->post('/api/user/' . $user->id . '/role/new', array(
             'roleId' => $perm->id,
-            'role' => $perm->id,
+            'role' => $perm->id
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // get
-        $response = $client->get('/api/user/' . $user->id . '/role/'. $perm->id);
+        $response = $client->get('/api/user/' . $user->id . '/role/' . $perm->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // delete
-        $response = $client->delete('/api/user/' . $user->id . '/role/'. $perm->id);
+        $response = $client->delete('/api/user/' . $user->id . '/role/' . $perm->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }

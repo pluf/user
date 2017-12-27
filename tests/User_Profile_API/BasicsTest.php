@@ -34,42 +34,7 @@ class User_Profile_API_BasicsTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(array(
-            'general_domain' => 'localhost',
-            'general_admin_email' => array(
-                'root@localhost'
-            ),
-            'general_from_email' => 'test@localhost',
-            'installed_apps' => array(),
-            'middleware_classes' => array(),
-            'debug' => true,
-            'test_unit' => true,
-            
-            'languages' => array(
-                'fa',
-                'en'
-            ),
-            'tmp_folder' => dirname(__FILE__) . '/../tmp',
-            'template_folders' => array(
-                dirname(__FILE__) . '/../templates'
-            ),
-            'template_tags' => array(),
-            'time_zone' => 'Asia/Tehran',
-            'encoding' => 'UTF-8',
-            
-            'secret_key' => '5a8d7e0f2aad8bdab8f6eef725412850',
-            'user_signup_active' => true,
-            'user_avatra_max_size' => 2097152,
-            'db_engine' => 'MySQL',
-            'db_version' => '5.5.33',
-            'db_login' => 'root',
-            'db_password' => '',
-            'db_server' => 'localhost',
-            'db_database' => 'test',
-            'db_table_prefix' => '_test_user_profile_',
-            
-            'mail_backend' => 'mail'
-        ));
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(

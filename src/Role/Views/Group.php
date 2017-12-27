@@ -33,32 +33,30 @@ class Role_Views_Group extends Pluf_Views
      * In other word, grant a role to a group.
      * Id of added group should be specified in request.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function add($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', $request->REQUEST['group']);
-//         $row = Pluf_RowPermission::add($group, null, $perm, false);
-        return new Pluf_HTTP_Response_Json($row);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
+        $group = Pluf_Shortcuts_GetObjectOr404('Group', isset($match['group_id']) ? $match['group_id'] : $request->REQUEST['group_id']);
+        $perm->setAssoc($group);
+        return $group;
     }
 
     /**
      * Returns list of groups of a role.
      * Resulted list can be customized by using filters, conditions and sort rules.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function find($request, $match)
     {
-        $perm = new Role($match['id']);
+        $perm = new Role($match['role_id']);
         $grModel = new Group();
         $pag = new Pluf_Paginator($grModel);
-        $pag->items_per_page = Role_Views::getListCount($request);
-        $perm_id_col = Pluf::f('pluf_use_rowpermission', false) ? 'permission' : 'Role_id';
-        $sql = new Pluf_SQL($perm_id_col.'=%s', array(
+        $sql = new Pluf_SQL('role_id=%s', array(
             $perm->id
         ));
         $pag->forced_where = $sql;
@@ -84,49 +82,48 @@ class Role_Views_Group extends Pluf_Views
             'name',
             'description'
         );
-        $pag->model_view = 'group_permission';
+        $pag->model_view = 'join_role';
         $pag->configure($list_display, $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        return $pag->render_object();
     }
 
     /**
      * Returns information of a group of a role.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
         $groupModel = new Group();
-        $perm_id_col = Pluf::f('pluf_use_rowpermission', false) ? 'permission' : 'Role_id';
         $param = array(
-            'view' => 'group_permission',
+            'view' => 'join_role',
             'filter' => array(
-                $groupModel->_a['table'].'.id=' . $match['groupId'],
-                $perm_id_col. '=' . $perm->id
+                'id=' . $match['group_id'],
+                'role_id=' . $perm->id
             )
         );
         $groups = $groupModel->getList($param);
-        if($groups->count() == 0){
+        if ($groups->count() == 0) {
             throw new Pluf_Exception_DoesNotExist('Group has not such role');
         }
-        return new Pluf_HTTP_Response_Json($groups);
+        return $groups[0];
     }
 
     /**
      * Deletes a group from a role.
      * Id of deleted group should be specify in the match.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function delete($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
-        $owner = Pluf_Shortcuts_GetObjectOr404('Group', $match['groupId']);
-//         $row = Pluf_RowPermission::remove($owner, null, $perm);
-        return new Pluf_HTTP_Response_Json($row);
+        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
+        $owner = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $perm->delAssoc($owner);
+        return $owner;
     }
 }

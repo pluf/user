@@ -19,7 +19,7 @@
  */
 
 /**
- * مدل داده‌ای یک گروه را ایجاد می‌کند.
+ * Group
  *
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
@@ -67,11 +67,13 @@ class Group extends Pluf_Model
                 'readable' => true,
                 'editable' => true
             ),
-            'permissions' => array(
+            'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
-                'blank' => true,
                 'model' => 'Role',
-                'readable' => true
+                'blank' => true,
+                'readable' => false,
+                'editable' => false,
+                'relate_name' => 'groups'
             )
         );
         $r_asso = $this->_con->pfx . 'group_role_assoc';
@@ -114,8 +116,7 @@ class Group extends Pluf_Model
         }
         $this->_cache_perms = array();
         // load group permissions
-        $this->_cache_perms = (array) $this->get_permissions_list();
-        
+        $this->_cache_perms = (array) $this->get_roles_list();
         return $this->_cache_perms;
     }
 
