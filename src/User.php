@@ -152,12 +152,14 @@ class User extends Pluf_Model
                 'editable' => false
             )
         );
-        $this->_a['idx'] = array(
-            'login_idx' => array(
-                'col' => 'login',
-                'type' => 'unique'
-            )
-        );
+        // @Note: hadi - 1396-10: when define an attribute as 'unique => true', pluf automatically
+        // create an unique index for it (for example login field here). So following codes are extra.
+//         $this->_a['idx'] = array(
+//             'login_idx' => array(
+//                 'col' => 'login',
+//                 'type' => 'unique'
+//             )
+//         );
         // Assoc. table
         $g_asso = $this->_con->pfx . 'group_user_assoc';
         $r_asso = $this->_con->pfx . 'role_user_assoc';
