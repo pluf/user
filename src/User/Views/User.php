@@ -97,8 +97,8 @@ class User_Views_User
     {
         $pag = new Pluf_Paginator(new User());
         $pag->list_filters = array(
-                'administrator',
-                'staff',
+//                 'administrator',
+//                 'staff',
                 'active'
         );
         $search_fields = array(

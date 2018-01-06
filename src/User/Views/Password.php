@@ -40,7 +40,8 @@ class User_Views_Password extends Pluf_Views
     public function update($request, $match)
     {
         $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-        if ($request->user->administrator || $user->id === $request->user->id) {
+//         if ($request->user->administrator || $user->id === $request->user->id) {
+        if ($user->id === $request->user->id) {
             $pass = User_Shortcuts_CheckPassword($request->REQUEST['password']);
             $user->setPassword($pass);
             $user->update();
