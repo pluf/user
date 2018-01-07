@@ -132,11 +132,13 @@ class Role extends Pluf_Model
         $perms = $permModel->getList(array(
             'filter' => $sql->gen()
         ));
-        if ($perms->count() != 1 && Pluf::f('core_permession_autoCreate', true)) {
-            $permModel->code_name = $code;
-            $permModel->application = $app;
-            if($permModel->create()){
-                return $permModel;
+        if ($perms->count() != 1) { // permission does not exist
+            if(Pluf::f('core_permession_autoCreate', true)){
+                $permModel->code_name = $code;
+                $permModel->application = $app;
+                if($permModel->create()){
+                    return $permModel;
+                }
             }
             return false;
         }

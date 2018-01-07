@@ -65,7 +65,6 @@ class User_Space extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User',
                 'blank' => false,
-                'unique' => true,
                 'editable' => false
             )
         );

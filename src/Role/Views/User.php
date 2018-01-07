@@ -71,8 +71,8 @@ class Role_Views_User extends Pluf_Views
         ));
         $pag->forced_where = $sql;
         $pag->list_filters = array(
-            'administrator',
-            'staff',
+//             'administrator',
+//             'staff',
             'active',
             'login',
             'first_name',
