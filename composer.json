@@ -16,8 +16,7 @@
 		}
 	],
 	"require" : {
-		"pluf/collection" : "^3.0.0",
-		"pluf/setting" : "^3.0.0"
+		"pluf/collection" : "^3.0.0"
 	},
 	"require-dev" : {
 		"pluf/test" : "^3.0.0"
