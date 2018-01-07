@@ -28,6 +28,9 @@ class User_Notify_Engine_Mail implements User_Notify_Engine
         }
         $email = new Pluf_Mail($from, $user->email, $subject);
         $email->addHtmlMessage($tmpl->render(new Pluf_Template_Context($context)));
+        if (defined('IN_UNIT_TESTS')) {
+            return;
+        }
         $res = $email->sendMail();
         if (is_a($res, 'PEAR_Error')) {
             throw new Pluf_Exception($res);
