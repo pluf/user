@@ -140,7 +140,7 @@ class User_Views_Password extends Pluf_Views
         if (Pluf::f('test_unit', false)) {
             return;
         }
-        $mailSubject = Setting_Service::get(User_Views_Password::EMAIL_TITLE, 'Reset password');
+        $mailSubject = 'Reset password';
         $context = array(
             'subject' => $mailSubject,
             'user' => $user,

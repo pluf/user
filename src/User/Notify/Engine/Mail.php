@@ -22,7 +22,7 @@ class User_Notify_Engine_Mail implements User_Notify_Engine
         $tmpl = new Pluf_Template($template);
         
         // Send mail
-        $email = new Pluf_Mail(Setting_Service::get('notify.mail', 'info@pluf.ir'), $user->email, $subject);
+        $email = new Pluf_Mail(Tenant_Service::setting('notify.mail', 'info@pluf.ir'), $user->email, $subject);
         $email->addHtmlMessage($tmpl->render(new Pluf_Template_Context($context)));
         $res = $email->sendMail();
         if (is_a($res, 'PEAR_Error')) {
