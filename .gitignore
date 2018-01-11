@@ -16,5 +16,4 @@ storage/tenant
 .directory
 
 # tests
-tests/tmp
 /build/

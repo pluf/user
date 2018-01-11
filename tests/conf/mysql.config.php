@@ -25,7 +25,6 @@ $cfg['timezone'] = 'Europe/Berlin';
 $cfg['debug'] = true;
 $cfg['installed_apps'] = array(
     'Pluf',
-    'Setting',
     'Collection',
     'User',
     'Group',
