@@ -129,8 +129,7 @@ class User_Precondition
         if (true !== $res) {
             return $res;
         }
-        if ($request->user->hasPerm('Pluf.owner', null, $request->tenant->id) || $request->user->hasPerm(
-                'Pluf.member', null, $request->tenant->id)) {
+        if ($request->user->hasPerm('Pluf.owner') || $request->user->hasPerm('Pluf.member')) {
             return true;
         }
         throw new Pluf_Exception_PermissionDenied();
