@@ -43,11 +43,10 @@
 			}
 		],
 		"Group": [],
-		"Pluf_Monitor": [
+		"Monitor_Property": [
 			{
-				"bean": "user",
-				"property": "owner",
-				"level": 2,
+				"monitor": "user",
+				"name": "owner",
 				"title": "Owner",
 				"description": "User ownership monitor",
 				"function": "User_Monitor::permisson"
