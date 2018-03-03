@@ -35,15 +35,10 @@ class User_Monitor
      */
     public static function permisson ($request, $match)
     {
-        $result = array(
-                'interval' => 100000,
-                'type' => 'scaler'
-        );
         
         // Check user
         if ($request->user->isAnonymous()) {
-            $result['value'] = false;
-            return $result;
+            return false;
         }
         
         // Get permission
@@ -57,12 +52,10 @@ class User_Monitor
                         'filter' => $sql->gen()
                 ));
         if ($items->count() == 0) {
-            $result['value'] = false;
-            return $result;
+            return false;
         }
         
         // Check permission
-        $result['value'] = $request->user->hasPerm($items[0].'');
-        return $result;
+        return $request->user->hasPerm($items[0].'');
     }
 }
