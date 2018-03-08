@@ -42,16 +42,6 @@
 				"active": "true"
 			}
 		],
-		"Group": [],
-		"Pluf_Monitor": [
-			{
-				"bean": "user",
-				"property": "owner",
-				"level": 2,
-				"title": "Owner",
-				"description": "User ownership monitor",
-				"function": "User_Monitor::permisson"
-			}
-		]
+		"Group": []
 	}
 }
