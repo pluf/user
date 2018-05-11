@@ -41,14 +41,14 @@ class User_PasswordToken extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Datetime',
                 'blank' => false,
                 'verbose' => 'creation date',
-                'help_text' => 'Creation date of the avatar.',
+                'help_text' => 'Creation date of the token (deprecated).',
                 'editable' => false
             ),
             'expireTime' => array(
                 'type' => 'Pluf_DB_Field_Datetime',
                 'blank' => false,
                 'verbose' => 'modification date',
-                'help_text' => 'Modification date of the avatar.',
+                'help_text' => 'End date of valid duration of the dution.',
                 'editable' => false
             )
         );
