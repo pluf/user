@@ -34,11 +34,6 @@ class Message_Monitor
      */
     public static function count ($request, $match)
     {
-        $result = array(
-                'interval' => 100000,
-                'type' => 'scalar'
-        );
-        
         $sql = new Pluf_SQL('user=%s', 
                 array(
                         $request->user->id
@@ -51,7 +46,6 @@ class Message_Monitor
                         'filter' => $sql->gen()
                 ));
         // Check permission
-        $result['value'] = $res[0]['nb_items'];
-        return $result;
+        return $res[0]['nb_items'];
     }
 }
