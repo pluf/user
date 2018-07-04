@@ -79,6 +79,5 @@ function User_Shortcuts_UpdateAvatar($user, $data = array())
             'user' => $user
         ));
     }
-    $model = $form->save();
-    return new Pluf_HTTP_Response_Json($model);
+    return $form->save();
 }
