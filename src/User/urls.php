@@ -194,7 +194,7 @@ return array(
         'method' => 'update',
         'http-method' => 'POST',
         'precond' => array(
-            'User_Precondition::ownerRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     array(
@@ -203,7 +203,7 @@ return array(
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
-            'User_Precondition::ownerRequired'
+            'User_Precondition::loginRequired'
         )
     ),
     // XXX: Hadi, 1395-07-08: I believe that following RESTs are redundant.
