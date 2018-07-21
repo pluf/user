@@ -106,7 +106,7 @@ class User extends Pluf_Model
                 'model' => 'Group',
                 'relate_name' => 'users',
                 'editable' => false,
-                'readable' => false,
+                'readable' => false
             ),
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
@@ -154,19 +154,19 @@ class User extends Pluf_Model
         );
         // @Note: hadi - 1396-10: when define an attribute as 'unique => true', pluf automatically
         // create an unique index for it (for example login field here). So following codes are extra.
-//         $this->_a['idx'] = array(
-//             'login_idx' => array(
-//                 'col' => 'login',
-//                 'type' => 'unique'
-//             )
-//         );
+        // $this->_a['idx'] = array(
+        // 'login_idx' => array(
+        // 'col' => 'login',
+        // 'type' => 'unique'
+        // )
+        // );
         // Assoc. table
         $g_asso = $this->_con->pfx . 'group_user_assoc';
         $r_asso = $this->_con->pfx . 'role_user_assoc';
         $t_user = $this->_con->pfx . $this->_a['table'];
         $this->_a['views'] = array(
             'join_role' => array(
-                'join' => 'LEFT JOIN '. $r_asso .' ON ' . $t_user . '.id=user_id'
+                'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_user . '.id=user_id'
             ),
             'join_group' => array(
                 'join' => 'LEFT JOIN ' . $g_asso . ' ON ' . $t_user . '.id=user_id'
@@ -175,8 +175,8 @@ class User extends Pluf_Model
     }
 
     /**
-     * 
-     * {@inheritDoc}
+     *
+     * {@inheritdoc}
      * @see Pluf_Model::__toString()
      */
     function __toString()
@@ -218,15 +218,15 @@ class User extends Pluf_Model
             'user' => $this
         );
         Pluf_Signal::send('User::preDelete', 'User', $params);
-        
-//         if (Pluf::f('pluf_use_rowpermission', false)) {
-//             $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();
-//             $sql = new Pluf_SQL('owner_class=%s AND owner_id=%s', array(
-//                 $this->_a['model'],
-//                 $this->_data['id']
-//             ));
-//             $this->_con->execute('DELETE FROM ' . $_rpt . ' WHERE ' . $sql->gen());
-//         }
+
+        // if (Pluf::f('pluf_use_rowpermission', false)) {
+        // $_rpt = Pluf::factory('Pluf_RowPermission')->getSqlTable();
+        // $sql = new Pluf_SQL('owner_class=%s AND owner_id=%s', array(
+        // $this->_a['model'],
+        // $this->_data['id']
+        // ));
+        // $this->_con->execute('DELETE FROM ' . $_rpt . ' WHERE ' . $sql->gen());
+        // }
     }
 
     /**
@@ -299,7 +299,7 @@ class User extends Pluf_Model
     /**
      * خصوصیت‌های کاربر را استخراج کرده و در اختیار قرار می دهد.
      *
-     * @param string $login            
+     * @param string $login
      * @return User
      */
     function getUser($login)
@@ -344,7 +344,7 @@ class User extends Pluf_Model
         }
         // load user permissions
         $this->_cache_perms = (array) $this->get_roles_list();
-        
+
         // Load groups
         $groups = $this->get_groups_list();
         $ids = array();
@@ -358,11 +358,11 @@ class User extends Pluf_Model
         return $this->_cache_perms;
     }
 
-    
     /**
      * Gets list of roles of groups
-     * 
-     * @param array $ids is list of group ids
+     *
+     * @param array $ids
+     *            is list of group ids
      */
     private function loadGroupRoles($ids)
     {
@@ -397,12 +397,11 @@ class User extends Pluf_Model
      */
     function hasPerm($perm)
     {
-        if (! $this->active)
+        if (! $this->active) {
             return false;
+        }
         $perms = $this->getAllRoles(false);
-        if (in_array($perm, $perms))
-            return true;
-        return false;
+        return in_array($perm, $perms);
     }
 
     /**
@@ -456,8 +455,8 @@ class User extends Pluf_Model
     function getProfile()
     {
         $pclass = Pluf::f('user_profile_class', false);
-        if (false == $pclass) {
-            throw new Pluf_Exception_SettingError(__('"user_profile_class" setting not defined.'));
+        if (false === $pclass) {
+            throw new Pluf_Exception_SettingError('"user_profile_class" setting not defined.');
         }
         $db = $this->getDbConnection();
         $sql = new Pluf_SQL(sprintf('%s=%%s', $db->qn('user')), array(
@@ -467,7 +466,7 @@ class User extends Pluf_Model
             'filter' => $sql->gen()
         ));
         if ($users->count() != 1) {
-            throw new Pluf_Exception_DoesNotExist(sprintf(__('No profiles available for user: %s'), (string) $this));
+            throw new Pluf_Exception_DoesNotExist(sprintf('No profiles available for user: %s', (string) $this));
         }
         return $users[0];
     }
