@@ -52,4 +52,19 @@ if (! defined('PHPUNIT_COMPOSER_INSTALL')) {
     die('You need to set up the project dependencies using the following commands:' . PHP_EOL . 'curl -s http://getcomposer.org/installer | php' . PHP_EOL . 'php composer.phar install' . PHP_EOL);
 }
 
+function deleteDir($path)
+{
+    return ! empty($path) && is_file($path) ? @unlink($path) : (array_reduce(glob($path . '/*'), function ($r, $i) {
+        return $r && deleteDir($i);
+    }, TRUE)) && @rmdir($path);
+}
+
+// clean test data
+$tmp_path = 'tests/tmp';
+deleteDir($tmp_path);
+if (!mkdir($tmp_path, 0777, true)) {
+    die('Failed to create temp folder...');
+}
+
+
 PHPUnit_TextUI_Command::main();
