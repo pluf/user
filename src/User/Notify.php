@@ -18,6 +18,9 @@ class User_Notify
      */
     public static function push($user, $templates, $context)
     {
+        if (defined('IN_UNIT_TESTS')) {
+            return;
+        }
         foreach ($templates as $engineName => $template) {
             $engineClass = 'User_Notify_Engine_' . $engineName;
             $engine = new $engineClass();

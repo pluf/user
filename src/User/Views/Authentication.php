@@ -57,7 +57,7 @@ class User_Views_Authentication
         }
         
         if (false === $user) {
-            throw new Pluf_Exception(__('user authentication incorrect'));
+            throw new Pluf_Exception('user authentication incorrect');
         }
         
         $request->user = $user;
