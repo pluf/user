@@ -25,7 +25,7 @@
  *        
  * @version 2.3.0 Row permsission i removed from the system model
  */
-class Group extends Pluf_Model
+class User_Group extends Pluf_Model
 {
 
     /**
@@ -35,18 +35,12 @@ class Group extends Pluf_Model
 
     function init()
     {
-        $this->_a['table'] = 'groups';
-        $this->_a['verbose'] = 'group';
+        $this->_a['table'] = 'user_groups';
+        $this->_a['verbose'] = 'groups';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
-                'blank' => true,
-                'readable' => true,
-                'editable' => false
-            ),
-            'version' => array(
-                'type' => 'Pluf_DB_Field_Integer',
                 'blank' => true,
                 'readable' => true,
                 'editable' => false

@@ -25,3 +25,25 @@
 
 از نکات مهم این ماژول این است که ساختار پروفایل ثابت نیست و می‌تواند در سیستم‌های مختلف متفاوت باشد
 پروفایل در اینجا به صورت یک نگاشت کلید-مقدار است که هر زوج کلید-مقداری را می‌توان در آن ذخیره کرد.
+
+## Update from V3
+
+### DB
+
+#### Copy table `user` to `user_accounts` and `user_profiles`
+
+In `user_accounts` keep following attributes:
+
+- id
+- login
+- date_joined
+- last_login
+- active
+
+Add the following:
+
+- deleted
+
+#### add `user_emails` table
+
+#### rename `user_groups`

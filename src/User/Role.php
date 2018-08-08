@@ -30,8 +30,8 @@ class Role extends Pluf_Model
 
     function init()
     {
-        $this->_a['verbose'] = 'role';
-        $this->_a['table'] = 'role';
+        $this->_a['verbose'] = 'roles';
+        $this->_a['table'] = 'user_roles';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
@@ -40,12 +40,6 @@ class Role extends Pluf_Model
                 'blank' => true,
                 'editable' => false,
                 'readable' => true
-            ),
-            'version' => array(
-                'type' => 'Pluf_DB_Field_Integer',
-                'blank' => true,
-                'editable' => false,
-                'readable' => false
             ),
             'name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
