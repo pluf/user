@@ -47,3 +47,5 @@ Add the following:
 #### add `user_emails` table
 
 #### rename `user_groups`
+
+#### rename `user_messages`

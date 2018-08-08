@@ -37,7 +37,7 @@ class User_Message extends Pluf_Model
      */
     function init ()
     {
-        $this->_a['table'] = 'messages';
+        $this->_a['table'] = 'user_messages';
         $this->_a['verbose'] = 'user messages';
         $this->_a['cols'] = array(
                 // It is mandatory to have an "id" column.
@@ -48,18 +48,12 @@ class User_Message extends Pluf_Model
                         'editable' => false,
                         'readable' => true
                 ),
-                'version' => array(
-                        'type' => 'Pluf_DB_Field_Integer',
-                        'blank' => true,
-                        'editable' => false,
-                        'readable' => true
-                ),
-                'user' => array(
+                'account_id' => array(
                         'type' => 'Pluf_DB_Field_Foreignkey',
-                        'model' => 'User',
+                        'model' => 'User_Account',
 //                         'relate_name' => 'message',
                         'blank' => false,
-                        'verbose' => __('user'),
+                        'verbose' => 'user account',
                         'editable' => false,
                         'readable' => false
                 ),
