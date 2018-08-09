@@ -8,7 +8,7 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *
  */
-class User_PasswordToken extends Pluf_Model
+class User_Token extends Pluf_Model
 {
 
     /**
@@ -25,7 +25,7 @@ class User_PasswordToken extends Pluf_Model
                 'blank' => true,
                 'editable' => false
             ),
-            'user' => array(
+            'user_id' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User',
                 'blank' => false,
@@ -37,14 +37,14 @@ class User_PasswordToken extends Pluf_Model
                 'size' => 50,
                 'editable' => false
             ),
-            'creationTime' => array(
+            'creation_time' => array(
                 'type' => 'Pluf_DB_Field_Datetime',
                 'blank' => false,
                 'verbose' => 'creation date',
                 'help_text' => 'Creation date of the token (deprecated).',
                 'editable' => false
             ),
-            'expireTime' => array(
+            'expire_time' => array(
                 'type' => 'Pluf_DB_Field_Datetime',
                 'blank' => false,
                 'verbose' => 'modification date',
