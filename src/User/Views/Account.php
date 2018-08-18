@@ -19,128 +19,126 @@
 Pluf::loadFunction('Pluf_HTTP_URL_urlForView');
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
 Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
+Pluf::loadFunction('User_Shortcuts_GetListCount');
 
 /**
  * Manage users (CRUD on users account)
  */
-class User_Views_User
+class User_Views_Account
 {
-
+    
     /**
-     * Creates new user
+     * Creates new account (register new user) and a credential for it
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
+     * @return User_Account created account
      */
-    public static function create ($request, $match)
+    public static function create($request, $match)
     {
         // Create account
         $extra = array();
-        $form = new User_Form_User(
-                array_merge($request->REQUEST, $request->FILES), $extra);
+        $data = array_merge($request->REQUEST, $request->FILES);
+        //         $form = new User_Form_User($data, $extra);
+        //         $cuser = $form->save();
+        $usr = User_Account::getUser($data['login']);
+        if($usr){
+            throw new Pluf_Exception('Username is existed already.', 400);
+        }
+        $form = new User_Form_Account($data, $extra);
         $cuser = $form->save();
+        // Create credential
+        $credit = new User_Credential();
+        $credit->setFromFormData(array('account_id' => $cuser->id));
+        $credit->setPassword($data['password']);
+        $success = $credit->create();
+        if(!$success){
+            throw new Pluf_Exception('An internal error is occured while create credential');
+        }
+        if(Pluf::f('account_force_activate', false)){
+            // TODO: hadi, 1397-05-26: send mail to activate account by user
+        }
         // Return response
         return $cuser;
     }
-
+    
     /**
      * Returns information of specified user by id.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public static function get ($request, $match)
+    public static function get($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
         return $user;
     }
-
+    
     /**
      * Updates information of specified user (by id)
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
-     * @return User
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
+     * @return User_Account
      */
-    public static function update ($request, $match)
+    public static function update($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-        $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, 
-                array());
-        $request->user->setMessage(
-                sprintf(__('Account data has been updated.'), (string) $model));
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, array());
+        $request->user->setMessage(sprintf(__('Account data has been updated.'), (string) $model));
         return $form->save();
     }
-
+    
     /**
      * Delete specified user (by id)
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public static function delete ($request, $match)
+    public static function delete($request, $match)
     {
-        $usr = new User($match['userId']);
-        $usr->delete();
+        $usr = new User_Account($match['userId']);
+        //         $usr->delete();
+        $usr->setDeleted(true);
+        // TODO: Hadi, 1397-05-26: delete credentials and profile
         return $usr;
     }
-
+    
     /**
      * Returns list of users.
      * Returned list can be customized using search fields, filters or sort
      * fields.
      *
-     * @param Pluf_HTTP_Request $request            
-     * @param array $match            
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
-    public static function find ($request, $match)
+    public static function find($request, $match)
     {
-        $pag = new Pluf_Paginator(new User());
+        $pag = new Pluf_Paginator(new User_Account());
         $pag->list_filters = array(
-//                 'administrator',
-//                 'staff',
-                'active'
+            'is_active',
+            'login'
         );
         $search_fields = array(
-                'login',
-                'first_name',
-                'last_name',
-                'email'
+            'login'
         );
         $sort_fields = array(
-                'id',
-                'login',
-                'first_name',
-                'last_name',
-                'date_joined',
-                'last_login'
+            'id',
+            'login',
+            'date_joined',
+            'last_login',
+            'is_active'
         );
         
-        // XXX: maso, 2017: owner can do that
-//         if (! ::isStaff($request) &&
-//                  Pluf::f('multitenant', false)) {
-//             $pag->model_view = 'roled_user';
-//             $pag->forced_where = new Pluf_SQL('tenant=%s', 
-//                     array(
-//                             Pluf_Tenant::current()->id
-//                     ));
-//         }
-        $pag->sort_order = array('id', 'DESC');
+        $pag->sort_order = array(
+            'id',
+            'DESC'
+        );
         $pag->configure(array(), $search_fields, $sort_fields);
-        $pag->items_per_page = User_Views_User::getListCount($request);
+        $pag->items_per_page = User_Shortcuts_GetListCount($request);
         $pag->setFromRequest($request);
         return $pag->render_object();
     }
-
-    static function getListCount ($request)
-    {
-        $count = 50;
-        if (array_key_exists('_px_ps', $request->GET)) {
-            $count = $request->GET['_px_ps'];
-            if ($count == 0 || $count > 50) {
-                $count = 50;
-            }
-        }
-        return $count;
-    }
+    
+    
 }

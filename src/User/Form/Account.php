@@ -1,4 +1,4 @@
-<?php
+// <?php
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. http://dpq.co.ir
@@ -17,15 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 Pluf::loadFunction('Pluf_HTTP_URL_urlForView');
-Pluf::loadFunction('User_Shortcuts_UserDateFactory');
+Pluf::loadFunction('User_Shortcuts_UserDataFactory');
 
 /**
  * Update user info
- * 
- * @author maso
  *
+ * @author maso
+ *        
  */
-class User_Form_User extends Pluf_Form
+class User_Form_Account extends Pluf_Form
 {
 
     public $user_data = null;
@@ -35,59 +35,24 @@ class User_Form_User extends Pluf_Form
      *
      * @see Pluf_Form::initFields()
      */
-    public function initFields ($extra = array())
+    public function initFields($extra = array())
     {
-        if (array_key_exists('user', $extra))
+        if (array_key_exists('user', $extra)){
             $this->user_data = $extra['user'];
-        $this->user_data = User_Shortcuts_UserDateFactory($this->user_data);
-        
-        $this->fields['login'] = new Pluf_Form_Field_Varchar(
-                array(
-                        'required' => true,
-                        'label' => __('login'),
-                        'initial' => $this->user_data->login
-                ));
-        
-        $this->fields['first_name'] = new Pluf_Form_Field_Varchar(
-                array(
-                        'required' => false,
-                        'label' => __('first name'),
-                        'initial' => $this->user_data->first_name
-                ));
-        
-        $this->fields['last_name'] = new Pluf_Form_Field_Varchar(
-                array(
-                        'required' => false,
-                        'label' => __('last name'),
-                        'initial' => $this->user_data->last_name
-                ));
-        
-        $this->fields['language'] = new Pluf_Form_Field_Varchar(
-                array(
-                        'required' => false,
-                        'label' => __('language'),
-                        'initial' => $this->user_data->language
-                ));
-        
-        $this->fields['password'] = new Pluf_Form_Field_Varchar(
-                array(
-                        'required' => false,
-                        'label' => __('your password'),
-                        'initial' => ''
-                ));
-        
-        $this->fields['email'] = new Pluf_Form_Field_Email(
-                array(
-                        'required' => !Pluf::f('user_signup_active', false),
-                        'label' => __('Email address'),
-                        'initial' => $this->user_data->email
-                ));
-        $this->fields['active'] = new Pluf_Form_Field_Boolean(
-                array(
-                        'required' => false,
-                        'label' => __('active'),
-                        'initial' => $this->user_data->active
-                ));
+        }
+        $this->user_data = User_Shortcuts_UserDataFactory($this->user_data);
+
+        $this->fields['login'] = new Pluf_Form_Field_Varchar(array(
+            'required' => true,
+            'label' => __('login'),
+            'initial' => $this->user_data->login
+        ));
+
+        $this->fields['is_active'] = new Pluf_Form_Field_Boolean(array(
+            'required' => false,
+            'label' => __('active'),
+            'initial' => $this->user_data->active
+        ));
     }
 
     /**
@@ -101,20 +66,19 @@ class User_Form_User extends Pluf_Form
      *
      * @param $commit داده‌ها
      *            ذخیره شود یا نه
-     * @return User مدل داده‌ای ایجاد شده
+     * @return User_Account مدل داده‌ای ایجاد شده
      */
-    function save ($commit = true)
+    function save($commit = true)
     {
         if (! $this->isValid()) {
-            throw new Pluf_Exception_Form(
-                    __('Cannot save the model from an invalid form.'), $this);
+            throw new Pluf_Exception_Form(__('Cannot save the model from an invalid form.'), $this);
         }
         $this->user_data->setFromFormData($this->cleaned_data);
         $user_active = Pluf::f('user_signup_active', false);
         $this->user_data->active = $user_active;
         if ($commit) {
             if (! $this->user_data->create()) {
-                throw new Pluf_Exception(__('Fail to create new user?!'));
+                throw new Pluf_Exception(__('Fail to create new user.'));
             }
         }
         return $this->user_data;
@@ -125,11 +89,10 @@ class User_Form_User extends Pluf_Form
      *
      * @throws Pluf_Exception
      */
-    function update ($commit = true)
+    function update($commit = true)
     {
         if (! $this->isValid()) {
-            throw new Pluf_Exception(
-                    __('Cannot save the model from an invalid form.'));
+            throw new Pluf_Exception(__('Cannot save the model from an invalid form.'));
         }
         $this->user_data->setFromFormData($this->cleaned_data);
         if ($commit) {
@@ -139,46 +102,4 @@ class User_Form_User extends Pluf_Form
         return $this->user_data;
     }
 
-    /**
-     * Check and clean last name
-     *
-     * @return string last name
-     */
-    function clean_last_name ()
-    {
-        $last_name = trim($this->cleaned_data['last_name']);
-        if ($last_name == mb_strtoupper($last_name)) {
-            return mb_convert_case(mb_strtolower($last_name), MB_CASE_TITLE, 
-                    'UTF-8');
-        }
-        return $last_name;
-    }
-
-    /**
-     * Check and clean first name
-     *
-     * @return string
-     */
-    function clean_first_name ()
-    {
-        $first_name = trim($this->cleaned_data['first_name']);
-        if ($first_name == mb_strtoupper($first_name)) {
-            return mb_convert_case(mb_strtolower($first_name), MB_CASE_TITLE, 
-                    'UTF-8');
-        }
-        return $first_name;
-    }
-
-    /**
-     * Check and clean email
-     *
-     * @throws Pluf_Form_Invalid
-     * @return multitype:
-     */
-    function clean_email ()
-    {
-        $this->cleaned_data['email'] = mb_strtolower(
-                trim($this->cleaned_data['email']));
-        return $this->cleaned_data['email'];
-    }
 }
