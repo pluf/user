@@ -51,7 +51,7 @@ class User_Form_Account extends Pluf_Form
         $this->fields['is_active'] = new Pluf_Form_Field_Boolean(array(
             'required' => false,
             'label' => __('active'),
-            'initial' => $this->user_data->active
+            'initial' => $this->user_data->is_active
         ));
     }
 
