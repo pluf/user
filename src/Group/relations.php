@@ -20,9 +20,9 @@ return array (
     /*
      * NOTE: relations MUST be defined in just one relations.php file.
      */
-    'Group' => array(
+    'User_Group' => array(
         'relate_to_many' => array(
-            'Role',
+            'User_Role',
         )
     ),
 );

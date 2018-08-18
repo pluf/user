@@ -27,7 +27,7 @@
  * کاربران
  * استفاده کرد.
  */
-class Profile extends Pluf_Model
+class User_Profile extends Pluf_Model
 {
 
     /**
@@ -47,30 +47,23 @@ class Profile extends Pluf_Model
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
                 // It is automatically added.
-                'blank' => true,
+                'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'first_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => true,
                 'size' => 100,
-                'verbose' => __('first name'),
-                'editable' => true,
-                'readable' => true
             ),
             'last_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'size' => 100,
-                'verbose' => __('last name'),
-                'editable' => true,
-                'readable' => true
             ),
             'public_email' => array(
                 'type' => 'Pluf_DB_Field_Email',
-                'blank' => false,
-                'verbose' => __('email'),
+                'is_null' => false,
                 // @note: hadi, 1395-07-14: change email is done by
                 // another process.
                 'editable' => false,
@@ -78,7 +71,7 @@ class Profile extends Pluf_Model
             ),
             'language' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => true,
                 'default' => $langs[0],
                 'size' => 5,
                 'verbose' => __('language'),
@@ -86,12 +79,22 @@ class Profile extends Pluf_Model
             ),
             'timezone' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => true,
                 'default' => date_default_timezone_get(),
                 'size' => 45,
                 'verbose' => __('time zone'),
                 'help_text' => __('Time zone of the user to display the time in local time.')
-            )
+            ),
+//             /*
+//              * Foreign keys
+//              */
+//             'account_id' => array(
+//                 'type' => 'Pluf_DB_Field_Foreignkey',
+//                 'model' => 'User_Account',
+//                 'relate_name' => 'account',
+//                 'is_null' => true,
+//                 'editable' => false
+//             ),
         );
     }
 
@@ -106,6 +109,6 @@ class Profile extends Pluf_Model
         if (strlen($this->first_name) > 0) {
             $repr = $this->first_name . ' ' . $repr;
         }
-        return $repr;
+        return trim($repr);
     }
 }

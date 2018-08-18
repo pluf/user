@@ -1,4 +1,6 @@
 <?php
+Pluf::loadFunction('Pluf_Shortcuts_GetAssociationTableName');
+Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
 
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
@@ -35,8 +37,8 @@ class User_Group extends Pluf_Model
 
     function init()
     {
-        $this->_a['table'] = 'user_groups';
         $this->_a['verbose'] = 'groups';
+        $this->_a['table'] = 'user_groups';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
@@ -47,38 +49,41 @@ class User_Group extends Pluf_Model
             ),
             'name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'size' => 50,
                 'verbose' => 'name',
-                'readable' => true,
-                'editable' => true
             ),
             'description' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => true,
                 'size' => 250,
                 'verbose' => 'description',
-                'readable' => true,
-                'editable' => true
             ),
+            /*
+             * Relations
+             */
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
-                'model' => 'Role',
-                'blank' => true,
+                'model' => 'User_Role',
+                'is_null' => true,
                 'readable' => false,
                 'editable' => false,
-                'relate_name' => 'groups'
+                'relate_name' => 'roles'
             )
         );
-        $r_asso = $this->_con->pfx . 'group_role_assoc';
-        $u_asso = $this->_con->pfx . 'group_user_assoc';
+        /*
+         * Views
+         */
+        $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
+        $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Account');
         $t_group = $this->_con->pfx . $this->_a['table'];
+        $group_fk = Pluf_Shortcuts_GetForeignKeyName('User_Group');
         $this->_a['views'] = array(
             'join_user' => array(
-                'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_group . '.id=group_id'
+                'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_group . '.id=' . $group_fk
             ),
             'join_role' => array(
-                'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_group . '.id=group_id'
+                'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_group . '.id=' . $group_fk
             )
         );
     }
