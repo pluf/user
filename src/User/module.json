@@ -1,19 +1,20 @@
 {
 	"name": "User",
-	"version": "0.1.2",
+	"version": "4.0.0",
 	"title": "User Management",
 	"model": [
-		"Role",
-		"Group",
-		"User",
-		"Profile",
+		"User_Account",
+		"User_Profile",
+		"User_Credential",
+		"User_Token",
+		"User_Role",
+		"User_Group",
 		"User_Message",
 		"User_Avatar",
-		"User_PasswordToken",
 		"User_Space"
 	],
 	"init": {
-		"Role": [
+		"User_Role": [
 			{
 				"name": "ownership",
 				"application": "Pluf",
@@ -33,16 +34,16 @@
 				"description": "Permission given to users allowed to access a tenant."
 			}
 		],
-		"User": [
+		"User_Account": [
 			{
 				"login": "admin",
 				"first_name": "admin",
 				"last_name": "admin",
 				"password": "admin",
-				"active": "true"
+				"is_active": "true"
 			}
 		],
-		"Group": [],
+		"User_Group": [],
 		"Monitor_Property": []
 	}
 }
