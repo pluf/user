@@ -51,4 +51,14 @@ return array(
         'method' => 'create',
         'http-method' => 'PUT'
     ),
+    
+    array( // Password
+        'regex' => '#^/credentials$#',
+        'model' => 'User_Views_Password',
+        'method' => 'password',
+        'http-method' => array(
+            'POST',
+            'PUT'
+        )
+    ),
 );
