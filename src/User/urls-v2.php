@@ -23,6 +23,12 @@ return array(
         'method' => 'login',
         'http-method' => 'POST'
     ),
+    array( // Login
+        'regex' => '#^/tokens$#',
+        'model' => 'User_Views_Authentication',
+        'method' => 'login',
+        'http-method' => 'PUT'
+    ),
     array( // Logout
         'regex' => '#^/logout$#',
         'model' => 'User_Views_Authentication',
@@ -31,6 +37,12 @@ return array(
             'POST',
             'GET'
         )
+    ),
+    array( // Logout from current session
+        'regex' => '#^/tokens/current$#',
+        'model' => 'User_Views_Authentication',
+        'method' => 'logout',
+        'http-method' => 'DELETE'
     ),
     
     array( // Register new user
