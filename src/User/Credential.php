@@ -113,7 +113,7 @@ class User_Credential extends Pluf_Model
      *
      * @param
      *            string password
-     * @return bool true if password is valid else false
+     * @return boolean true if password is valid else false
      */
     function checkPassword($password)
     {
@@ -129,13 +129,31 @@ class User_Credential extends Pluf_Model
     }
 
     /**
+     * Returns credential for given account id
+     * @param int $userId
+     * @return boolean|User_Credential
+     */
+    public static function getCredential($userId)
+    {
+        $model = new User_Credential();
+        $where = 'account_id = ' . $model->_toDb($userId, 'account_id');
+        $creds = $model->getList(array(
+            'filter' => $where
+        ));
+        if ($creds === false or count($creds) !== 1) {
+            return false;
+        }
+        return $creds[0];
+    }
+    
+    /**
      * Check if the login creditential is valid.
      *
      * @param
      *            string Login
      * @param
      *            string Password
-     * @return mixed False or matching account
+     * @return boolean True if password is correct for given login else returns false
      */
     public static function checkCredential($login, $password)
     {
