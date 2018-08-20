@@ -44,7 +44,7 @@ class User_Precondition
             throw new Pluf_Exception_Unauthorized('Login required', null, '', 
                     'login is required, or cocki is not enabled');
         }
-        if (! $request->user->active) {
+        if (! $request->user->isActive()) {
             throw new Pluf_Exception('user is not active', 4002, null, 400, '', 
                     'user is not active');
         }
@@ -65,7 +65,7 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        if (! $request->user->active) {
+        if (! $request->user->isActive()) {
             return false;
         }
         return true;

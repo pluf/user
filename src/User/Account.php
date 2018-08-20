@@ -286,7 +286,7 @@ class User_Account extends Pluf_Model
      */
     function hasPerm($perm)
     {
-        if (! $this->active) {
+        if (! $this->isActive()) {
             return false;
         }
         $perms = $this->getAllRoles(false);
