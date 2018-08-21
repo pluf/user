@@ -75,7 +75,7 @@ class User_Form_Account extends Pluf_Form
         }
         $this->user_data->setFromFormData($this->cleaned_data);
         $user_active = Pluf::f('user_signup_active', false);
-        $this->user_data->active = $user_active;
+        $this->user_data->is_active = $user_active;
         if ($commit) {
             if (! $this->user_data->create()) {
                 throw new Pluf_Exception(__('Fail to create new user.'));
