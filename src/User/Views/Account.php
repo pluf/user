@@ -115,6 +115,7 @@ class User_Views_Account
     public static function find($request, $match)
     {
         $pag = new Pluf_Paginator(new User_Account());
+        $pag->forced_where = new Pluf_SQL('is_deleted=false');
         $pag->list_filters = array(
             'is_active',
             'login'

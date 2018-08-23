@@ -44,15 +44,201 @@ return array(
         'method' => 'logout',
         'http-method' => 'DELETE'
     ),
-    
-    array( // Register new user
+
+    // ************************************************** Current Account (current user info)
+
+    array( // Read
+        'regex' => '#^/accounts/current$#',
+        'model' => 'User_Views',
+        'method' => 'getAccount',
+        'http-method' => 'GET'
+    ),
+    // array( // Update
+    // 'regex' => '#^/accounts/current$#',
+    // 'model' => 'User_Views',
+    // 'method' => 'updateAccount',
+    // 'precond' => array(
+    // 'User_Precondition::loginRequired'
+    // ),
+    // 'http-method' => 'POST'
+    // ),
+    array( // Delete
+        'regex' => '#^/accounts/current$#',
+        'model' => 'User_Views',
+        'method' => 'deleteAccount',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        ),
+        'http-method' => 'DELETE'
+    ),
+
+    // ************************************************** Account (user info)
+
+    array( // Create
         'regex' => '#^/accounts$#',
         'model' => 'User_Views_Account',
         'method' => 'create',
-        'http-method' => 'PUT'
+        'http-method' => array(
+            'PUT',
+            'POST'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts$#',
+        'model' => 'User_Views_Account',
+        'method' => 'find',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)$#',
+        'model' => 'User_Views_Account',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+    // array( // Update
+    // 'regex' => '#^/accounts/(?P<userId>\d+)$#',
+    // 'model' => 'User_Views_Account',
+    // 'method' => 'update',
+    // 'precond' => array(
+    // 'User_Precondition::ownerRequired'
+    // ),
+    // 'http-method' => 'POST'
+    // ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<userId>\d+)$#',
+        'model' => 'User_Views_Account',
+        'method' => 'delete',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        ),
+        'http-method' => 'DELETE'
+    ),
+
+    // ************************************************** Groups
+    array( // Create
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
+        'model' => 'User_Views_Group',
+        'method' => 'add',
+        'http-method' => array(
+            'PUT',
+            'POST'
+        ),
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
+        'model' => 'User_Views_Group',
+        'method' => 'find',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+        'model' => 'User_Views_Group',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+        'model' => 'User_Views_Group',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+        'model' => 'User_Views_Group',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    // ************************************************** Roles
+    array( // Create
+        'regex' => '#^/accounts/(?P<userId>\d+)/roles$#',
+        'model' => 'User_Views_Permission',
+        'method' => 'create',
+        'http-method' => array(
+            'PUT',
+            'POST'
+        ),
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<userId>\d+)/roles$#',
+        'model' => 'User_Views_Permission',
+        'method' => 'find',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)/roles/(?P<roleId>\d+)$#',
+        'model' => 'User_Views_Permission',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<userId>\d+)/roles/(?P<roleId>\d+)$#',
+        'model' => 'User_Views_Permission',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
     ),
     
-    array( // Password
+    // ************************************************** Groups
+    
+    array( // Create
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
+        'model' => 'User_Views_Group',
+        'method' => 'add',
+        'http-method' => array(
+            'PUT',
+            'POST'
+        ),
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
+        'model' => 'User_Views_Group',
+        'method' => 'find',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+        'model' => 'User_Views_Group',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+//     array( // Update
+//         'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+//         'model' => 'User_Views_Group',
+//         'method' => 'update',
+//         'http-method' => 'POST',
+//         'precond' => array(
+//             'User_Precondition::ownerRequired'
+//         )
+//     ),
+    array(
+        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+        'model' => 'User_Views_Group',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        )
+    ),
+    // ************************************************** Credential (password)
+    
+    array( // Create/Update
         'regex' => '#^/credentials$#',
         'model' => 'User_Views_Password',
         'method' => 'password',

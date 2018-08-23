@@ -257,7 +257,7 @@ class User_Account extends Pluf_Model
     {
         $gperm = new User_Role();
         $roles = (array) $gperm->getList(array(
-            'filter' => 'group_id IN (' . join(', ', $ids) . ')',
+            'filter' => 'user_group_id IN (' . join(', ', $ids) . ')',
             'view' => 'join_group'
         ));
         foreach ($roles as $role) {
