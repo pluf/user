@@ -39,13 +39,13 @@ class Role_Views_User extends Pluf_Views
      */
     public static function add($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
         if (array_key_exists('user_id', $match)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['user_id']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['user_id']);
         } elseif (array_key_exists('user_id', $request->REQUEST)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $request->REQUEST['user_id']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $request->REQUEST['user_id']);
         } elseif (array_key_exists('login', $request->REQUEST)) {
-            $user = new User();
+            $user = new User_Account();
             $user = $user->getUser($request->REQUEST['login']);
         }
         if (! isset($user) || $user->isAnonymous()) {
@@ -64,8 +64,8 @@ class Role_Views_User extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $pag = new Pluf_Paginator(new User());
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $pag = new Pluf_Paginator(new User_Account());
         $sql = new Pluf_SQL('role_id=%s', array(
             $perm->id
         ));
@@ -117,8 +117,8 @@ class Role_Views_User extends Pluf_Views
      */
     public static function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $userModel = new User();
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $userModel = new User_Account();
         $param = array(
             'view' => 'join_role',
             'filter' => array(
@@ -142,8 +142,8 @@ class Role_Views_User extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $owner = Pluf_Shortcuts_GetObjectOr404('User', $match['user_id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $owner = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['user_id']);
         $perm->delAssoc($owner);
         return $owner;
     }

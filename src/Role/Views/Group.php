@@ -38,8 +38,8 @@ class Role_Views_Group extends Pluf_Views
      */
     public static function add($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $group = Pluf_Shortcuts_GetObjectOr404('Group', isset($match['group_id']) ? $match['group_id'] : $request->REQUEST['group_id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $group = Pluf_Shortcuts_GetObjectOr404('User_Group', isset($match['group_id']) ? $match['group_id'] : $request->REQUEST['group_id']);
         $perm->setAssoc($group);
         return $group;
     }
@@ -53,8 +53,8 @@ class Role_Views_Group extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $perm = new Role($match['role_id']);
-        $grModel = new Group();
+        $perm = new User_Role($match['role_id']);
+        $grModel = new User_Group();
         $pag = new Pluf_Paginator($grModel);
         $sql = new Pluf_SQL('role_id=%s', array(
             $perm->id
@@ -96,8 +96,8 @@ class Role_Views_Group extends Pluf_Views
      */
     public static function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $groupModel = new Group();
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $groupModel = new User_Group();
         $param = array(
             'view' => 'join_role',
             'filter' => array(
@@ -121,8 +121,8 @@ class Role_Views_Group extends Pluf_Views
      */
     public static function delete($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['role_id']);
-        $owner = Pluf_Shortcuts_GetObjectOr404('Group', $match['group_id']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
+        $owner = Pluf_Shortcuts_GetObjectOr404('User_Group', $match['group_id']);
         $perm->delAssoc($owner);
         return $owner;
     }
