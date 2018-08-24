@@ -34,10 +34,8 @@ class Message_Monitor
      */
     public static function count ($request, $match)
     {
-        $sql = new Pluf_SQL('account_id=%s', 
-                array(
-                        $request->user->id
-                ));
+        $userId = $request->user ? $request->user->id : 0;
+        $sql = new Pluf_SQL('account_id=%s', array($userId));
         
         $message = new User_Message();
         $res = $message->getList(
