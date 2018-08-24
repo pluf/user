@@ -68,7 +68,7 @@ class User_Group extends Pluf_Model
                 'is_null' => true,
                 'readable' => false,
                 'editable' => false,
-                'relate_name' => 'roles'
+                'relate_name' => 'groups'
             )
         );
         /*
