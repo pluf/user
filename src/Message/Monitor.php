@@ -34,7 +34,7 @@ class Message_Monitor
      */
     public static function count ($request, $match)
     {
-        $sql = new Pluf_SQL('user=%s', 
+        $sql = new Pluf_SQL('account_id=%s', 
                 array(
                         $request->user->id
                 ));
