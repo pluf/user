@@ -43,7 +43,6 @@
 				"is_active": "true"
 			}
 		],
-		"User_Group": [],
-		"Monitor_Property": []
+		"User_Group": []
 	}
 }
