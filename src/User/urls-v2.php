@@ -115,6 +115,7 @@ return array(
     ),
 
     // ************************************************** Groups
+
     array( // Create
         'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
         'model' => 'User_Views_Group',
@@ -126,7 +127,7 @@ return array(
         'precond' => array(
             'User_Precondition::ownerRequired'
         )
-    ),
+    ),  
     array( // Read (list)
         'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
         'model' => 'User_Views_Group',
@@ -139,15 +140,16 @@ return array(
         'method' => 'get',
         'http-method' => 'GET'
     ),
-    array( // Update
-        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
-        'model' => 'User_Views_Group',
-        'method' => 'update',
-        'http-method' => 'POST',
-        'precond' => array(
-            'User_Precondition::ownerRequired'
-        )
-    ),
+    
+    // array( // Update
+    // 'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
+    // 'model' => 'User_Views_Group',
+    // 'method' => 'update',
+    // 'http-method' => 'POST',
+    // 'precond' => array(
+    // 'User_Precondition::ownerRequired'
+    // )
+    // ),
     array( // Delete
         'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
         'model' => 'User_Views_Group',
@@ -157,7 +159,9 @@ return array(
             'User_Precondition::ownerRequired'
         )
     ),
+
     // ************************************************** Roles
+    
     array( // Create
         'regex' => '#^/accounts/(?P<userId>\d+)/roles$#',
         'model' => 'User_Views_Permission',
@@ -191,53 +195,9 @@ return array(
             'User_Precondition::ownerRequired'
         )
     ),
-    
-    // ************************************************** Groups
-    
-    array( // Create
-        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
-        'model' => 'User_Views_Group',
-        'method' => 'add',
-        'http-method' => array(
-            'PUT',
-            'POST'
-        ),
-        'precond' => array(
-            'User_Precondition::ownerRequired'
-        )
-    ),
-    array( // Read (list)
-        'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
-        'model' => 'User_Views_Group',
-        'method' => 'find',
-        'http-method' => 'GET'
-    ),
-    array( // Read
-        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
-        'model' => 'User_Views_Group',
-        'method' => 'get',
-        'http-method' => 'GET'
-    ),
-//     array( // Update
-//         'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
-//         'model' => 'User_Views_Group',
-//         'method' => 'update',
-//         'http-method' => 'POST',
-//         'precond' => array(
-//             'User_Precondition::ownerRequired'
-//         )
-//     ),
-    array(
-        'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
-        'model' => 'User_Views_Group',
-        'method' => 'delete',
-        'http-method' => 'DELETE',
-        'precond' => array(
-            'User_Precondition::ownerRequired'
-        )
-    ),
+
     // ************************************************** Credential (password)
-    
+
     array( // Create/Update
         'regex' => '#^/credentials$#',
         'model' => 'User_Views_Password',
@@ -246,5 +206,5 @@ return array(
             'POST',
             'PUT'
         )
-    ),
+    )
 );
