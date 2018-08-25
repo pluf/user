@@ -13,4 +13,9 @@ return array (
             'User_Account'
         )
     ),
+    'User_Profile' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
+    )
 );

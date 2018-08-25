@@ -57,7 +57,7 @@ class User_Profile extends Pluf_Model
             ),
             'public_email' => array(
                 'type' => 'Pluf_DB_Field_Email',
-                'is_null' => false,
+                'is_null' => true,
                 // @note: hadi, 1395-07-14: change email is done by
                 // another process.
                 'editable' => false,
@@ -77,16 +77,18 @@ class User_Profile extends Pluf_Model
                 'verbose' => __('time zone'),
                 'help_text' => __('Time zone of the user to display the time in local time.')
             ),
-//             /*
-//              * Foreign keys
-//              */
-//             'account_id' => array(
-//                 'type' => 'Pluf_DB_Field_Foreignkey',
-//                 'model' => 'User_Account',
-//                 'relate_name' => 'account',
-//                 'is_null' => true,
-//                 'editable' => false
-//             ),
+            /*
+             * Foreign keys
+             */
+            'account_id' => array(
+                'type' => 'Pluf_DB_Field_Foreignkey',
+                'model' => 'User_Account',
+                'name' => 'account',
+                'relate_name' => 'profile',
+                'graphql_name' => 'account',
+                'is_null' => false,
+                'editable' => false,
+            ),
         );
     }
 
