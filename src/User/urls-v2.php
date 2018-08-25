@@ -127,7 +127,7 @@ return array(
         'precond' => array(
             'User_Precondition::ownerRequired'
         )
-    ),  
+    ),
     array( // Read (list)
         'regex' => '#^/accounts/(?P<userId>\d+)/groups$#',
         'model' => 'User_Views_Group',
@@ -140,7 +140,7 @@ return array(
         'method' => 'get',
         'http-method' => 'GET'
     ),
-    
+
     // array( // Update
     // 'regex' => '#^/accounts/(?P<userId>\d+)/groups/(?P<groupId>\d+)$#',
     // 'model' => 'User_Views_Group',
@@ -161,7 +161,7 @@ return array(
     ),
 
     // ************************************************** Roles
-    
+
     array( // Create
         'regex' => '#^/accounts/(?P<userId>\d+)/roles$#',
         'model' => 'User_Views_Permission',
@@ -195,6 +195,51 @@ return array(
             'User_Precondition::ownerRequired'
         )
     ),
+
+    // ************************************************** Profiles
+
+    array( // Create / Update
+        'regex' => '#^/accounts/(?P<userId>\d+)/profiles$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'update',
+        'http-method' => array(
+            'PUT',
+            'POST'
+        ),
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<userId>\d+)/profiles/$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'get',
+        'http-method' => 'GET'
+    ),
+//     array( // Delete
+//         'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
+//         'model' => 'User_Views_Profile',
+//         'method' => 'delete',
+//         'http-method' => 'DELETE',
+//         'precond' => array(
+//             'User_Precondition::ownerRequired'
+//         )
+//     ),
 
     // ************************************************** Credential (password)
 
