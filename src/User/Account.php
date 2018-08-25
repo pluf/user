@@ -22,7 +22,7 @@ Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
 
 /**
  * Account data model
- * 
+ *
  * Stores information of an account. An account actually is a user.
  */
 class User_Account extends Pluf_Model
@@ -106,14 +106,7 @@ class User_Account extends Pluf_Model
                 'model' => 'User_Role'
             )
         );
-        // @Note: hadi - 1396-10: when define an attribute as 'unique => true', pluf automatically
-        // create an unique index for it (for example login field here). So following codes are extra.
-        // $this->_a['idx'] = array(
-        // 'login_idx' => array(
-        // 'col' => 'login',
-        // 'type' => 'unique'
-        // )
-        // );
+
         // Assoc. table
         $g_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Group');
         $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Role');
@@ -207,7 +200,7 @@ class User_Account extends Pluf_Model
         if (! ($this->id > 0)) {
             $this->last_login = gmdate('Y-m-d H:i:s');
             $this->date_joined = gmdate('Y-m-d H:i:s');
-            if(Pluf::f('account_force_activate', false)){
+            if (Pluf::f('account_force_activate', false)) {
                 $this->is_active = false;
             }
             $this->is_active = $this->is_active && true;
@@ -362,13 +355,16 @@ class User_Account extends Pluf_Model
 
     /**
      * Checks if account is active
+     *
      * @return boolean true if account is active else false
      */
-    function isActive(){
+    function isActive()
+    {
         return $this->is_active;
     }
 
-    function setDeleted($deleted){
+    function setDeleted($deleted)
+    {
         $this->_data['is_deleted'] = $deleted;
         $this->update();
     }

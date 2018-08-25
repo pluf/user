@@ -29,12 +29,6 @@
  */
 class User_Profile extends Pluf_Model
 {
-
-    /**
-     * Cache of the Role.
-     */
-    public $_cache_perms = null;
-
     function init()
     {
         $langs = Pluf::f('languages', array(
@@ -73,9 +67,7 @@ class User_Profile extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => true,
                 'default' => $langs[0],
-                'size' => 5,
-                'verbose' => __('language'),
-                'help_text' => __('Prefered language of the user for the interface. Use the 2 or 5 letter code like "fr", "en", "fr_QC" or "en_US".')
+                'size' => 5
             ),
             'timezone' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
