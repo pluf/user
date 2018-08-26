@@ -42,14 +42,13 @@ class User_Views_Profile
     public static function get($request, $match)
     {
         $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        $profile = null;
         if (array_key_exists('profileId', $match)) {
-            $profile = Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
-        } else {
-            $profile = self::getProfileOfUser($user);
-            if(!$profile){
-                $profile = new User_Profile();
-            }
+            return Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
+        }
+        $profile = self::getProfileOfUser($user);
+        if($profile === null){
+            $profile = new User_Profile();
+            $profile->account_id = $user;
         }
         return $profile;
     }

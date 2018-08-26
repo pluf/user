@@ -220,7 +220,7 @@ return array(
         )
     ),
     array( // Read (list)
-        'regex' => '#^/accounts/(?P<userId>\d+)/profiles/$#',
+        'regex' => '#^/accounts/(?P<userId>\d+)/profiles$#',
         'model' => 'User_Views_Profile',
         'method' => 'get',
         'http-method' => 'GET'
