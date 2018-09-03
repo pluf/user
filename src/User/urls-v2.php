@@ -85,15 +85,23 @@ return array(
     ),
     array( // Read (list)
         'regex' => '#^/accounts$#',
-        'model' => 'User_Views_Account',
-        'method' => 'find',
-        'http-method' => 'GET'
+        'model' => 'Pluf_Views',
+        'method' => 'findObject',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Account',
+            'sql' => 'is_deleted=false'
+        )
     ),
     array( // Read
-        'regex' => '#^/accounts/(?P<userId>\d+)$#',
-        'model' => 'User_Views_Account',
-        'method' => 'get',
-        'http-method' => 'GET'
+        'regex' => '#^/accounts/(?P<modelId>\d+)$#',
+        'model' => 'Pluf_Views',
+        'method' => 'getObject',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Account',
+            'sql' => 'is_deleted=false'
+        )
     ),
     // array( // Update
     // 'regex' => '#^/accounts/(?P<userId>\d+)$#',
@@ -231,15 +239,15 @@ return array(
         'method' => 'get',
         'http-method' => 'GET'
     ),
-//     array( // Delete
-//         'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
-//         'model' => 'User_Views_Profile',
-//         'method' => 'delete',
-//         'http-method' => 'DELETE',
-//         'precond' => array(
-//             'User_Precondition::ownerRequired'
-//         )
-//     ),
+    // array( // Delete
+    // 'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
+    // 'model' => 'User_Views_Profile',
+    // 'method' => 'delete',
+    // 'http-method' => 'DELETE',
+    // 'precond' => array(
+    // 'User_Precondition::ownerRequired'
+    // )
+    // ),
 
     // ************************************************** Credential (password)
 

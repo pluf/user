@@ -63,18 +63,6 @@ class User_Views_Account
     }
     
     /**
-     * Returns information of specified user by id.
-     *
-     * @param Pluf_HTTP_Request $request
-     * @param array $match
-     */
-    public static function get($request, $match)
-    {
-        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        return $user;
-    }
-    
-    /**
      * Updates information of specified user (by id)
      *
      * @param Pluf_HTTP_Request $request
@@ -103,43 +91,5 @@ class User_Views_Account
         // TODO: Hadi, 1397-05-26: delete credentials and profile
         return $usr;
     }
-    
-    /**
-     * Returns list of users.
-     * Returned list can be customized using search fields, filters or sort
-     * fields.
-     *
-     * @param Pluf_HTTP_Request $request
-     * @param array $match
-     */
-    public static function find($request, $match)
-    {
-        $pag = new Pluf_Paginator(new User_Account());
-        $pag->forced_where = new Pluf_SQL('is_deleted=false');
-        $pag->list_filters = array(
-            'is_active',
-            'login'
-        );
-        $search_fields = array(
-            'login'
-        );
-        $sort_fields = array(
-            'id',
-            'login',
-            'date_joined',
-            'last_login',
-            'is_active'
-        );
-        
-        $pag->sort_order = array(
-            'id',
-            'DESC'
-        );
-        $pag->configure(array(), $search_fields, $sort_fields);
-        $pag->items_per_page = User_Shortcuts_GetListCount($request);
-        $pag->setFromRequest($request);
-        return $pag->render_object();
-    }
-    
     
 }
