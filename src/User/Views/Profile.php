@@ -58,7 +58,7 @@ class User_Views_Profile
      * @param User_Account $user
      */
     public static function getProfileOfUser($user){
-        $profiles = $user->get_profile_list();
+        $profiles = $user->get_profiles_list();
         if (count($profiles) === 0 || $profiles[0]->isAnonymous()) {
             return null;
         } else {
@@ -105,6 +105,40 @@ class User_Views_Profile
                 $profile = $form->save();
             }
         }
+        return $profile;
+    }
+
+    /**
+     * Deletes profile of specified user.
+     *
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
+     * @param array $p
+     * @throws Pluf_Exception
+     * @return Pluf_HTTP_Response_Json
+     */
+    public static function delete($request, $match)
+    {
+        // Check access
+        $currentUser = $request->user;
+        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        if ($currentUser->getId() !== $user->getId() && ! User_Precondition::isOwner($request)) {
+            throw new Pluf_Exception_PermissionDenied("Permission is denied");
+        }
+        
+        $profile = null;
+        if (array_key_exists('profileId', $match)) {
+            $profile = Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
+            if($profile->account_id !== $user->id){
+                throw new Pluf_HTTP_Error404('Profile is not blong to given user');
+            }
+        }else{
+            $profile = self::getProfileOfUser($user);
+            if ($profile === null) {
+                return new User_Profile();
+            }
+        }
+        $profile->delete();
         return $profile;
     }
 }

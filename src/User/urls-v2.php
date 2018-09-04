@@ -228,26 +228,42 @@ return array(
         )
     ),
     array( // Read (list)
-        'regex' => '#^/accounts/(?P<userId>\d+)/profiles$#',
-        'model' => 'User_Views_Profile',
-        'method' => 'get',
-        'http-method' => 'GET'
+        'regex' => '#^/accounts/(?P<parentId>\d+)/profiles$#',
+        'model' => 'Pluf_Views',
+        'method' => 'findManyToOne',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        ),
+        'params' => array(
+            'parent' => 'User_Account',
+            'parentKey' => 'account_id',
+            'model' => 'User_Profile'
+        )
     ),
     array( // Read
+        'regex' => '#^/accounts/(?P<parentId>\d+)/profiles/(?P<modelId>\d+)$#',
+        'model' => 'Pluf_Views',
+        'method' => 'getManyToOne',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        ),
+        'params' => array(
+            'parent' => 'User_Account',
+            'parentKey' => 'account_id',
+            'model' => 'User_Profile'
+        )
+    ),
+    array( // Delete
         'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
         'model' => 'User_Views_Profile',
-        'method' => 'get',
-        'http-method' => 'GET'
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
     ),
-    // array( // Delete
-    // 'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
-    // 'model' => 'User_Views_Profile',
-    // 'method' => 'delete',
-    // 'http-method' => 'DELETE',
-    // 'precond' => array(
-    // 'User_Precondition::ownerRequired'
-    // )
-    // ),
 
     // ************************************************** Credential (password)
 

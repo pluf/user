@@ -29,6 +29,7 @@
  */
 class User_Profile extends Pluf_Model
 {
+
     function init()
     {
         $langs = Pluf::f('languages', array(
@@ -48,12 +49,12 @@ class User_Profile extends Pluf_Model
             'first_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => true,
-                'size' => 100,
+                'size' => 100
             ),
             'last_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
-                'size' => 100,
+                'size' => 100
             ),
             'public_email' => array(
                 'type' => 'Pluf_DB_Field_Email',
@@ -84,11 +85,11 @@ class User_Profile extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
-                'relate_name' => 'profile',
+                'relate_name' => 'profiles',
                 'graphql_name' => 'account',
                 'is_null' => false,
-                'editable' => false,
-            ),
+                'editable' => false
+            )
         );
     }
 
