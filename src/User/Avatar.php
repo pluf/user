@@ -19,65 +19,67 @@ class User_Avatar extends Pluf_Model
      */
     function init()
     {
-        $this->_a['table'] = 'user_avatar';
+        $this->_a['table'] = 'user_avatars';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
                 'blank' => true,
                 'editable' => false
             ),
-            'user' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => 'User',
-                'blank' => false,
-                'editable' => false
-            ),
             'fileName' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'filePath' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'fileSize' => array(
                 'type' => 'Pluf_DB_Field_Integer',
-                'blank' => false,
+                'is_null' => false,
                 'verbose' => __('validate'),
                 'editable' => false
             ),
             'mimeType' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'size' => 50,
                 'editable' => false
             ),
             'creationTime' => array(
                 'type' => 'Pluf_DB_Field_Datetime',
-                'blank' => false,
-                'verbose' => __('creation date'),
-                'help_text' => __('Creation date of the avatar.'),
+                'is_null' => false,
                 'editable' => false
             ),
             'modifTime' => array(
                 'type' => 'Pluf_DB_Field_Datetime',
-                'blank' => false,
-                'verbose' => __('modification date'),
-                'help_text' => __('Modification date of the avatar.'),
+                'is_null' => false,
+                'editable' => false
+            ),
+            /*
+             * Foreign key
+             */
+            'account_id' => array(
+                'type' => 'Pluf_DB_Field_Foreignkey',
+                'model' => 'User_Account',
+                'unique' => true,
+                'name' => 'account',
+                'relate_name' => 'avatar',
+                'is_null' => false,
                 'editable' => false
             )
         );
-        
-        $this->_a['idx'] = array(
-                'user_avatar_idx' => array(
-                        'col' => 'user',
-                        'type' => 'unique'
-                )
-        );
+
+//         $this->_a['idx'] = array(
+//             'user_avatar_idx' => array(
+//                 'col' => 'account_id',
+//                 'type' => 'unique'
+//             )
+//         );
     }
 
     /**
@@ -88,7 +90,8 @@ class User_Avatar extends Pluf_Model
      * در زمان ایجاد باید تعیین شوند. از این جمله می‌توان به کاربر و تاریخ اشاره
      * کرد.
      *
-     * @param $create boolean حالت
+     * @param $create boolean
+     *            حالت
      *            ساخت یا به روز رسانی را تعیین می‌کند
      */
     function preSave($create = false)
@@ -117,7 +120,7 @@ class User_Avatar extends Pluf_Model
      */
     public function getAbsloutPath()
     {
-        return $this->filePath . '/' . $this->user;
+        return $this->filePath . '/' . $this->account_id;
     }
 
     /**

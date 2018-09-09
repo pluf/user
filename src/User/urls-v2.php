@@ -90,7 +90,7 @@ return array(
         'http-method' => 'GET',
         'params' => array(
             'model' => 'User_Account',
-            'sql' => 'is_deleted=false'
+            'sql' => 'is_deleted=0'
         )
     ),
     array( // Read
@@ -258,6 +258,70 @@ return array(
     array( // Delete
         'regex' => '#^/accounts/(?P<userId>\d+)/profiles/(?P<profileId>\d+)$#',
         'model' => 'User_Views_Profile',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+
+    // ************************************************** Avatar (Current user)
+    array(
+        'regex' => '#^/accounts/current/avatar$#',
+        'model' => 'User_Views_Avatar',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(),
+        // Cache param
+        'cacheable' => true,
+        'revalidate' => true,
+        'intermediate_cache' => true
+    ),
+    array(
+        'regex' => '#^/accounts/current/avatar$#',
+        'model' => 'User_Views_Avatar',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array(
+        'regex' => '#^/accounts/current/avatar$#',
+        'model' => 'User_Views_Avatar',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    // ************************************************** Avatar (Specified User)
+    array( // Read
+        'regex' => '#^/accounts/(?P<userId>\d+)/avatar$#',
+        'model' => 'User_Views_Avatar',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(),
+        // Cache param
+        'cacheable' => true,
+        'revalidate' => true,
+        'intermediate_cache' => true
+    ),
+    array( // Create / Update
+        'regex' => '#^/accounts/(?P<userId>\d+)/avatar$#',
+        'model' => 'User_Views_Avatar',
+        'method' => 'update',
+        'http-method' => array(
+            'POST',
+            'PUT'
+        ),
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<userId>\d+)/avatar$#',
+        'model' => 'User_Views_Avatar',
         'method' => 'delete',
         'http-method' => 'DELETE',
         'precond' => array(
