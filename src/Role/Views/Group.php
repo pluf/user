@@ -56,7 +56,7 @@ class Role_Views_Group extends Pluf_Views
         $perm = new User_Role($match['role_id']);
         $grModel = new User_Group();
         $pag = new Pluf_Paginator($grModel);
-        $sql = new Pluf_SQL('role_id=%s', array(
+        $sql = new Pluf_SQL('user_role_id=%s', array(
             $perm->id
         ));
         $pag->forced_where = $sql;

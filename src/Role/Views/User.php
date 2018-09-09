@@ -66,14 +66,12 @@ class Role_Views_User extends Pluf_Views
     {
         $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['role_id']);
         $pag = new Pluf_Paginator(new User_Account());
-        $sql = new Pluf_SQL('role_id=%s', array(
+        $sql = new Pluf_SQL('user_role_id=%s', array(
             $perm->id
         ));
         $pag->forced_where = $sql;
         $pag->list_filters = array(
-//             'administrator',
-//             'staff',
-            'active',
+            'is_active',
             'login',
             'first_name',
             'last_name',

@@ -35,7 +35,7 @@ function User_Shortcuts_CheckPassword($pass)
  */
 function User_Shortcuts_DeleteAvatar($user)
 {
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         $avatar->delete();
     }
@@ -50,7 +50,7 @@ function User_Shortcuts_DeleteAvatar($user)
 function User_Shortcuts_GetAvatar($user)
 {
     // get avatar
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         return new Pluf_HTTP_Response_File($avatar->getAbsloutPath(), $avatar->mimeType);
     }
@@ -67,7 +67,7 @@ function User_Shortcuts_GetAvatar($user)
  */
 function User_Shortcuts_UpdateAvatar($user, $data = array())
 {
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         $form = new User_Form_Avatar($data, array(
             'model' => $avatar,
