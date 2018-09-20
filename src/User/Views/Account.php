@@ -26,7 +26,7 @@ Pluf::loadFunction('User_Shortcuts_GetListCount');
  */
 class User_Views_Account
 {
-    
+
     /**
      * Creates new account (register new user) and a credential for it
      *
@@ -39,29 +39,41 @@ class User_Views_Account
         // Create account
         $extra = array();
         $data = array_merge($request->REQUEST, $request->FILES);
-        //         $form = new User_Form_User($data, $extra);
-        //         $cuser = $form->save();
+        // $form = new User_Form_User($data, $extra);
+        // $cuser = $form->save();
         $usr = User_Account::getUser($data['login']);
-        if($usr){
+        if ($usr) {
             throw new Pluf_Exception('Username is existed already.', 400);
+        }
+        if (! ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('user.manager')) 
+                || ! array_key_exists('is_active', $data)) {
+            $account_active = false;
+            if (class_exists('Tenant_Service')) {
+                $account_active = Tenant_Service::setting('Module.User.account_auto_activate', false);
+            }else{                
+                $account_active = Pluf::f('user_account_auto_activate', false);
+            }
+            $data['is_active'] = $account_active;
         }
         $form = new User_Form_Account($data, $extra);
         $cuser = $form->save();
         // Create credential
         $credit = new User_Credential();
-        $credit->setFromFormData(array('account_id' => $cuser->id));
+        $credit->setFromFormData(array(
+            'account_id' => $cuser->id
+        ));
         $credit->setPassword($data['password']);
         $success = $credit->create();
-        if(!$success){
+        if (! $success) {
             throw new Pluf_Exception('An internal error is occured while create credential');
         }
-        if(Pluf::f('account_force_activate', false)){
+        if (! Pluf::f('user_account_auto_activation', false)) {
             // TODO: hadi, 1397-05-26: send mail to activate account by user
         }
         // Return response
         return $cuser;
     }
-    
+
     /**
      * Updates information of specified user (by id)
      *
@@ -76,7 +88,7 @@ class User_Views_Account
         $request->user->setMessage(sprintf(__('Account data has been updated.'), (string) $model));
         return $form->save();
     }
-    
+
     /**
      * Delete specified user (by id)
      *
@@ -86,10 +98,9 @@ class User_Views_Account
     public static function delete($request, $match)
     {
         $usr = new User_Account($match['userId']);
-        //         $usr->delete();
+        // $usr->delete();
         $usr->setDeleted(true);
         // TODO: Hadi, 1397-05-26: delete credentials and profile
         return $usr;
     }
-    
 }

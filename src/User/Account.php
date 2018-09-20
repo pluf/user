@@ -202,10 +202,6 @@ class User_Account extends Pluf_Model
         if (! ($this->id > 0)) {
             $this->last_login = gmdate('Y-m-d H:i:s');
             $this->date_joined = gmdate('Y-m-d H:i:s');
-            if (Pluf::f('account_force_activate', false)) {
-                $this->is_active = false;
-            }
-            $this->is_active = $this->is_active && true;
         }
     }
 
