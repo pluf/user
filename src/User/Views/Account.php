@@ -49,7 +49,7 @@ class User_Views_Account
                 || ! array_key_exists('is_active', $data)) {
             $account_active = false;
             if (class_exists('Tenant_Service')) {
-                $account_active = Tenant_Service::setting('Module.User.account_auto_activate', false);
+                $account_active = Tenant_Service::setting('Module.User.account_auto_activate', true);
             }else{                
                 $account_active = Pluf::f('user_account_auto_activate', false);
             }
