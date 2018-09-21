@@ -56,12 +56,12 @@ class User_REST_BasicsTest extends TestCase
             throw new Exception();
         }
         
-        $per = User_Role::getFromString('Pluf.owner');
+        $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
         
         $user = new User_Account();
         $user = $user->getUser('test');
-        Test_Assert::assertTrue($user->hasPerm('Pluf.owner'));
+        Test_Assert::assertTrue($user->hasPerm('tenant.owner'));
         
         self::$client = new Test_Client(array(
             array(

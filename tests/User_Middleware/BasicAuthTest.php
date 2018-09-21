@@ -59,7 +59,7 @@ class User_Middleware_BasicAuthTest extends TestCase
             throw new Exception();
         }
         
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $user->setAssoc($role);
     }
 

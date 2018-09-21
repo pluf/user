@@ -58,7 +58,7 @@ class Group_REST_BasicsTest extends TestCase
             throw new Exception();
         }
         
-        $per = User_Role::getFromString('Pluf.owner');
+        $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
 
         self::$client = new Test_Client(array(
@@ -150,7 +150,7 @@ class Group_REST_BasicsTest extends TestCase
         $group->description = 'Descritpion';
         $group->create();
 
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $group->setAssoc($role);
 
         // Get list of roles
@@ -172,7 +172,7 @@ class Group_REST_BasicsTest extends TestCase
         $group->description = 'Descritpion';
         $group->create();
 
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $group->setAssoc($role);
 
         // Get list of roles
@@ -192,7 +192,7 @@ class Group_REST_BasicsTest extends TestCase
         $group->description = 'Descritpion';
         $group->create();
 
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $group->setAssoc($role);
 
         // Get list of roles
@@ -216,7 +216,7 @@ class Group_REST_BasicsTest extends TestCase
         $group->description = 'Descritpion';
         $group->create();
 
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $group->setAssoc($role);
 
         // Add role
@@ -250,7 +250,7 @@ class Group_REST_BasicsTest extends TestCase
         $group->description = 'Descritpion';
         $group->create();
 
-        $role = User_Role::getFromString('Pluf.owner');
+        $role = User_Role::getFromString('tenant.owner');
         $group->setAssoc($role);
 
         // Add role
