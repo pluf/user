@@ -172,8 +172,8 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        // Precondition::baseAccess($request, $app);
-        if ($request->user->hasPerm('tenant.owner')) {
+        // Note: Permission 'Pluf.owner' is deprecated. It is used here for backward compatibility.
+        if ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('Pluf.owner')) {
             return true;
         }
         return false;

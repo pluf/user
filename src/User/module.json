@@ -17,21 +17,27 @@
 		"User_Role": [
 			{
 				"name": "ownership",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "owner",
 				"description": "Permission given to software owners."
 			},
 			{
 				"name": "membership",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "member",
 				"description": "Permission given to software members."
 			},
 			{
 				"name": "authorized users",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "authorized",
 				"description": "Permission given to users allowed to access a tenant."
+			},
+			{
+				"name": "user mamanger",
+				"application": "user",
+				"code_name": "manager",
+				"description": "Permission given to users allowed to manager users of a tenant."
 			}
 		],
 		"User_Account": [
