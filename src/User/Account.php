@@ -282,7 +282,7 @@ class User_Account extends Pluf_Model
         }
         $perms = $this->getAllRoles(false);
         // Note: Permission 'Pluf.owner' is deprecated. It is used here for backward compatibility.
-        if(in_array($perms, 'tenant.owner') || in_array($perms, 'Pluf.owner')){
+        if(in_array('tenant.owner', $perms) || in_array('Pluf.owner', $perms)){
             // Owner has all permissions
             return true;
         }
