@@ -84,6 +84,7 @@ class User_Views_Account
     public static function update($request, $match)
     {
         $model = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $model->_a['cols']['is_active']['editable'] = true;
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, array());
         $request->user->setMessage(sprintf(__('Account data has been updated.'), (string) $model));
         return $form->save();

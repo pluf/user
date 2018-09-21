@@ -103,15 +103,15 @@ return array(
             'sql' => 'is_deleted=false'
         )
     ),
-    // array( // Update
-    // 'regex' => '#^/accounts/(?P<userId>\d+)$#',
-    // 'model' => 'User_Views_Account',
-    // 'method' => 'update',
-    // 'precond' => array(
-    // 'User_Precondition::ownerRequired'
-    // ),
-    // 'http-method' => 'POST'
-    // ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<userId>\d+)$#',
+        'model' => 'User_Views_Account',
+        'method' => 'update',
+        'precond' => array(
+            'User_Precondition::ownerRequired'
+        ),
+        'http-method' => 'POST'
+    ),
     array( // Delete
         'regex' => '#^/accounts/(?P<userId>\d+)$#',
         'model' => 'User_Views_Account',

@@ -52,7 +52,7 @@ class User_Views
      */
     public function updateAccount($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('User', $request->user->id);
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Account', $request->user->id);
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, array());
         return $form->save();
     }
