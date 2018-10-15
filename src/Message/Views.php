@@ -39,7 +39,7 @@ class Message_Views
     public static function find ($request, $match)
     {
         $content = new Pluf_Paginator(new User_Message());
-        $sql = new Pluf_SQL('user=%s', 
+        $sql = new Pluf_SQL('account_id=%s', 
                 array(
                         $request->user->id
                 ));
