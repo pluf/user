@@ -37,9 +37,10 @@ class User_UserTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role',
+            'User_Group',
+            'User_Account',
+            'User_Role',
+            'User_Credential',
             'User_Message'
         );
         foreach ($models as $model) {
@@ -51,7 +52,7 @@ class User_UserTest extends TestCase
         }
         $perms = array();
         for ($i = 1; $i <= 10; $i ++) {
-            $perm = new Role();
+            $perm = new User_Role();
             $perm->application = 'DummyModel';
             $perm->code_name = 'code-' . $i;
             $perm->name = 'code-' . $i;
@@ -61,7 +62,7 @@ class User_UserTest extends TestCase
         }
         $groups = array();
         for ($i = 1; $i <= 10; $i ++) {
-            $group = new Group();
+            $group = new User_Group();
             $group->name = 'Group ' . $i;
             $group->description = 'Group ' . $i;
             $group->create();
@@ -75,16 +76,23 @@ class User_UserTest extends TestCase
         $groups[0]->setAssoc($perms[4]);
         $groups[0]->setAssoc($perms[5]);
         
-        $user = new User();
+        // Test user
+        $user = new User_Account();
         $user->login = 'test';
-        $user->first_name = 'test';
-        $user->last_name = 'test';
-        $user->email = 'toto@example.com';
-        $user->setPassword('test');
-        $user->active = true;
+        $user->is_active = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
+        // Credential of user
+        $credit = new User_Credential();
+        $credit->setFromFormData(array(
+            'account_id' => $user->id
+        ));
+        $credit->setPassword('test');
+        if (true !== $credit->create()) {
+            throw new Exception();
+        }
+        
         $user->setAssoc($groups[0]);
         $user->setAssoc($groups[1]);
         $user->setAssoc($perms[7]);
@@ -99,9 +107,10 @@ class User_UserTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role',
+            'User_Group',
+            'User_Account',
+            'User_Role',
+            'User_Credential',
             'User_Message'
         );
         foreach ($models as $model) {
@@ -115,7 +124,8 @@ class User_UserTest extends TestCase
      */
     public function testGetPermissions()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $a = $user->getAllRoles();
         $this->assertEquals(8, count($a));
     }
@@ -125,11 +135,12 @@ class User_UserTest extends TestCase
      */
     public function testHasPermission()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $this->assertEquals(true, $user->hasPerm('DummyModel.code-5'));
         $this->assertEquals(false, $user->hasPerm('DummyModel.code-7'));
         
-        $user->active = false;
+        $user->is_active = false;
         $this->assertEquals(false, $user->hasPerm('DummyModel.code-5'));
     }
 
@@ -138,7 +149,8 @@ class User_UserTest extends TestCase
      */
     public function testHasAppPermissions()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $this->assertEquals(true, $user->hasAppPerms('DummyModel'));
         $this->assertEquals(false, $user->hasPerm('DummyModel2'));
     }

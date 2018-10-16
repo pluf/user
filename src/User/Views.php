@@ -41,7 +41,7 @@ class User_Views
      */
     public function getAccount($request, $match)
     {
-        return new Pluf_HTTP_Response_Json($request->user);
+        return $request->user;
     }
 
     /**
@@ -52,9 +52,9 @@ class User_Views
      */
     public function updateAccount($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('User', $request->user->id);
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Account', $request->user->id);
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, array());
-        return new Pluf_HTTP_Response_Json($form->save());
+        return $form->save();
     }
 
     /**
@@ -67,6 +67,6 @@ class User_Views
     {
         $user = Pluf_Shortcuts_GetObjectOr404('User', $request->user->id);
         $request->user->delete();
-        return new Pluf_HTTP_Response_Json($user);
+        return $user;
     }
 }

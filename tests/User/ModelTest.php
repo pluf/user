@@ -24,6 +24,7 @@ require_once 'Pluf.php';
 Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
 
 /**
+ *
  * @backupGlobals disabled
  * @backupStaticAttributes disabled
  */
@@ -31,20 +32,22 @@ class User_ModelTest extends TestCase
 {
 
     /**
+     *
      * @beforeClass
      */
-    public static function createDataBase ()
+    public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role',
-                'User_Message'
+            'User_Group',
+            'User_Account',
+            'User_Role',
+            'User_Credential',
+            'User_Message'
         );
-        
+
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
             $schema->dropTables();
@@ -52,31 +55,39 @@ class User_ModelTest extends TestCase
                 throw new Exception($res);
             }
         }
-        
-        $user = new User();
+
+        // Test user
+        $user = new User_Account();
         $user->login = 'test';
-        $user->first_name = 'test';
-        $user->last_name = 'test';
-        $user->email = 'toto@example.com';
-        $user->setPassword('test');
-        $user->active = true;
+        $user->is_active = true;
         if (true !== $user->create()) {
+            throw new Exception();
+        }
+        // Credential of user
+        $credit = new User_Credential();
+        $credit->setFromFormData(array(
+            'account_id' => $user->id
+        ));
+        $credit->setPassword('test');
+        if (true !== $credit->create()) {
             throw new Exception();
         }
     }
 
     /**
+     *
      * @afterClass
      */
-    public static function removeDatabses ()
+    public static function removeDatabses()
     {
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-                'Group',
-                'User',
-                'Role',
-                'User_Message'
+            'User_Group',
+            'User_Account',
+            'User_Role',
+            'User_Credential',
+            'User_Message'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -85,82 +96,83 @@ class User_ModelTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
-    public function shouldPossibleCreateNew ()
+    public function shouldPossibleCreateNew()
     {
-        $user = new User();
-        $user->login = 'Random'.rand();
+        $user = new User_Account();
+        $user->login = 'Random' . rand();
         $user->email = 'Hi@test.com';
         Test_Assert::assertTrue($user->create(), 'Impossible to create user');
     }
 
     /**
+     *
      * @test
      */
-    public function shouldPossibleToGetMessages ()
+    public function shouldPossibleToGetMessages()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $mess = $user->get_user_message_list();
         Test_Assert::assertEquals(0, $mess->count());
     }
-    
+
     /**
+     *
      * @test
      */
-    public function shouldPossibleToRoles ()
+    public function shouldPossibleToRoles()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $roles = $user->get_roles_list();
         Test_Assert::assertEquals(0, $roles->count());
     }
-    
+
     /**
+     *
      * @test
      */
-    public function shouldPossibleToGetGroups ()
+    public function shouldPossibleToGetGroups()
     {
-        $user = new User(1);
+        $user = new User_Account();
+        $user = $user->getUser('test');
         $groups = $user->get_groups_list();
         Test_Assert::assertEquals(0, $groups->count());
     }
 
     /**
+     *
      * @expectedException Pluf_Exception
      * @test
      */
-    public function testUniqueLogin ()
+    public function testUniqueLogin()
     {
-        $user = new User();
+        // Test user
+        $user = new User_Account();
         $user->login = 'test';
-        $user->first_name = 'test';
-        $user->last_name = 'test';
-        $user->email = 'toto@example.com';
-        $user->setPassword('test');
-        $user->active = true;
+        $user->is_active = true;
         // Test user already exists
         $user->create();
     }
 
     /**
-     * TODO: maso, 2017: must throw Pluf_Exception_Form 
-     * 
+     * TODO: maso, 2017: must throw Pluf_Exception_Form
+     *
      * @expectedException Pluf_Exception
      * @test
      */
-    public function testValidationUnique ()
+    public function testValidationUnique()
     {
         // Test user already exists
-        $user = new User();
+        $user = new User_Account();
         $user->login = 'test';
-        $user->first_name = 'test';
-        $user->last_name = 'test';
-        $user->email = 'toto@example.com';
-        $user->setPassword('test');
-        $user->active = true;
-        
+        $user->is_active = true;
+
         $form = Pluf_Shortcuts_GetFormForModel($user, $user->getData(), array());
-        $errors = $form->save();
+        $form->save();
     }
 }
 

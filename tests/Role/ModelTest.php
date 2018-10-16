@@ -37,9 +37,9 @@ class Role_ModelTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role'
+            'User_Group',
+            'User_Account',
+            'User_Role'
         );
         
         foreach ($models as $model) {
@@ -59,9 +59,9 @@ class Role_ModelTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role'
+            'User_Group',
+            'User_Account',
+            'User_Role'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -74,7 +74,7 @@ class Role_ModelTest extends TestCase
      */
     public function shouldPossibleCreateNew()
     {
-        $role = new Role();
+        $role = new User_Role();
         $role->name = 'Random' . rand();
         $role->application = 'test';
         $role->code_name = 'codename_' . rand();

@@ -35,8 +35,8 @@ class User_Views_Permission
     public function find($request, $match)
     {
         // XXX: maso, 1395: check user access.
-        $model = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-        $pag = new Pluf_Paginator(new Role());
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $pag = new Pluf_Paginator(new User_Role());
         $pag->configure(array(), array( // search
             'name',
             'description'
@@ -53,7 +53,7 @@ class User_Views_Permission
         );
         $pag->setFromRequest($request);
         $pag->model_view = 'join_user';
-        $pag->forced_where = new Pluf_SQL('user_id=%s', array(
+        $pag->forced_where = new Pluf_SQL('user_account_id=%s', array(
             $model->id,
         ));
         return new Pluf_HTTP_Response_Json($pag->render_object());
@@ -68,8 +68,8 @@ class User_Views_Permission
     {
         // XXX: maso, 1395: check user access.
         // Hadi, 1396: check user access
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $request->REQUEST['role']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $request->REQUEST['role']);
         $user->setAssoc($perm);
         return $user;
     }
@@ -81,7 +81,7 @@ class User_Views_Permission
      */
     public function get($request, $match)
     {
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['roleId']);
         return $perm;
     }
 
@@ -94,8 +94,8 @@ class User_Views_Permission
     {
         // XXX: maso, 1395: check user access.
         // Hadi, 1396: check user access
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-        $perm = Pluf_Shortcuts_GetObjectOr404('Role', $match['roleId']);
+        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['roleId']);
         $user->delAssoc($perm);
         return $user;
     }

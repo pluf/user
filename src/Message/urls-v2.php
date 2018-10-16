@@ -16,13 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-return array (
-    /*
-     * NOTE: relations MUST be defined in just one relations.php file.
-     */
-    'User_Group' => array(
-        'relate_to_many' => array(
-            'User_Role',
+return array(
+    array(
+        'regex' => '#^$#',
+        'model' => 'Message_Views',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
         )
     ),
+    array(
+        'regex' => '#^/(?P<messageId>\d+)$#',
+        'model' => 'Message_Views',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array(
+        'regex' => '#^/(?P<messageId>\d+)$#',
+        'model' => 'Message_Views',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    )
 );

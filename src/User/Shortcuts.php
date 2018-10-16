@@ -3,13 +3,13 @@
 /**
  * مدل داده‌ای کاربر را ایجاد می‌کند.
  * 
- * @param User $object
- * @return User
+ * @param User_Account $object
+ * @return User_Account
  */
-function User_Shortcuts_UserDateFactory($object)
+function User_Shortcuts_UserDataFactory($object)
 {
     if ($object == null || ! isset($object))
-        return new User();
+        return new User_Account();
     return $object;
 }
 
@@ -35,7 +35,7 @@ function User_Shortcuts_CheckPassword($pass)
  */
 function User_Shortcuts_DeleteAvatar($user)
 {
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         $avatar->delete();
     }
@@ -50,7 +50,7 @@ function User_Shortcuts_DeleteAvatar($user)
 function User_Shortcuts_GetAvatar($user)
 {
     // get avatar
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         return new Pluf_HTTP_Response_File($avatar->getAbsloutPath(), $avatar->mimeType);
     }
@@ -67,7 +67,7 @@ function User_Shortcuts_GetAvatar($user)
  */
 function User_Shortcuts_UpdateAvatar($user, $data = array())
 {
-    $avatar = Pluf::factory('User_Avatar')->getOne('user=' . $user->id);
+    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
     if ($avatar) {
         $form = new User_Form_Avatar($data, array(
             'model' => $avatar,
@@ -80,4 +80,24 @@ function User_Shortcuts_UpdateAvatar($user, $data = array())
         ));
     }
     return $form->save();
+}
+
+/**
+ * Returns list count for given request. 
+ * 
+ * If count is not set in request or count is more than a threshold (50) returns a default value (50).
+ * 
+ * @param Pluf_HTTP_Request $request
+ * @return number
+ */
+function User_Shortcuts_GetListCount($request)
+{
+    $count = 50;
+    if (array_key_exists('_px_ps', $request->GET)) {
+        $count = $request->GET['_px_ps'];
+        if ($count == 0 || $count > 50) {
+            $count = 50;
+        }
+    }
+    return $count;
 }

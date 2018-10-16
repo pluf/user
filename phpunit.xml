@@ -11,7 +11,6 @@
 		</testsuite>
 		<testsuite name="User">
 			<directory>tests/User/</directory>
-			<directory>tests/User_Monitor/</directory>
 			<directory>tests/User_Password_Token/</directory>
 			<directory>tests/User_REST/</directory>
 			<directory>tests/User_Profile_API/</directory>

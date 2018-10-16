@@ -27,6 +27,8 @@ require_once 'Pluf.php';
 class User_REST_BasicsTest extends TestCase
 {
 
+    private static $client = null;
+    
     /**
      * @beforeClass
      */
@@ -37,26 +39,38 @@ class User_REST_BasicsTest extends TestCase
         $m->install();
         $m->init();
         
-        $user = new User(1);
-        $rol = Role::getFromString('Pluf.owner');
-        $user->setAssoc($rol);
-        
-        $user = new User();
+        // Test user
+        $user = new User_Account();
         $user->login = 'test';
-        $user->first_name = 'test';
-        $user->last_name = 'test';
-        $user->email = 'toto@example.com';
-        $user->setPassword('test');
-        $user->active = true;
+        $user->is_active = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
+        // Credential of user
+        $credit = new User_Credential();
+        $credit->setFromFormData(array(
+            'account_id' => $user->id
+        ));
+        $credit->setPassword('test');
+        if (true !== $credit->create()) {
+            throw new Exception();
+        }
         
-        $rol = Role::getFromString('Pluf.owner');
-        $user->setAssoc($rol);
+        $per = User_Role::getFromString('tenant.owner');
+        $user->setAssoc($per);
         
-        $t = new User(1);
-        Test_Assert::assertTrue($t->hasPerm('Pluf.owner'));
+        $user = new User_Account();
+        $user = $user->getUser('test');
+        Test_Assert::assertTrue($user->hasPerm('tenant.owner'));
+        
+        self::$client = new Test_Client(array(
+            array(
+                'app' => 'User',
+                'regex' => '#^/api/v2/user#',
+                'base' => '',
+                'sub' => include 'User/urls-v2.php'
+            )
+        ));
     }
 
     /**
@@ -73,15 +87,7 @@ class User_REST_BasicsTest extends TestCase
      */
     public function currentUserRest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->get('/api/user');
+        $response = self::$client->get('/api/v2/user/accounts/current');
         $this->assertNotNull($response);
     }
 
@@ -90,15 +96,7 @@ class User_REST_BasicsTest extends TestCase
      */
     public function loginRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
@@ -111,18 +109,10 @@ class User_REST_BasicsTest extends TestCase
      */
     public function logoutRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->post('/api/user/logout');
+        $response = self::$client->post('/api/v2/user/logout');
         $this->assertNotNull($response);
         
-        $response = $client->get('/api/user/logout');
+        $response = self::$client->get('/api/v2/user/logout');
         $this->assertNotNull($response);
     }
 
@@ -131,45 +121,7 @@ class User_REST_BasicsTest extends TestCase
      */
     public function listUsersRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        $response = $client->get('/api/user/find');
-        $this->assertNotNull($response);
-        $this->assertEquals($response->status_code, 200);
-    }
-
-    /**
-     * @test
-     */
-    public function updateCurrentUserRestTest()
-    {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // login
-        $response = $client->post('/api/user/login', array(
-            'login' => 'test',
-            'password' => 'test'
-        ));
-        $this->assertNotNull($response);
-        $this->assertEquals($response->status_code, 200);
-        
-        // Change detail
-        $response = $client->post('/api/user', array(
-            'first_name' => 'my_name'
-        ));
+        $response = self::$client->get('/api/v2/user/accounts');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -179,15 +131,6 @@ class User_REST_BasicsTest extends TestCase
      */
     public function createNewUserRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
         // Change detail
         $form = array(
             'login' => 'LoginName' . rand(),
@@ -195,7 +138,7 @@ class User_REST_BasicsTest extends TestCase
             'password' => 'test',
             'first_name' => 'my_name'
         );
-        $response = $client->post('/api/user/new', $form);
+        $response = self::$client->post('/api/v2/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -205,54 +148,10 @@ class User_REST_BasicsTest extends TestCase
      */
     public function getUserByIdRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser('test');
         
-        // Change detail
-        $response = $client->get('/api/user/' . $user->id);
-        $this->assertNotNull($response);
-        $this->assertEquals($response->status_code, 200);
-    }
-
-    /**
-     * @test
-     */
-    public function updateUserByIdRestTest()
-    {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        $user = new User();
-        $user = $user->getUser('test');
-        
-        // Login
-        $response = $client->post('/api/user/login', array(
-            'login' => 'test',
-            'password' => 'test'
-        ));
-        $this->assertNotNull($response);
-        $this->assertEquals($response->status_code, 200);
-        
-        // Change detail
-        $form = array(
-            'first_name' => 'my_name'
-        );
-        $response = $client->post('/api/user/' . $user->id, $form);
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -262,31 +161,21 @@ class User_REST_BasicsTest extends TestCase
      */
     public function deleteUserByIdRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
         $form = array(
             'login' => 'LoginName' . rand(),
             'email' => 'info' . rand() . '@localhost',
             'password' => 'test',
             'first_name' => 'my_name'
         );
-        $response = $client->post('/api/user/new', $form);
+        $response = self::$client->post('/api/v2/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser($form['login']);
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
@@ -294,7 +183,7 @@ class User_REST_BasicsTest extends TestCase
         $this->assertEquals($response->status_code, 200);
         
         // delete
-        $response = $client->delete('/api/user/' . $user->id, $form);
+        $response = self::$client->delete('/api/v2/user/accounts/' . $user->id, $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -304,39 +193,28 @@ class User_REST_BasicsTest extends TestCase
      */
     public function getUserProfileRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
         $form = array(
             'login' => 'LoginName' . rand(),
             'email' => 'info' . rand() . '@localhost',
             'password' => 'test',
             'first_name' => 'my_name'
         );
-        $response = $client->post('/api/user/new', $form);
+        $response = self::$client->post('/api/v2/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser($form['login']);
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        // delete
-        $response = $client->get('/api/user/' . $user->id . '/profile');
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/profiles');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -346,40 +224,31 @@ class User_REST_BasicsTest extends TestCase
      */
     public function updateUserProfileRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
         $form = array(
             'login' => 'LoginName' . rand(),
             'email' => 'info' . rand() . '@localhost',
             'password' => 'test',
             'first_name' => 'my_name'
         );
-        $response = $client->post('/api/user/new', $form);
+        $response = self::$client->post('/api/v2/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser($form['login']);
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        // delete
-        $response = $client->post('/api/user/' . $user->id . '/profile', array(
-            'email' => 'public@mail'
+        $response = self::$client->post('/api/v2/user/accounts/' . $user->id . '/profiles', array(
+            'first_name' => 'test first name',
+            'last_name' => 'test last name',
+            'public_email' => 'public@mail'
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
@@ -390,34 +259,24 @@ class User_REST_BasicsTest extends TestCase
      */
     public function getUserAvatarRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser('test');
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        // get
-        $response = $client->get('/api/user/' . $user->id . '/avatar');
+        // get avatar
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/avatar');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
-        // get
-        $response = $client->get('/api/user/avatar');
+        // current user avatar
+        $response = self::$client->get('/api/v2/user/accounts/current/avatar');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -427,27 +286,17 @@ class User_REST_BasicsTest extends TestCase
     /**
      * @test
      */
-    public function assUserGroupRestTest()
+    public function addUserGroupRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser('test');
         
-        $group = new Group();
+        $group = new User_Group();
         $group->name = 'test:' . rand();
         $group->create();
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
@@ -455,12 +304,12 @@ class User_REST_BasicsTest extends TestCase
         $this->assertEquals($response->status_code, 200);
         
         // find
-        $response = $client->get('/api/user/' . $user->id . '/group/find');
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/groups');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // create
-        $response = $client->post('/api/user/' . $user->id . '/group/new', array(
+        $response = self::$client->post('/api/v2/user/accounts/' . $user->id . '/groups', array(
             'groupId' => $group->id,
             'group' => $group->id
         ));
@@ -468,17 +317,17 @@ class User_REST_BasicsTest extends TestCase
         $this->assertEquals($response->status_code, 200);
         
         // get
-        $response = $client->get('/api/user/' . $user->id . '/group/' . $group->id);
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/groups/' . $group->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // delete
-        $response = $client->delete('/api/user/' . $user->id . '/group/' . $group->id);
+        $response = self::$client->delete('/api/v2/user/accounts/' . $user->id . '/groups/' . $group->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // create
-        $response = $client->post('/api/user/' . $user->id . '/group/new', array(
+        $response = self::$client->post('/api/v2/user/accounts/' . $user->id . '/groups', array(
             'group_name' => $group->name
         ));
         $this->assertNotNull($response);
@@ -490,26 +339,16 @@ class User_REST_BasicsTest extends TestCase
      */
     public function assUserRoleRestTest()
     {
-        $client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/user#',
-                'base' => '',
-                'sub' => include 'User/urls.php'
-            )
-        ));
-        
-        // Change detail
-        $user = new User();
+        $user = new User_Account();
         $user = $user->getUser('test');
         
-        $perm = new Role();
+        $perm = new User_Role();
         $perm->app = 'test';
         $perm->code_name = 'testRest';
         $perm->create();
         
         // Login
-        $response = $client->post('/api/user/login', array(
+        $response = self::$client->post('/api/v2/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
@@ -517,12 +356,12 @@ class User_REST_BasicsTest extends TestCase
         $this->assertEquals($response->status_code, 200);
         
         // find
-        $response = $client->get('/api/user/' . $user->id . '/role/find');
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/roles');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // get
-        $response = $client->post('/api/user/' . $user->id . '/role/new', array(
+        $response = self::$client->post('/api/v2/user/accounts/' . $user->id . '/roles', array(
             'roleId' => $perm->id,
             'role' => $perm->id
         ));
@@ -530,12 +369,12 @@ class User_REST_BasicsTest extends TestCase
         $this->assertEquals($response->status_code, 200);
         
         // get
-        $response = $client->get('/api/user/' . $user->id . '/role/' . $perm->id);
+        $response = self::$client->get('/api/v2/user/accounts/' . $user->id . '/roles/' . $perm->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         
         // delete
-        $response = $client->delete('/api/user/' . $user->id . '/role/' . $perm->id);
+        $response = self::$client->delete('/api/v2/user/accounts/' . $user->id . '/roles/' . $perm->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }

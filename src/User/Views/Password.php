@@ -17,7 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
-Pluf::loadFunction('User_Shortcuts_CheckPassword');
+
+// Pluf::loadFunction('User_Shortcuts_CheckPassword');
 
 /**
  * Manage avatar image of user
@@ -28,28 +29,28 @@ Pluf::loadFunction('User_Shortcuts_CheckPassword');
  */
 class User_Views_Password extends Pluf_Views
 {
-    
+
     const EMAIL_TITLE = 'user.reset_pass_email_title';
 
-    /**
-     * Updates passwrod
-     *
-     * @param Pluf_HTTP_Request $request
-     * @param array $match
-     */
-    public function update($request, $match)
-    {
-        $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
-//         if ($request->user->administrator || $user->id === $request->user->id) {
-        if ($user->id === $request->user->id) {
-            $pass = User_Shortcuts_CheckPassword($request->REQUEST['password']);
-            $user->setPassword($pass);
-            $user->update();
-        } else {
-            throw new Pluf_Exception_PermissionDenied("You are not allowed to change password.");
-        }
-        return $user;
-    }
+    // /**
+    // * Updates passwrod
+    // *
+    // * @param Pluf_HTTP_Request $request
+    // * @param array $match
+    // */
+    // public function update($request, $match)
+    // {
+    // $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+    // // if ($request->user->administrator || $user->id === $request->user->id) {
+    // if ($user->id === $request->user->id) {
+    // $pass = User_Shortcuts_CheckPassword($request->REQUEST['password']);
+    // $user->setPassword($pass);
+    // $user->update();
+    // } else {
+    // throw new Pluf_Exception_PermissionDenied("You are not allowed to change password.");
+    // }
+    // return $user;
+    // }
 
     /**
      * Manages user password
@@ -84,7 +85,7 @@ class User_Views_Password extends Pluf_Views
             }
             return $msg;
         }
-        // TODO: maso, 2017: reset by token
+        // Reset password by token
         if (array_key_exists('token', $request->REQUEST)) {
             $token = new User_PasswordToken();
             $sql = new Pluf_SQL('token=%s', array(
@@ -100,16 +101,25 @@ class User_Views_Password extends Pluf_Views
             $token->delete();
             return $msg;
         }
-        // TODO: maso, 2017: reset by old password
-        if (array_key_exists('old', $request->REQUEST)) {
-            if ($request->user->isAnonymous() || ! $request->user->checkPassword($request->REQUEST['old'])) {
+        // Reset password by old password
+        if (array_key_exists('old', $request->REQUEST) || array_key_exists('old_password', $request->REQUEST)) {
+            $oldPass = array_key_exists('old', $request->REQUEST) ? 
+            $request->REQUEST['old'] : $request->REQUEST['old_password'];
+            if ($request->user->isAnonymous()) {
+                throw new Pluf_Exception_Unauthorized();
+            }
+            // Retreive credential
+            $cred = User_Credential::getCredential($request->user->id);
+            if (! $cred->checkPassword($oldPass)) {
                 throw new Pluf_Exception_MismatchParameter('Old pass is not currect');
             }
-            $request->user->setPassword($request->REQUEST['new']);
-            $request->user->update();
+            $newPass = array_key_exists('new', $request->REQUEST) ? 
+                $request->REQUEST['new'] : $request->REQUEST['password'];
+            $cred->setPassword($newPass);
+            $cred->update();
             return $msg;
         }
-        
+
         throw new Pluf_Exception_MismatchParameter('Invalid request params');
     }
 
@@ -129,13 +139,13 @@ class User_Views_Password extends Pluf_Views
         if (isset($old)) {
             $old->delete();
         }
-        
+
         // 2- create new token
         $token->user = $user;
         $token->create();
-        
+
         $callback = $this->generateCallback($request, $token);
-        
+
         // 3- Notify user
         if (Pluf::f('test_unit', false)) {
             return;
@@ -172,7 +182,7 @@ class User_Views_Password extends Pluf_Views
             return null;
         }
         $calback = $request->REQUEST['callback'];
-        
+
         $user = $token->get_user();
         $calback = str_replace("{{token}}", $token->token, $calback);
         $calback = str_replace("{{host}}", Pluf_Tenant::current()->domain, $calback);

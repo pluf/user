@@ -36,7 +36,7 @@ class Role_Views extends Pluf_Views
      */
     public static function create($request, $match)
     {
-        $model = new Role();
+        $model = new User_Role();
         $form = Pluf_Shortcuts_GetFormForModel($model, $request->REQUEST, array());
         return new Pluf_HTTP_Response_Json($form->save());
     }
@@ -49,7 +49,7 @@ class Role_Views extends Pluf_Views
      */
     public static function find($request, $match)
     {
-        $pag = new Pluf_Paginator(new Role());
+        $pag = new Pluf_Paginator(new User_Role());
         $pag->items_per_page = Role_Views::getListCount($request);
         $pag->list_filters = array(
             'id',
@@ -94,7 +94,7 @@ class Role_Views extends Pluf_Views
      */
     public function get($request, $match)
     {
-        return new Pluf_HTTP_Response_Json(Pluf_Shortcuts_GetObjectOr404('Role', $match['id']));
+        return new Pluf_HTTP_Response_Json(Pluf_Shortcuts_GetObjectOr404('User_Role', $match['id']));
     }
 
     /**
@@ -105,7 +105,7 @@ class Role_Views extends Pluf_Views
      */
     public static function update($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['id']);
         $form = Pluf_Shortcuts_GetFormForUpdateModel($model, $request->REQUEST, array());
         $model = $form->save();
         $request->user->setMessage(sprintf(__('Role data has been updated.'), (string) $model));
@@ -120,8 +120,8 @@ class Role_Views extends Pluf_Views
      */
     public function delete($request, $match)
     {
-        $model = Pluf_Shortcuts_GetObjectOr404('Role', $match['id']);
-        $model2 = new Role($match['id']);
+        $model = Pluf_Shortcuts_GetObjectOr404('User_Role', $match['id']);
+        $model2 = new User_Role($match['id']);
         if ($model->delete()) {
             return new Pluf_HTTP_Response_Json($model2);
         }

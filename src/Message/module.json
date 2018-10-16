@@ -1,16 +1,29 @@
 {
 	"name": "Message",
-	"version": "0.1.0",
+	"version": "4.0.0",
 	"title": "System messaging service",
 	"init": {
-		"Monitor_Property": [
+		"Monitor_Tag": [
 			{
-				"monitor": "message",
-				"name": "count",
+				"name": "message",
+				"description": "Tag for monitors on user messages"
+			}
+		],
+		"Monitor_Metric": [
+			{
+				"name": "message.count",
 				"title": "Message count",
 				"description": "Number of messages from the server.",
 				"function": "Message_Monitor::count",
 				"cacheable": false
+			}
+		]
+	},
+	"init_assoc": {
+		"Monitor_Tag|Monitor_Metric": [
+			{
+				"from": "name='message'",
+				"to": "name='message.count'"
 			}
 		]
 	}
