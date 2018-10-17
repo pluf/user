@@ -16,10 +16,10 @@
 		}
 	],
 	"require" : {
-		"pluf/collection" : "^3.0.0"
+		"pluf/collection" : "^4.0.0"
 	},
 	"require-dev" : {
-		"pluf/test" : "^3.0.0"
+		"pluf/test" : "^4.0.0"
 	},
 	"include-path" : [
 		"src/"

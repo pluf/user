@@ -37,9 +37,9 @@ class Group_ModelTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role'
+            'User_Group',
+            'User_Account',
+            'User_Role'
         );
         
         foreach ($models as $model) {
@@ -59,9 +59,9 @@ class Group_ModelTest extends TestCase
         $db = Pluf::db();
         $schema = Pluf::factory('Pluf_DB_Schema', $db);
         $models = array(
-            'Group',
-            'User',
-            'Role'
+            'User_Group',
+            'User_Account',
+            'User_Role'
         );
         foreach ($models as $model) {
             $schema->model = Pluf::factory($model);
@@ -74,7 +74,7 @@ class Group_ModelTest extends TestCase
      */
     public function shouldPossibleCreateNew()
     {
-        $group = new Group();
+        $group = new User_Group();
         $group->name = 'Random' . rand();
         $group->description = 'Hi@test.com';
         Test_Assert::assertTrue($group->create(), 'Impossible to create group');

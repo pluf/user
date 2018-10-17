@@ -30,76 +30,71 @@
  */
 class User_Message extends Pluf_Model
 {
+
     /**
-     * 
-     * {@inheritDoc}
+     *
+     * {@inheritdoc}
      * @see Pluf_Model::init()
      */
-    function init ()
+    function init()
     {
-        $this->_a['table'] = 'messages';
+        $this->_a['table'] = 'user_messages';
         $this->_a['verbose'] = 'user messages';
         $this->_a['cols'] = array(
-                // It is mandatory to have an "id" column.
-                'id' => array(
-                        'type' => 'Pluf_DB_Field_Sequence',
-                        // It is automatically added.
-                        'blank' => true,
-                        'editable' => false,
-                        'readable' => true
-                ),
-                'version' => array(
-                        'type' => 'Pluf_DB_Field_Integer',
-                        'blank' => true,
-                        'editable' => false,
-                        'readable' => true
-                ),
-                'user' => array(
-                        'type' => 'Pluf_DB_Field_Foreignkey',
-                        'model' => 'User',
-//                         'relate_name' => 'message',
-                        'blank' => false,
-                        'verbose' => __('user'),
-                        'editable' => false,
-                        'readable' => false
-                ),
-                'message' => array(
-                        'type' => 'Pluf_DB_Field_Text',
-                        'blank' => false,
-                        'editable' => false,
-                        'readable' => true
-                ),
-                'creation_dtime' => array(
-                        'type' => 'Pluf_DB_Field_Datetime',
-                        'blank' => true,
-                        'editable' => false,
-                        'readable' => true
-                )
+            // It is mandatory to have an "id" column.
+            'id' => array(
+                'type' => 'Pluf_DB_Field_Sequence',
+                // It is automatically added.
+                'blank' => true,
+                'editable' => false,
+                'readable' => true
+            ),
+            'account_id' => array(
+                'type' => 'Pluf_DB_Field_Foreignkey',
+                'model' => 'User_Account',
+                // 'relate_name' => 'message',
+                'is_null' => false,
+                'verbose' => 'user account',
+                'editable' => false,
+                'readable' => false
+            ),
+            'message' => array(
+                'type' => 'Pluf_DB_Field_Text',
+                'is_null' => false,
+                'editable' => false,
+                'readable' => true
+            ),
+            'creation_dtime' => array(
+                'type' => 'Pluf_DB_Field_Datetime',
+                'is_null' => true,
+                'editable' => false,
+                'readable' => true
+            )
         );
         $this->_a['idx'] = array(
-                'message_user_idx' => array(
-                        'type' => 'normal',
-                        'col' => 'user'
-                )
+            'message_user_idx' => array(
+                'type' => 'normal',
+                'col' => 'account_id'
+            )
         );
     }
 
     /**
-     * 
-     * {@inheritDoc}
+     *
+     * {@inheritdoc}
      * @see Pluf_Model::__toString()
      */
-    function __toString ()
+    function __toString()
     {
         return $this->message;
     }
 
     /**
-     * 
-     * {@inheritDoc}
+     *
+     * {@inheritdoc}
      * @see Pluf_Model::preSave()
      */
-    function preSave ($create = false)
+    function preSave($create = false)
     {
         if ($this->id == '') {
             $this->creation_dtime = gmdate('Y-m-d H:i:s');

@@ -35,7 +35,7 @@ class User_Views_Authentication
      *
      * @param Pluf_HTTP_Request $request
      * @param array $match
-     * @return User
+     * @return User_Account
      */
     public function login($request, $match)
     {
@@ -74,11 +74,11 @@ class User_Views_Authentication
      *
      * @param Pluf_HTTP_Request $request
      * @param array $match
-     * @return User
+     * @return User_Account
      */
     public function logout($request, $match)
     {
-        $request->user = new User();
+        $request->user = new User_Account();
         $request->session->clear();
         $request->session->setData('logout_time', gmdate('Y-m-d H:i:s'));
         return $request->user;

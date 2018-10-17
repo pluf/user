@@ -1,48 +1,54 @@
 {
 	"name": "User",
-	"version": "0.1.2",
+	"version": "4.0.0",
 	"title": "User Management",
 	"model": [
-		"Role",
-		"Group",
-		"User",
-		"Profile",
+		"User_Account",
+		"User_Profile",
+		"User_Credential",
+		"User_Token",
+		"User_Role",
+		"User_Group",
 		"User_Message",
 		"User_Avatar",
-		"User_PasswordToken",
 		"User_Space"
 	],
 	"init": {
-		"Role": [
+		"User_Role": [
 			{
 				"name": "ownership",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "owner",
 				"description": "Permission given to software owners."
 			},
 			{
 				"name": "membership",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "member",
 				"description": "Permission given to software members."
 			},
 			{
 				"name": "authorized users",
-				"application": "Pluf",
+				"application": "tenant",
 				"code_name": "authorized",
 				"description": "Permission given to users allowed to access a tenant."
+			},
+			{
+				"name": "user mamanger",
+				"application": "user",
+				"code_name": "manager",
+				"description": "Permission given to users allowed to manager users of a tenant."
 			}
 		],
-		"User": [
+		"User_Account": [
 			{
 				"login": "admin",
 				"first_name": "admin",
 				"last_name": "admin",
 				"password": "admin",
-				"active": "true"
+				"is_active": "true"
 			}
 		],
-		"Group": [],
-		"Monitor_Property": []
+		"User_Group": []
 	}
 }

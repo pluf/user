@@ -29,16 +29,31 @@ class User_Auth_ModelBackend
      *
      * In the case of the User backend, the $user_id is the login.
      *
-     * @return User
+     * @return User_Account
      */
     public static function getUser($user_id)
     {
         $sql = new Pluf_SQL('login=%s', array(
             $user_id
         ));
-        return Pluf::factory('User')->getOne($sql->gen());
+        return Pluf::factory('User_Account')->getOne($sql->gen());
     }
 
+    /**
+     * Returns credential data of given user if exist
+     *
+     * In the case of the User backend, the $user_id is the login.
+     *
+     * @return User_Account
+     */
+    public static function getCredential($user_id)
+    {
+        $sql = new Pluf_SQL('login=%s', array(
+            $user_id
+        ));
+        return Pluf::factory('User_Account')->getOne($sql->gen());
+    }
+    
     /**
      * Given an array with the authentication data, auth the user and return it.
      */
@@ -50,10 +65,11 @@ class User_Auth_ModelBackend
         if (! $user) {
             return false;
         }
-        if (! $user->active) {
+        if (! $user->isActive()) {
             return false;
         }
-        return ($user->checkPassword($password)) ? $user : false;
+        return User_Credential::checkCredential($login, $password) ? $user : false;
+//         return ($user->checkPassword($password)) ? $user : false;
     }
 }
 

@@ -36,9 +36,9 @@ class User_Middleware_Session
         if ($request->session->containsKey($this->session_key)) {
             // We can get the corresponding user
             $id = $request->session->getData($this->session_key);
-            $found_user = new User($id);
+            $found_user = new User_Account($id);
             if ($found_user->id == $id) {
-                // User found!
+                // User_Account found!
                 $request->user = $found_user;
                 // If the last login is from 12h or more, set it to
                 // now.
@@ -50,7 +50,7 @@ class User_Middleware_Session
                 return false;
             }
         }
-        $request->user = new User();
+        $request->user = new User_Account();
         return false;
     }
 

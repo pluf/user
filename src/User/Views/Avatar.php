@@ -41,9 +41,12 @@ class User_Views_Avatar extends Pluf_Views
     public static function get($request, $match)
     {
         if (array_key_exists('userId', $match)) {
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
         } else {
             $user = $request->user;
+        }
+        if($user->isAnonymous()){
+            throw new Pluf_Exception_BadRequest('User is not defined');
         }
         return User_Shortcuts_GetAvatar($user);
     }
@@ -61,9 +64,12 @@ class User_Views_Avatar extends Pluf_Views
             if ($request->user->id !== $match['userId'] && !User_Precondition::ownerRequired($request)) {
                 throw new Pluf_Exception_Forbidden('Not allowed to change others avatar');
             }
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
         } else {
             $user = $request->user;
+        }
+        if($user->isAnonymous()){
+            throw new Pluf_Exception_BadRequest('User is not defined');
         }
         return User_Shortcuts_UpdateAvatar($user, array_merge($request->REQUEST, $request->FILES));
     }
@@ -82,9 +88,12 @@ class User_Views_Avatar extends Pluf_Views
             if ($request->user->id !== $match['userId'] && !User_Precondition::ownerRequired($request)) {
                 throw new Pluf_Exception_Forbidden('Not allowed to change others avatar');
             }
-            $user = Pluf_Shortcuts_GetObjectOr404('User', $match['userId']);
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
         } else {
             $user = $request->user;
+        }
+        if($user->isAnonymous()){
+            throw new Pluf_Exception_BadRequest('User is not defined');
         }
         return User_Shortcuts_DeleteAvatar($user);
     }

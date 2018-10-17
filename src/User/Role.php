@@ -1,4 +1,7 @@
 <?php
+Pluf::loadFunction('Pluf_Shortcuts_GetAssociationTableName');
+Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. http://dpq.co.ir
@@ -23,15 +26,15 @@
  * @author maso
  *        
  */
-class Role extends Pluf_Model
+class User_Role extends Pluf_Model
 {
 
     private $_cache_to_string;
 
     function init()
     {
-        $this->_a['verbose'] = 'role';
-        $this->_a['table'] = 'role';
+        $this->_a['verbose'] = 'roles';
+        $this->_a['table'] = 'user_roles';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
@@ -41,47 +44,36 @@ class Role extends Pluf_Model
                 'editable' => false,
                 'readable' => true
             ),
-            'version' => array(
-                'type' => 'Pluf_DB_Field_Integer',
-                'blank' => true,
-                'editable' => false,
-                'readable' => false
-            ),
             'name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
+                'is_null' => false,
                 'size' => 50,
                 'verbose' => __('name'),
-                'editable' => true,
-                'readable' => true
-            ),
-            'code_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => false,
-                'size' => 100,
-                'verbose' => __('code name'),
-                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".'),
-                'editable' => true,
-                'readable' => true
             ),
             'description' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => true,
                 'size' => 250,
                 'verbose' => __('description'),
-                'editable' => true,
-                'readable' => true
             ),
             'application' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'size' => 150,
-                'blank' => false,
+                'is_null' => false,
                 'verbose' => __('application'),
                 'help_text' => __('The application using this permission, for example "YourApp", "CMS" or "SView".'),
-                'editable' => true,
-                'readable' => true
+            ),
+            'code_name' => array(
+                'type' => 'Pluf_DB_Field_Varchar',
+                'is_null' => false,
+                'size' => 100,
+                'verbose' => __('code name'),
+                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".'),
             )
         );
+        /*
+         * Indeces
+         */
         $this->_a['idx'] = array(
             'code_name_idx' => array(
                 'type' => 'normal',
@@ -100,15 +92,19 @@ class Role extends Pluf_Model
                 'lock_option' => ''
             )
         );
-        $g_asso = $this->_con->pfx . 'group_role_assoc';
-        $u_asso = $this->_con->pfx . 'role_user_assoc';
+        /*
+         * Views
+         */
+        $g_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
+        $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Role');
         $t_perm = $this->_con->pfx . $this->_a['table'];
+        $role_fk = Pluf_Shortcuts_GetForeignKeyName('User_Role');
         $this->_a['views'] = array(
             'join_group' => array(
-                'join' => 'LEFT JOIN '.$g_asso.' ON ' . $t_perm . '.id=role_id'
+                'join' => 'LEFT JOIN '.$g_asso.' ON ' . $t_perm . '.id=' . $role_fk
             ),
             'join_user' => array(
-                'join' => 'LEFT JOIN '.$u_asso.' ON ' . $t_perm . '.id=role_id'
+                'join' => 'LEFT JOIN '.$u_asso.' ON ' . $t_perm . '.id=' . $role_fk
             )
         );        
     }
@@ -119,7 +115,7 @@ class Role extends Pluf_Model
      *
      * @param
      *            string Permission string, for example 'User.create'.
-     * @return false|Role The matching permission or false.
+     * @return false|User_Role The matching permission or false.
      */
     public static function getFromString($perm)
     {
@@ -128,7 +124,7 @@ class Role extends Pluf_Model
             $code,
             $app
         ));
-        $permModel = new Role();
+        $permModel = new User_Role();
         $perms = $permModel->getList(array(
             'filter' => $sql->gen()
         ));

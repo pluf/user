@@ -44,7 +44,7 @@ class User_Precondition
             throw new Pluf_Exception_Unauthorized('Login required', null, '', 
                     'login is required, or cocki is not enabled');
         }
-        if (! $request->user->active) {
+        if (! $request->user->isActive()) {
             throw new Pluf_Exception('user is not active', 4002, null, 400, '', 
                     'user is not active');
         }
@@ -65,7 +65,7 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        if (! $request->user->active) {
+        if (! $request->user->isActive()) {
             return false;
         }
         return true;
@@ -108,7 +108,7 @@ class User_Precondition
         if (true !== $res) {
             return $res;
         }
-        if ($request->user->hasPerm('Pluf.owner')) {
+        if ($request->user->hasPerm('tenant.owner')) {
             return true;
         }
         throw new Pluf_Exception_PermissionDenied();
@@ -129,7 +129,7 @@ class User_Precondition
         if (true !== $res) {
             return $res;
         }
-        if ($request->user->hasPerm('Pluf.owner') || $request->user->hasPerm('Pluf.member')) {
+        if ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('tenant.member')) {
             return true;
         }
         throw new Pluf_Exception_PermissionDenied();
@@ -150,9 +150,9 @@ class User_Precondition
         if (true !== $res) {
             return $res;
         }
-        if ($request->user->hasPerm('Pluf.owner', null, $request->tenant->id) || $request->user->hasPerm(
-                'Pluf.member', null, $request->tenant->id) || $request->user->hasPerm(
-                'Pluf.authorized', null, $request->tenant->id)) {
+        if ($request->user->hasPerm('tenant.owner', null, $request->tenant->id) || $request->user->hasPerm(
+                'tenant.member', null, $request->tenant->id) || $request->user->hasPerm(
+                'tenant.authorized', null, $request->tenant->id)) {
             return true;
         }
         throw new Pluf_Exception_PermissionDenied();
@@ -172,8 +172,8 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        // Precondition::baseAccess($request, $app);
-        if ($request->user->hasPerm('Pluf.owner')) {
+        // Note: Permission 'Pluf.owner' is deprecated. It is used here for backward compatibility.
+        if ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('Pluf.owner')) {
             return true;
         }
         return false;
@@ -193,8 +193,8 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        if ($request->user->hasPerm('Pluf.owner', $request->application) || $request->user->hasPerm(
-                'Pluf.member')) {
+        if ($request->user->hasPerm('tenant.owner', $request->application) || $request->user->hasPerm(
+                'tenant.member')) {
             return true;
         }
         return false;
@@ -214,9 +214,9 @@ class User_Precondition
         if (! isset($request->user) or $request->user->isAnonymous()) {
             return false;
         }
-        if ($request->user->hasPerm('Pluf.owner', $request->application) ||
-                 $request->user->hasPerm('Pluf.member', $request->application) || $request->user->hasPerm(
-                        'Pluf.authorized')) {
+        if ($request->user->hasPerm('tenant.owner', $request->application) ||
+                 $request->user->hasPerm('tenant.member', $request->application) || $request->user->hasPerm(
+                        'tenant.authorized')) {
             return true;
         }
         return false;
@@ -234,10 +234,10 @@ class User_Precondition
         if (true !== $res) {
             return $res;
         }
-        if ($request->user->hasPerm('Pluf.owner', null, $request->tenant->id)) {
+        if ($request->user->hasPerm('tenant.owner', null, $request->tenant->id)) {
             return true;
         }
-        $perm = Role::getFromString('Pluf.authorized');
+        $perm = Role::getFromString('tenant.authorized');
         if ($request->user->id === $userId && $roleId === $perm->id) {
             return true;
         }
@@ -256,7 +256,7 @@ class User_Precondition
         if (true !== $res) {
             return false;
         }
-        if ($request->user->hasPerm('Pluf.owner', null, $request->tenant->id)) {
+        if ($request->user->hasPerm('tenant.owner', null, $request->tenant->id)) {
             return true;
         }
         if ($request->user->id === $userId) {
