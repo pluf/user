@@ -31,8 +31,9 @@ class User_Middleware_Session
      */
     function process_request(&$request)
     {
-        $session = $request->session;
-        $set_lang = false;
+        if(isset($request->user) && !$request->user->isAnonymous()){
+            return false;
+        }
         if ($request->session->containsKey($this->session_key)) {
             // We can get the corresponding user
             $id = $request->session->getData($this->session_key);
