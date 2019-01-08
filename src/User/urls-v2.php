@@ -204,6 +204,56 @@ return array(
         )
     ),
 
+    // ************************************************** Profiles (current user)
+    
+    array( // Create / Update
+        'regex' => '#^/profiles$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'update',
+        'http-method' => array(
+            'PUT',
+            'POST'
+        ),
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/profiles/(?P<profileId>\d+)$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/profiles$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'find',
+        'http-method' => 'GET'
+    ),
+    array( // Read
+        'regex' => '#^/profiles/(?P<modelId>\d+)$#',
+        'model' => 'Pluf_Views',
+        'method' => 'getManyToOne',
+        'http-method' => 'GET',
+        'params' => array(
+            'parent' => 'User_Account',
+            'parentKey' => 'account_id',
+            'model' => 'User_Profile'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/profiles/(?P<profileId>\d+)$#',
+        'model' => 'User_Views_Profile',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    
     // ************************************************** Profiles
 
     array( // Create / Update

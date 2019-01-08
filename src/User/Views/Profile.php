@@ -41,7 +41,11 @@ class User_Views_Profile
      */
     public static function get($request, $match)
     {
-        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        if(isset($match['userId'])){        
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        }else{
+            $user = $request->user;
+        }
         if (array_key_exists('profileId', $match)) {
             return Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
         }
@@ -79,17 +83,16 @@ class User_Views_Profile
     public static function update($request, $match)
     {
         // Check access
-        $currentUser = $request->user;
-        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        if ($currentUser->getId() !== $user->getId() && ! User_Precondition::isOwner($request)) {
-            throw new Pluf_Exception_PermissionDenied("Permission is denied");
+        if(isset($match['userId'])){
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        }else{
+            $user = $request->user;
         }
-        
         $profile = null;
         if (array_key_exists('profileId', $match)) {
             $profile = Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
             if($profile->account_id !== $user->id){
-                throw new Pluf_HTTP_Error404('Profile is not blong to given user');
+                throw new Pluf_HTTP_Error404('You are not allowed to change this profile.');
             }
             $form = Pluf_Shortcuts_GetFormForUpdateModel($profile, $request->REQUEST, array());
             $profile = $form->save();
@@ -120,12 +123,11 @@ class User_Views_Profile
     public static function delete($request, $match)
     {
         // Check access
-        $currentUser = $request->user;
-        $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        if ($currentUser->getId() !== $user->getId() && ! User_Precondition::isOwner($request)) {
-            throw new Pluf_Exception_PermissionDenied("Permission is denied");
+        if(isset($match['userId'])){
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        }else{
+            $user = $request->user;
         }
-        
         $profile = null;
         if (array_key_exists('profileId', $match)) {
             $profile = Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
@@ -141,6 +143,49 @@ class User_Views_Profile
         $profile->delete();
         return $profile;
     }
+
+    public static function find($request, $match)
+    {
+        if(isset($match['userId'])){
+            $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        }else{
+            $user = $request->user;
+        }
+        $pag = new Pluf_Paginator(new User_Profile());
+        $sql = new Pluf_SQL('account_id=%s', array(
+            $user->id
+        ));
+        $pag->forced_where = $sql;
+        $pag->list_filters = array(
+            'id',
+            'first_name',
+            'last_name',
+            'language',
+            'timezone',
+            'public_email',
+            'account_id'
+        );
+        $search_fields = array(
+            'first_name',
+            'last_name',
+            'language',
+            'timezone',
+            'public_email'
+        );
+        $sort_fields = array(
+            'id',
+            'first_name',
+            'last_name',
+            'language',
+            'timezone',
+            'public_email',
+            'account_id'
+        );
+        $pag->configure(array(), $search_fields, $sort_fields);
+        $pag->setFromRequest($request);
+        return $pag->render_object();
+    }
+
 }
 
 
