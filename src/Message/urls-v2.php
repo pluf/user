@@ -36,9 +36,18 @@ return array(
         )
     ),
     array(
-        'regex' => '#^/(?P<messageId>\d+)$#',
+        'regex' => '#^/(?P<modelId>\d+)$#',
         'model' => 'Message_Views',
         'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array(
+        'regex' => '#^$#',
+        'model' => 'Message_Views',
+        'method' => 'deleteAll',
         'http-method' => 'DELETE',
         'precond' => array(
             'User_Precondition::loginRequired'

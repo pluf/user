@@ -52,9 +52,10 @@ class User_Message extends Pluf_Model
             'account_id' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
-                // 'relate_name' => 'message',
+                'name' => 'account',
+                'graphql_name' => 'account',
+                'relate_name' => 'messages',
                 'is_null' => false,
-                'verbose' => 'user account',
                 'editable' => false,
                 'readable' => false
             ),
