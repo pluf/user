@@ -84,8 +84,10 @@ class Message_Views extends Pluf_Views
      */
     public function deleteAll($request, $match)
     {
-        $user = $request->user;
-        $messageList = $user->get_messages_list();
+//         $user = $request->user;
+//         $messageList = $user->get_messages_list();
+        $messagePage = $this->find($request, $match)->render_object();
+        $messageList = $messagePage['items'];
         foreach ($messageList as $msg) {
             $msg->delete();
         }
