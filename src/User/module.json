@@ -1,6 +1,5 @@
 {
 	"name": "User",
-	"version": "4.0.0",
 	"title": "User Management",
 	"model": [
 		"User_Account",
