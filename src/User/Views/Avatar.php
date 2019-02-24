@@ -61,7 +61,7 @@ class User_Views_Avatar extends Pluf_Views
     {
         if (array_key_exists('userId', $match)) {
             // Check user is owner 
-            if ($request->user->id !== $match['userId'] && !User_Precondition::ownerRequired($request)) {
+            if ($request->user->id != $match['userId'] && !User_Precondition::isOwner($request)) {
                 throw new Pluf_Exception_Forbidden('Not allowed to change others avatar');
             }
             $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
@@ -85,7 +85,7 @@ class User_Views_Avatar extends Pluf_Views
     {
         if (array_key_exists('userId', $match)) {
             // Check user is owner
-            if ($request->user->id !== $match['userId'] && !User_Precondition::ownerRequired($request)) {
+            if ($request->user->id != $match['userId'] && !User_Precondition::isOwner($request)) {
                 throw new Pluf_Exception_Forbidden('Not allowed to change others avatar');
             }
             $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
