@@ -56,8 +56,7 @@ class User_Message extends Pluf_Model
                 'graphql_name' => 'account',
                 'relate_name' => 'messages',
                 'is_null' => false,
-                'editable' => false,
-                'readable' => false
+                'editable' => false
             ),
             'message' => array(
                 'type' => 'Pluf_DB_Field_Text',

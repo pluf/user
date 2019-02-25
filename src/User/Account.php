@@ -95,7 +95,6 @@ class User_Account extends Pluf_Model
                 'model' => 'User_Group',
                 'relate_name' => 'accounts',
                 'editable' => false,
-                'readable' => false,
                 'graphql_name' => 'groups'
             ),
             'roles' => array(
@@ -103,7 +102,6 @@ class User_Account extends Pluf_Model
                 'blank' => true,
                 'relate_name' => 'accounts',
                 'editable' => false,
-                'readable' => false,
                 'model' => 'User_Role',
                 'graphql_name' => 'roles'
             )
