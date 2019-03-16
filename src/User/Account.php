@@ -27,7 +27,6 @@ Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
  */
 class User_Account extends Pluf_Model
 {
-
     /**
      * Cache of the Role.
      */
@@ -95,7 +94,6 @@ class User_Account extends Pluf_Model
                 'model' => 'User_Group',
                 'relate_name' => 'accounts',
                 'editable' => false,
-                'readable' => false,
                 'graphql_name' => 'groups'
             ),
             'roles' => array(
@@ -103,7 +101,6 @@ class User_Account extends Pluf_Model
                 'blank' => true,
                 'relate_name' => 'accounts',
                 'editable' => false,
-                'readable' => false,
                 'model' => 'User_Role',
                 'graphql_name' => 'roles'
             )
@@ -320,7 +317,7 @@ class User_Account extends Pluf_Model
             throw new Pluf_Exception_DoesNotExist(__("User not exist, while you are trying to add message?!"));
         }
         $m = new User_Message();
-        $m->user = $this;
+        $m->account_id = $this;
         $m->message = $message;
         if (! $m->create()) {
             throw new Pluf_Exception(__("not possible to create a message"));

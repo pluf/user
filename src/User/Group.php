@@ -66,7 +66,6 @@ class User_Group extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Manytomany',
                 'model' => 'User_Role',
                 'is_null' => true,
-                'readable' => false,
                 'editable' => false,
                 'relate_name' => 'groups',
                 'graphql_name' => 'roles'
