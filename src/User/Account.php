@@ -27,7 +27,6 @@ Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
  */
 class User_Account extends Pluf_Model
 {
-
     /**
      * Cache of the Role.
      */
