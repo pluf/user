@@ -27,7 +27,6 @@ Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
  */
 class User_Account extends Pluf_Model
 {
-
     /**
      * Cache of the Role.
      */
@@ -318,7 +317,7 @@ class User_Account extends Pluf_Model
             throw new Pluf_Exception_DoesNotExist(__("User not exist, while you are trying to add message?!"));
         }
         $m = new User_Message();
-        $m->user = $this;
+        $m->account_id = $this;
         $m->message = $message;
         if (! $m->create()) {
             throw new Pluf_Exception(__("not possible to create a message"));

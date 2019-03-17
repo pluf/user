@@ -115,7 +115,7 @@ class User_ModelTest extends TestCase
     {
         $user = new User_Account();
         $user = $user->getUser('test');
-        $mess = $user->get_user_message_list();
+        $mess = $user->get_user_messages_list();
         Test_Assert::assertEquals(0, $mess->count());
     }
 

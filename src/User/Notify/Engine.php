@@ -12,7 +12,7 @@ interface User_Notify_Engine
     /**
      * Push a messag fo the user
      *
-     * @param User $user
+     * @param User_Account $user
      * @param string $template
      * @param array $context
      */
