@@ -76,7 +76,7 @@ class User_Account extends Pluf_Model
                 'editable' => false
             ),
 //             /*
-//              * Foreign keys 
+//              * Foreign keys
 //              */
 //             'profile_id' => array(
 //                 'type' => 'Pluf_DB_Field_Foreignkey',
@@ -94,7 +94,8 @@ class User_Account extends Pluf_Model
                 'model' => 'User_Group',
                 'relate_name' => 'accounts',
                 'editable' => false,
-                'graphql_name' => 'groups'
+                'graphql_name' => 'groups',
+                'readable' => false
             ),
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
@@ -102,7 +103,8 @@ class User_Account extends Pluf_Model
                 'relate_name' => 'accounts',
                 'editable' => false,
                 'model' => 'User_Role',
-                'graphql_name' => 'roles'
+                'graphql_name' => 'roles',
+                'readable' => false
             )
         );
 
