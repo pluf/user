@@ -9,7 +9,7 @@
 			<directory>tests/Role/</directory>
 			<directory>tests/Role_REST/</directory>
 		</testsuite>
-		<testsuite name="User">
+		<testsuite name="Account">
 			<directory>tests/User/</directory>
 			<directory>tests/User_Password_Token/</directory>
 			<directory>tests/User_REST/</directory>

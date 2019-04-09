@@ -23,7 +23,7 @@ Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
  * Manages roles
  *
  * @author maso
- *        
+ *
  */
 class Role_Views extends Pluf_Views
 {
@@ -31,8 +31,8 @@ class Role_Views extends Pluf_Views
     /**
      * Creates new role.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param unknown_type $request
+     * @param unknown_type $match
      */
     public static function create($request, $match)
     {
@@ -42,55 +42,10 @@ class Role_Views extends Pluf_Views
     }
 
     /**
-     * Returns list of roles with specified conditions.
-     *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
-     */
-    public static function find($request, $match)
-    {
-        $pag = new Pluf_Paginator(new User_Role());
-        $pag->items_per_page = Role_Views::getListCount($request);
-        $pag->list_filters = array(
-            'id',
-            'name',
-            'version',
-            'code_name',
-            'application'
-        );
-        $pag->sort_order = array(
-            'version',
-            'DESC'
-        );
-        $search_fields = array(
-            'name',
-            'version',
-            'code_name',
-            'description',
-            'application'
-        );
-        $list_display = array(
-            'name' => __('name'),
-            'description' => __('description')
-        );
-        $sort_fields = array(
-            'id',
-            'name',
-            'version',
-            'code_name',
-            'application'
-        );
-        $pag->sort_order = array('id', 'DESC');
-        $pag->configure($list_display, $search_fields, $sort_fields);
-        $pag->setFromRequest($request);
-        return new Pluf_HTTP_Response_Json($pag->render_object());
-    }
-
-    /**
      * Returns information of a role.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param unknown_type $request
+     * @param unknown_type $match
      */
     public function get($request, $match)
     {
@@ -100,8 +55,8 @@ class Role_Views extends Pluf_Views
     /**
      * Updates information of a role.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param unknown_type $request
+     * @param unknown_type $match
      */
     public static function update($request, $match)
     {
@@ -115,8 +70,8 @@ class Role_Views extends Pluf_Views
     /**
      * Deletes a role.
      *
-     * @param unknown_type $request            
-     * @param unknown_type $match            
+     * @param unknown_type $request
+     * @param unknown_type $match
      */
     public function delete($request, $match)
     {
@@ -127,7 +82,7 @@ class Role_Views extends Pluf_Views
         }
         throw new Pluf_HTTP_Error500('Unexpected error while removing role: ' . $model2->code_name);
     }
-    
+
     static function getListCount($request)
     {
         $count = 50;

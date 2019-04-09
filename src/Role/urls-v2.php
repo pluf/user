@@ -3,6 +3,16 @@ return array(
     /*
      * Roles
      */
+    array(
+        'regex' => '#^/schema$#',
+        'model' => 'Pluf_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Role'
+        )
+    ),
+
     array( // Create
         'regex' => '#^$#',
         'model' => 'Role_Views',
@@ -17,9 +27,12 @@ return array(
     ),
     array( // Read (list)
         'regex' => '#^$#',
-        'model' => 'Role_Views',
-        'method' => 'find',
-        'http-method' => 'GET'
+        'model' => 'Pluf_Views',
+        'method' => 'findObject',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Role'
+        )
     ),
     array( // Read
         'regex' => '#^/(?P<id>\d+)$#',
@@ -45,6 +58,9 @@ return array(
             'User_Precondition::ownerRequired'
         )
     ),
+
+
+
     /*
      * Users of role
      */
