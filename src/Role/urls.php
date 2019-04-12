@@ -14,9 +14,12 @@ return array(
     ),
     array(
         'regex' => '#^/find$#',
-        'model' => 'Role_Views',
-        'method' => 'find',
-        'http-method' => 'GET'
+        'model' => 'Pluf_Views',
+        'method' => 'findObject',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Role'
+        )
     ),
     array(
         'regex' => '#^/(?P<id>\d+)$#',

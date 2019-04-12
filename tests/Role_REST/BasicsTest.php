@@ -40,7 +40,7 @@ class Role_REST_BasicsTest extends TestCase
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         $m->init();
-        
+
         // Test user
         $user = new User_Account();
         $user->login = 'test';
@@ -57,7 +57,7 @@ class Role_REST_BasicsTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
 
@@ -137,6 +137,39 @@ class Role_REST_BasicsTest extends TestCase
 
         // Delete
         $role->delete();
+    }
+
+    /**
+     *
+     * @test
+     */
+    public function shouldGetSchema()
+    {
+        // Get
+        $response = self::$client->get('/api/v2/user/roles/schema');
+        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
+        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
+    }
+
+    /**
+     *
+     * @test
+     */
+    public function shouldGetRoles()
+    {
+        // Get regular
+        $response = self::$client->get('/api/v2/user/roles');
+        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
+        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
+
+        // Get with query
+        $response = self::$client->get('/api/v2/user/roles', array(
+            '_px_q' => 'test',
+            '_px_sk' => 'id',
+            '_px_so' => 'a'
+        ));
+        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
+        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
     }
 
     /**
