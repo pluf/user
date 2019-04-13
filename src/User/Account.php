@@ -95,7 +95,7 @@ class User_Account extends Pluf_Model
                 'relate_name' => 'accounts',
                 'editable' => false,
                 'graphql_name' => 'groups',
-                'readable' => false
+                'readable' => true
             ),
             'roles' => array(
                 'type' => 'Pluf_DB_Field_Manytomany',
@@ -104,7 +104,7 @@ class User_Account extends Pluf_Model
                 'editable' => false,
                 'model' => 'User_Role',
                 'graphql_name' => 'roles',
-                'readable' => false
+                'readable' => true
             )
         );
 
