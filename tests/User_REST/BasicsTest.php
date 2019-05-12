@@ -21,6 +21,7 @@ use PHPUnit\Framework\IncompleteTestError;
 require_once 'Pluf.php';
 
 /**
+ *
  * @backupGlobals disabled
  * @backupStaticAttributes disabled
  */
@@ -30,6 +31,7 @@ class User_REST_BasicsTest extends TestCase
     private static $client = null;
 
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
@@ -74,6 +76,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
@@ -83,15 +86,82 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function currentUserRest()
     {
+        // Anonymous access
+        // logout
+        $response = self::$client->post('/api/v2/user/logout');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        // get current account
         $response = self::$client->get('/api/v2/user/accounts/current');
         $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        
+        // Logged in user access
+        // login
+        $response = self::$client->post('/api/v2/user/login', array(
+            'login' => 'test',
+            'password' => 'test'
+        ));
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        // get current account
+        $response = self::$client->get('/api/v2/user/accounts/current');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
     }
 
     /**
+     *
+     * @test
+     */
+    public function currentUserWithGraphqlRest()
+    {
+        $params = array(
+            'graphql' => '{id, login, profiles{first_name, last_name, language, timezone}, roles{id, application, code_name}, groups{id, name, roles{id, application, code_name}}}'
+        );
+        $user = new User_Account();
+        $user = $user->getUser('test');
+
+        // Anonymous access
+        // logout
+        $response = self::$client->post('/api/v2/user/logout');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        // get current account
+        $response = self::$client->get('/api/v2/user/accounts/current', $params);
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        $actual = json_decode($response->content, true);
+        $this->assertNotEquals($actual['id'], $user->id);
+        $this->assertNotEquals($actual['login'], $user->login);
+        
+        // Logged in access
+        // login
+        $response = self::$client->post('/api/v2/user/login', array(
+            'login' => 'test',
+            'password' => 'test'
+        ));
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        // get current account
+        $response = self::$client->get('/api/v2/user/accounts/current', $params);
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        $actual = json_decode($response->content, true);
+        $this->assertNotNull($actual['profiles']);
+        $this->assertNotNull($actual['roles']);
+        $this->assertNotNull($actual['groups']);
+        $this->assertEquals($actual['id'], $user->id);
+        $this->assertEquals($actual['login'], $user->login);
+    }
+
+    /**
+     *
      * @test
      */
     public function loginRestTest()
@@ -105,6 +175,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function logoutRestTest()
@@ -117,6 +188,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function listUsersRestTest()
@@ -127,6 +199,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function listUsersByAdminRestTest()
@@ -154,6 +227,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function createNewUserRestTest()
@@ -171,6 +245,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function getUserByIdRestTest()
@@ -184,6 +259,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function deleteUserByIdRestTest()
@@ -216,6 +292,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function getUserProfileRestTest()
@@ -247,6 +324,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function updateUserProfileRestTest()
@@ -282,6 +360,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function getUserAvatarRestTest()
@@ -311,6 +390,7 @@ class User_REST_BasicsTest extends TestCase
     // TODO: maso, 2017: adding test to update avatar
 
     /**
+     *
      * @test
      */
     public function addUserGroupRestTest()
@@ -362,6 +442,7 @@ class User_REST_BasicsTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function assUserRoleRestTest()
