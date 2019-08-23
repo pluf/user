@@ -73,7 +73,15 @@ return array(
     ),
 
     // ************************************************** Account (user info)
-
+    array( // schema
+        'regex' => '#^/accounts/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Account'
+        )
+    ),
     array( // Create
         'regex' => '#^/accounts$#',
         'model' => 'User_Views_Account',
@@ -205,7 +213,7 @@ return array(
     ),
 
     // ************************************************** Profiles (current user)
-    
+
     array( // Create / Update
         'regex' => '#^/profiles$#',
         'model' => 'User_Views_Profile',
@@ -253,7 +261,7 @@ return array(
             'User_Precondition::loginRequired'
         )
     ),
-    
+
     // ************************************************** Profiles
 
     array( // Create / Update

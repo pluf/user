@@ -85,6 +85,16 @@ class Group_REST_BasicsAnonymouseTest extends TestCase
         Test_Assert::assertResponsePaginateList($response, 'Find result is not JSON paginated list');
     }
 
+    /**
+     *
+     * @test
+     */
+    public function anonymousCanGetSchemaOfGroups()
+    {
+        $response = self::$client->get('/api/v2/user/groups/schema');
+        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
+        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
+    }
 }
 
 
