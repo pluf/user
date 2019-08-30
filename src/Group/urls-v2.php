@@ -21,6 +21,17 @@ return array(
     // Groups
     // --------------------------------------------------------------
     array( // Create
+        'regex' => '#^/schema$#',
+        'model' => 'Pluf_Views',
+        'method' => 'getSchema',
+        'http-method' => array(
+            'GET',
+        ),
+        'params' => array(
+            'model' => 'User_Group'
+        )
+    ),
+    array( // Create
         'regex' => '#^$#',
         'model' => 'Pluf_Views',
         'method' => 'createObject',
@@ -100,7 +111,7 @@ return array(
             'User_Precondition::ownerRequired'
         )
     ),
-    
+
     // --------------------------------------------------------------
     // Group roles
     // --------------------------------------------------------------

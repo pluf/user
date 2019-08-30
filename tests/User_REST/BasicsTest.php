@@ -89,6 +89,17 @@ class User_REST_BasicsTest extends TestCase
      *
      * @test
      */
+    public function anonymousCanGetSchemaOfAccounts()
+    {
+        $response = self::$client->get('/api/v2/user/accounts/schema');
+        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
+        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
+    }
+
+    /**
+     *
+     * @test
+     */
     public function currentUserRest()
     {
         // Anonymous access
@@ -100,7 +111,7 @@ class User_REST_BasicsTest extends TestCase
         $response = self::$client->get('/api/v2/user/accounts/current');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
-        
+
         // Logged in user access
         // login
         $response = self::$client->post('/api/v2/user/login', array(
@@ -139,7 +150,7 @@ class User_REST_BasicsTest extends TestCase
         $actual = json_decode($response->content, true);
         $this->assertNotEquals($actual['id'], $user->id);
         $this->assertNotEquals($actual['login'], $user->login);
-        
+
         // Logged in access
         // login
         $response = self::$client->post('/api/v2/user/login', array(

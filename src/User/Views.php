@@ -30,7 +30,7 @@ Pluf::loadFunction('User_Shortcuts_UpdateAvatar');
  * @author hadi<mohammad.hadi.mansouri@dpq.co.ir>
  * @since 0.1.0
  */
-class User_Views
+class User_Views extends Pluf_Views
 {
 
     /**
