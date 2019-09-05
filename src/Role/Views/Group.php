@@ -85,7 +85,7 @@ class Role_Views_Group extends Pluf_Views
         $pag->model_view = 'join_role';
         $pag->configure($list_display, $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        return $pag->render_object();
+        return $pag;
     }
 
     /**

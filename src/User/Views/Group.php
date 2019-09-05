@@ -57,7 +57,7 @@ class User_Views_Group extends Pluf_Views
         $pag->model_view = 'join_user';
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        return $pag;
     }
 
     /**
