@@ -90,7 +90,7 @@ class Group_Views_User extends Pluf_Views
         $pag->model_view = 'join_group';
         $pag->configure(array(), $search_fields, $sort_fields);
         $pag->setFromRequest($request);
-        return $pag->render_object();
+        return $pag;
     }
 
     /**

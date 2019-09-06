@@ -56,7 +56,7 @@ class User_Views_Permission
         $pag->forced_where = new Pluf_SQL('user_account_id=%s', array(
             $model->id,
         ));
-        return new Pluf_HTTP_Response_Json($pag->render_object());
+        return $pag;
     }
 
     /**

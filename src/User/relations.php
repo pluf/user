@@ -17,5 +17,10 @@ return array (
         'relate_to' => array(
             'User_Account'
         )
+    ),
+    'User_Avatar' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
     )
 );

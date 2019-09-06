@@ -68,7 +68,8 @@ class User_Avatar extends Pluf_Model
                 'model' => 'User_Account',
                 'unique' => true,
                 'name' => 'account',
-                'relate_name' => 'avatar',
+                'relate_name' => 'avatars',
+                'graphql_name' => 'account',
                 'is_null' => false,
                 'editable' => false
             )
