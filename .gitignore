@@ -16,6 +16,7 @@ composer.phar
 
 clover.xml
 /build/
+/tests/tmp
 
 # netbeans
 /nbproject/private/
