@@ -15,11 +15,12 @@ class Pluf_GraphQl_Schema_User_Account {
          $User_Role = null;
          $User_Message = null;
          $User_Profile = null;
+         $User_Avatar = null;
         // render code
          //
         $User_Account = new ObjectType([
             'name' => 'User_Account',
-            'fields' => function () use (&$User_Group, &$User_Role, &$User_Message, &$User_Profile){
+            'fields' => function () use (&$User_Group, &$User_Role, &$User_Message, &$User_Profile, &$User_Avatar){
                 return [
                     // List of basic fields
                     
@@ -93,6 +94,13 @@ class Pluf_GraphQl_Schema_User_Account {
                             'type' => Type::listOf($User_Profile),
                             'resolve' => function ($root) {
                                 return $root->get_profiles_list();
+                            },
+                    ],
+                    //Foreinkey list-account_id: Array()
+                    'avatars' => [
+                            'type' => Type::listOf($User_Avatar),
+                            'resolve' => function ($root) {
+                                return $root->get_avatars_list();
                             },
                     ],
                     
@@ -310,6 +318,81 @@ class Pluf_GraphQl_Schema_User_Account {
                             },
                     ],
                     //Foreinkey object-account_id: Array(    [type] => Pluf_DB_Field_Foreignkey    [model] => User_Account    [name] => account    [relate_name] => profiles    [graphql_name] => account    [is_null] =>     [editable] => )
+                    'account' => [
+                            'type' => $User_Account,
+                            'resolve' => function ($root) {
+                                return $root->get_account();
+                            },
+                    ],
+                    // relations: forenkey 
+                    
+                    
+                ];
+            }
+        ]); //
+        $User_Avatar = new ObjectType([
+            'name' => 'User_Avatar',
+            'fields' => function () use (&$User_Account){
+                return [
+                    // List of basic fields
+                    
+                    //id: Array(    [type] => Pluf_DB_Field_Sequence    [blank] => 1    [editable] => )
+                    'id' => [
+                        'type' => Type::id(),
+                        'resolve' => function ($root) {
+                            return $root->id;
+                        },
+                    ],
+                    //fileName: Array(    [type] => Pluf_DB_Field_Varchar    [is_null] =>     [unique] =>     [editable] => )
+                    'fileName' => [
+                        'type' => Type::string(),
+                        'resolve' => function ($root) {
+                            return $root->fileName;
+                        },
+                    ],
+                    //filePath: Array(    [type] => Pluf_DB_Field_Varchar    [is_null] =>     [unique] =>     [editable] => )
+                    'filePath' => [
+                        'type' => Type::string(),
+                        'resolve' => function ($root) {
+                            return $root->filePath;
+                        },
+                    ],
+                    //fileSize: Array(    [type] => Pluf_DB_Field_Integer    [is_null] =>     [verbose] => validate    [editable] => )
+                    'fileSize' => [
+                        'type' => Type::int(),
+                        'resolve' => function ($root) {
+                            return $root->fileSize;
+                        },
+                    ],
+                    //mimeType: Array(    [type] => Pluf_DB_Field_Varchar    [is_null] =>     [size] => 50    [editable] => )
+                    'mimeType' => [
+                        'type' => Type::string(),
+                        'resolve' => function ($root) {
+                            return $root->mimeType;
+                        },
+                    ],
+                    //creationTime: Array(    [type] => Pluf_DB_Field_Datetime    [is_null] =>     [editable] => )
+                    'creationTime' => [
+                        'type' => Type::string(),
+                        'resolve' => function ($root) {
+                            return $root->creationTime;
+                        },
+                    ],
+                    //modifTime: Array(    [type] => Pluf_DB_Field_Datetime    [is_null] =>     [editable] => )
+                    'modifTime' => [
+                        'type' => Type::string(),
+                        'resolve' => function ($root) {
+                            return $root->modifTime;
+                        },
+                    ],
+                    //Foreinkey value-account_id: Array(    [type] => Pluf_DB_Field_Foreignkey    [model] => User_Account    [unique] => 1    [name] => account    [relate_name] => avatars    [graphql_name] => account    [is_null] =>     [editable] => )
+                    'account_id' => [
+                            'type' => Type::int(),
+                            'resolve' => function ($root) {
+                                return $root->account_id;
+                            },
+                    ],
+                    //Foreinkey object-account_id: Array(    [type] => Pluf_DB_Field_Foreignkey    [model] => User_Account    [unique] => 1    [name] => account    [relate_name] => avatars    [graphql_name] => account    [is_null] =>     [editable] => )
                     'account' => [
                             'type' => $User_Account,
                             'resolve' => function ($root) {
