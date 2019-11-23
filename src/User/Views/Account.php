@@ -45,18 +45,9 @@ class User_Views_Account
         if ($usr) {
             throw new Pluf_Exception('Username is existed already.', 400);
         }
-        if (! ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('user.manager')) 
-                || ! array_key_exists('is_active', $data)) {
-            $account_active = false;
-            if (class_exists('Tenant_Service')) {
-                $account_active = Tenant_Service::setting('Module.User.account_auto_activate', false);
-            }else{                
-                $account_active = Pluf::f('user_account_auto_activate', false);
-            }
-            $data['is_active'] = $account_active;
-        }
         $form = new User_Form_Account($data, $extra);
         $cuser = $form->save();
+        self::doVerify($cuser);
         // Create credential
         $credit = new User_Credential();
         $credit->setFromFormData(array(
@@ -72,6 +63,16 @@ class User_Views_Account
         }
         // Return response
         return $cuser;
+    }
+
+    private static function doVerify($account)
+    {
+        // Load verifier engine and verify account
+        $type = class_exists('Tenant_Service') ? Tenant_Service::setting('account.verifier.engine', 'noverify') : //
+           Pluf::f('account.verifier.engine', 'noverify');
+        $verification = Verifier_Service::createVerification($account, $account);
+        $engine = Verifier_Service::getEngine($type);
+        return $engine->verify($verification);
     }
 
     /**
