@@ -29,35 +29,38 @@ class Verifier_Service
     /**
      * Creates a new verification.
      *
-     * @param User_Account $user the account who is owner of the verification 
+     * @param User_Account $user
+     *            the account who is owner of the verification
      * @param Pluf_Model $subject
+     *            the model which should be verified
      * @return Verifier_Verification
      */
-    public static function createVerification($user, $subject){
+    public static function createVerification($user, $subject)
+    {
         $verification = new Verifier_Verification();
         $verification->code = Pluf_Utils::getRandomString(7);
         $verification->subject_class = $subject->_a['model'];
         $verification->subject_id = $subject->id;
         $verification->account_id = $user;
-        if(true !== $verification->create()){
+        if (true !== $verification->create()) {
             throw new Verifier_Exception_VerificationGenerate();
         }
         return $verification;
     }
 
     /**
-     * Finds a verification
+     * Returns list of verifications to verify given subject
      *
-     * @param Pluf_Model $subject
+     * @param Pluf_Model|string $subject
      * @param integer $subjectId
      */
-    public static function find($subject, $subjectId = null)
+    public static function findVerifications($subject, $subjectId = null)
     {
         // get class
         if ($subject instanceof Pluf_Model) { // Pluf module
             $subjectClass = $subject->getClass();
             $subjectId = $subject->getId();
-        } elseif (! is_null($subject)) { // module
+        } elseif (! is_null($subject)) { // model
             $subjectClass = $subject;
         }
 
@@ -74,6 +77,81 @@ class Verifier_Service
     }
 
     /**
+     * Returns the verification with given code which is created to verify the given subject.
+     *
+     * @param User_Account $account
+     *            the account which is the owner of the verification
+     * @param Pluf_Model $subject
+     *            the model to verify
+     * @param string $code
+     *            the code of the verification
+     * @return Verifier_Verification
+     */
+    public static function getVerification($account, $subject, $code)
+    {
+        // get list
+        $model = new Verifier_Verification();
+        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s AND code=%s', array(
+            $subject->_a['model'],
+            $subject->id,
+            $code
+        ));
+        $list = $model->getList(array(
+            'filter' => $q->gen()
+        ));
+        if ($list === false or count($list) !== 1) {
+            return false;
+        }
+        return $list[0];
+    }
+
+    /**
+     * Checks if given code and verification is acceptable
+     *
+     * @param Verifier_Verification $verification
+     * @param string $code
+     * @return boolean
+     */
+    public static function validateVerification($verification, $code)
+    {
+        // XXX: hadi 2019: check expiry count
+        // Check the code and expiry time
+        return ! $verification->isExpired() && $verification->code === $code;
+    }
+
+    /**
+     * Clears verifications created to verify the given subject
+     *
+     * @param Pluf_Model|string $subject
+     * @param integer $subjectId
+     * @return boolean true if the process is successful.
+     */
+    public static function clearVerifications($subject, $subjectId = null)
+    {
+        // get class
+        if ($subject instanceof Pluf_Model) { // Pluf module
+            $subjectClass = $subject->getClass();
+            $subjectId = $subject->getId();
+        } elseif (! is_null($subject)) { // model
+            $subjectClass = $subject;
+        }
+        // get list
+        $verification = new Verifier_Verification();
+        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s', array(
+            $subjectClass,
+            $subjectId
+        ));
+        $list = $verification->getList(array(
+            'filter' => $q->gen()
+        ));
+        // delete
+        foreach ($list as $verification) {
+            $verification->delete();
+        }
+        return true;
+    }
+    
+    /**
      * Find engine
      *
      * @param string $type
@@ -89,7 +167,7 @@ class Verifier_Service
         }
         return null;
     }
-    
+
     /**
      * Returns the list of supported verification engines.
      *
@@ -102,6 +180,4 @@ class Verifier_Service
             new Verifier_Engine_Manual()
         );
     }
-
-    
 }
