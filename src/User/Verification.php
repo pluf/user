@@ -28,7 +28,7 @@ class User_Verification extends Pluf_Model
     function init()
     {
         $this->_a['verbose'] = 'verifications';
-        $this->_a['table'] = 'verifier_verifications';
+        $this->_a['table'] = 'user_verifications';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
