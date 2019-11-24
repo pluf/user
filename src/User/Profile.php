@@ -101,6 +101,7 @@ class User_Profile extends Pluf_Model
             ),
             'birthday' => array(
                 'type' => 'Pluf_DB_Field_Date',
+                'default' => '0000-00-00',
                 'is_null' => true,
                 'editable' => true
             ),
