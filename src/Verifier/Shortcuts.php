@@ -35,18 +35,3 @@ function Verifier_Shortcuts_GetEngineOr404($type)
     throw new Verifier_Exception_EngineNotFound("Verifier engine not found: " . $type);
 }
 
-/**
- *
- * @param unknown $id
- * @throws Pluf_HTTP_Error404
- * @return Verifier_Backend
- */
-function Verifier_Shortcuts_GetBackendOr404($id)
-{
-    $item = new Verifier_Backend($id);
-    if ((int) $id > 0 && $item->id == $id) {
-        return $item;
-    }
-    throw new Pluf_HTTP_Error404("Verifier backend not found (" . $id . ")");
-}
-
