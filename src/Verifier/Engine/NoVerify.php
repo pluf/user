@@ -39,21 +39,13 @@ class Verifier_Engine_NoVerify extends Verifier_Engine
      */
     public function getDescription()
     {
-        return 'This verifier always says yes to verify an entity.';
+        return 'This verifier do nothing to verify an entity. The verification is not needed.';
     }
 
-    public function verify($verification)
+    public function send($verification)
     {
-        $obj = null;
-        switch ($verification->subject_class) {
-            case 'User_Account':
-                $obj = Pluf_Shortcuts_GetObjectOr404($verification->subject_class, $verification->subject_id);
-                $obj->is_active = true;
-                $obj->update();
-                break;
-        }
-        $verification->delete();
-        return $obj;
+        // Do nothing
+        return true;
     }
 
     /*

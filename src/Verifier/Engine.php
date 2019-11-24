@@ -70,15 +70,15 @@ class Verifier_Engine implements JsonSerializable
     }
 
     /**
-     * Do some action to verify entity determined in the given verification.
+     * Sends verification to its related account.
      * 
      * This function should be overrided by implementors.
      * 
      * @param Verifier_Verification $verification
-     * @return mixed information of the subject determined by given verification after verifying.
+     * @return boolean true if sending verification is successful else false.
      */
-    public function verify($verification){
-        
+    public function send($verification){
+        return true;
     }
 
     /**

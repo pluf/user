@@ -50,20 +50,26 @@ class Verifier_Engine_Manual extends Verifier_Engine
         return array();
     }
 
-    public function verify($verification)
+    public function send($verification)
     {
-        $request = $GLOBALS['_PX_request'];
-        $obj = null;
-        switch ($verification->subject_class) {
-            case 'User_Account':
-                if (! ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('user.manager'))) {
-                    $obj = Pluf_Shortcuts_GetObjectOr404($verification->subject_class, $verification->subject_id);
-                    $obj->is_active = true;
-                    $obj->update();
-                }
-                break;
-        }
-        $verification->delete();
-        return $obj;
+        // Do nothing
+        return true;
+// //         $request = $GLOBALS['_PX_request'];
+// //         $obj = null;
+// //         switch ($verification->subject_class) {
+// //             case 'User_Account':
+// //                 if (! ($request->user->hasPerm('tenant.owner') || $request->user->hasPerm('user.manager'))) {
+// //                     $obj = Pluf_Shortcuts_GetObjectOr404($verification->subject_class, $verification->subject_id);
+// //                     $obj->is_active = true;
+// //                     $obj->update();
+// //                 }
+// //                 break;
+// //         }
+// //         $verification->delete();
+// //         return $obj;
+//         $obj = Pluf_Shortcuts_GetObjectOr404($verification->subject_class, $verification->subject_id);
+//         $verification->code = ''; // A verification with empty code is valid always.
+//         $verification->update();
+//         return $obj;
     }
 }
