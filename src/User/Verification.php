@@ -22,7 +22,7 @@
  * Verification data model
  *
  */
-class Verifier_Verification extends Pluf_Model
+class User_Verification extends Pluf_Model
 {
 
     function init()

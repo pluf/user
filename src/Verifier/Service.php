@@ -33,11 +33,11 @@ class Verifier_Service
      *            the account who is owner of the verification
      * @param Pluf_Model $subject
      *            the model which should be verified
-     * @return Verifier_Verification
+     * @return User_Verification
      */
     public static function createVerification($user, $subject)
     {
-        $verification = new Verifier_Verification();
+        $verification = new User_Verification();
         $verification->code = Pluf_Utils::getRandomString(7);
         $verification->subject_class = $subject->_a['model'];
         $verification->subject_id = $subject->id;
@@ -65,7 +65,7 @@ class Verifier_Service
         }
 
         // get list
-        $verification = new Verifier_Verification();
+        $verification = new User_Verification();
         $q = new Pluf_SQL('subject_class=%s AND subject_id=%s', array(
             $subjectClass,
             $subjectId
@@ -85,12 +85,12 @@ class Verifier_Service
      *            the model to verify
      * @param string $code
      *            the code of the verification
-     * @return Verifier_Verification
+     * @return User_Verification
      */
     public static function getVerification($account, $subject, $code)
     {
         // get list
-        $model = new Verifier_Verification();
+        $model = new User_Verification();
         $q = new Pluf_SQL('subject_class=%s AND subject_id=%s AND code=%s', array(
             $subject->_a['model'],
             $subject->id,
@@ -108,7 +108,7 @@ class Verifier_Service
     /**
      * Checks if given code and verification is acceptable
      *
-     * @param Verifier_Verification $verification
+     * @param User_Verification $verification
      * @param string $code
      * @return boolean
      */
@@ -136,7 +136,7 @@ class Verifier_Service
             $subjectClass = $subject;
         }
         // get list
-        $verification = new Verifier_Verification();
+        $verification = new User_Verification();
         $q = new Pluf_SQL('subject_class=%s AND subject_id=%s', array(
             $subjectClass,
             $subjectId

@@ -74,7 +74,7 @@ class Verifier_Engine implements JsonSerializable
      * 
      * This function should be overrided by implementors.
      * 
-     * @param Verifier_Verification $verification
+     * @param User_Verification $verification
      * @return boolean true if sending verification is successful else false.
      */
     public function send($verification){
