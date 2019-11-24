@@ -21,7 +21,6 @@
 /**
  * Verification data model
  *
- * Stores credential information of a user.
  */
 class Verifier_Verification extends Pluf_Model
 {
@@ -29,7 +28,7 @@ class Verifier_Verification extends Pluf_Model
     function init()
     {
         $this->_a['verbose'] = 'verifications';
-        $this->_a['table'] = 'user_verifications';
+        $this->_a['table'] = 'verifier_verifications';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
@@ -41,16 +40,18 @@ class Verifier_Verification extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
                 'size' => 64,
-                'verbose' => 'name',
+                'readable' => false
             ),
             'subject_class' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
                 'size' => 64,
+                'readable' => false
             ),
             'subject_id' => array(
                 'type' => 'Pluf_DB_Field_Integer',
                 'is_null' => false,
+                'readable' => false
             ),
             'expiry_count' => array(
                 'type' => 'Pluf_DB_Field_Integer',
@@ -74,52 +75,19 @@ class Verifier_Verification extends Pluf_Model
                 'editable' => false
             )
         );
-
-        // Assoc. table
-        $accountModel = new User_Account();
-        $accountTable = $this->_con->pfx . $accountModel->_a['table'];
-        $credentialTable = $this->_con->pfx . $this->_a['table'];
-        $this->_a['views'] = array(
-            'join_credential_account' => array(
-                'join' => 'LEFT JOIN ' . $accountTable . ' ON ' . $credentialTable . '.account_id=' . $accountTable . 'id'
+        
+        $this->_a['idx'] = array(
+            'verification_code_unique_idx' => array(
+                'col' => 'subject_class, subject_id, code',
+                'type' => 'unique', // normal, unique, fulltext, spatial
+                'index_type' => '', // hash, btree
+                'index_option' => '',
+                'algorithm_option' => '',
+                'lock_option' => ''
             )
         );
     }
 
-    /**
-     * Check if code is valid
-     *
-     * @param string code the code to validate
-     * 
-     * @return boolean true if code is valid else false
-     */
-    function validate($code)
-    {
-        // XXX: hadi 2019: check expiry time
-        // XXX: hadi 2019: check user info
-        
-        // Check the code
-        return $this->code === $code;
-    }
-
-    /**
-     * Returns list of verifications of the given user account
-     * @param int $userId
-     * @return array
-     */
-    public static function getVerifications($userId)
-    {
-        $model = new Verifier_Verification();
-        $where = 'account_id = ' . $model->_toDb($userId, 'account_id');
-        $creds = $model->getList(array(
-            'filter' => $where
-        ));
-        if ($creds === false) {
-            return array();
-        }
-        return $creds;
-    }
-    
     function preSave($create = false)
     {
         if ($this->id == '') {
