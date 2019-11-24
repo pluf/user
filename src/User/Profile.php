@@ -49,12 +49,14 @@ class User_Profile extends Pluf_Model
             'first_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => true,
-                'size' => 100
+                'size' => 100,
+                'editable' => true
             ),
             'last_name' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
-                'size' => 100
+                'size' => 100,
+                'editable' => true
             ),
             'public_email' => array(
                 'type' => 'Pluf_DB_Field_Email',
@@ -68,7 +70,8 @@ class User_Profile extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => true,
                 'default' => $langs[0],
-                'size' => 5
+                'size' => 5,
+                'editable' => true
             ),
             'timezone' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
@@ -76,7 +79,30 @@ class User_Profile extends Pluf_Model
                 'default' => date_default_timezone_get(),
                 'size' => 45,
                 'verbose' => __('time zone'),
-                'help_text' => __('Time zone of the user to display the time in local time.')
+                'help_text' => __('Time zone of the user to display the time in local time.'),
+                'editable' => true
+            ),
+            'national_code' => array(
+                'type' => 'Pluf_DB_Field_Varchar',
+                'is_null' => true,
+                'size' => 32,
+                'editable' => true
+            ),
+            'gender' => array(
+                'type' => 'Pluf_DB_Field_Varchar',
+                'is_null' => true,
+                'size' => 16,
+                'editable' => true
+            ),
+            'weight' => array(
+                'type' => 'Pluf_DB_Field_Float',
+                'is_null' => true,
+                'editable' => true
+            ),
+            'birthday' => array(
+                'type' => 'Pluf_DB_Field_Date',
+                'is_null' => true,
+                'editable' => true
             ),
             /*
              * Foreign keys
