@@ -138,7 +138,7 @@ return array(
         'http-method' => 'POST'
     ),
     array( // verify
-        'regex' => '#^/accounts/(?P<userId>\d+)/verifications/(?P<code>[^\]+)$#',
+        'regex' => '#^/accounts/(?P<userId>\d+)/verifications/(?P<code>[^/]+)$#',
         'model' => 'User_Views_Account',
         'method' => 'activate',
         'http-method' => 'POST'
