@@ -129,6 +129,20 @@ return array(
         ),
         'http-method' => 'DELETE'
     ),
+    
+    // ************************************************** Account Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<userId>\d+)/verifications$#',
+        'model' => 'User_Views_Account',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<userId>\d+)/verifications/(?P<code>[^\]+)$#',
+        'model' => 'User_Views_Account',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
 
     // ************************************************** Groups
 

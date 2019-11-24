@@ -23,7 +23,7 @@
  * @author hadi
  *        
  */
-class Verifier_Exception_VerificationFailed extends Pluf_Exception
+class Verifier_Exception_VerificationSend extends Pluf_Exception
 {
 
     /**
@@ -33,9 +33,9 @@ class Verifier_Exception_VerificationFailed extends Pluf_Exception
      * @param string $link
      * @param string $developerMessage
      */
-    public function __construct($message = "Verification failed.", $previous = null, $link = null, $developerMessage = null)
+    public function __construct($message = 'Failed to send verification', $previous = null, $link = null, $developerMessage = null)
     {
         // XXX: maso, 1395: تعیین کد خطا
-        parent::__construct($message, 400, $previous, 400, $link, $developerMessage);
+        parent::__construct($message, 5000, $previous, 500, $link, $developerMessage);
     }
 }

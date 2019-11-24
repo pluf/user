@@ -39,15 +39,12 @@ class User_Views_Account
         // Create account
         $extra = array();
         $data = array_merge($request->REQUEST, $request->FILES);
-        // $form = new User_Form_User($data, $extra);
-        // $cuser = $form->save();
         $usr = User_Account::getUser($data['login']);
         if ($usr) {
             throw new Pluf_Exception('Username is existed already.', 400);
         }
         $form = new User_Form_Account($data, $extra);
         $cuser = $form->save();
-        self::doVerify($cuser);
         // Create credential
         $credit = new User_Credential();
         $credit->setFromFormData(array(
@@ -58,10 +55,8 @@ class User_Views_Account
         if (! $success) {
             throw new Pluf_Exception('An internal error is occured while create credential');
         }
-        if (! Pluf::f('user_account_auto_activation', false)) {
-            // TODO: hadi, 1397-05-26: send mail to activate account by user
-        }
-        // Return response
+        // Verifying account
+        $cuser = self::doVerify($cuser);
         return $cuser;
     }
 
@@ -69,14 +64,31 @@ class User_Views_Account
     {
         // Load verifier engine and verify account
         $type = class_exists('Tenant_Service') ? Tenant_Service::setting('account.verifier.engine', 'noverify') : //
-           Pluf::f('account.verifier.engine', 'noverify');
-        $verification = Verifier_Service::createVerification($account, $account);
-        $engine = Verifier_Service::getEngine($type);
-        return $engine->verify($verification);
+        Pluf::f('account.verifier.engine', 'noverify');
+        if($type === 'manual'){
+            return $account;
+        }
+        if ($type === 'noverify') {
+            $account->is_active = true;
+            $account->update();
+        } else {
+            $engine = Verifier_Service::getEngine($type);
+            $verification = Verifier_Service::createVerification($account, $account);
+            $success = $engine->send($verification);
+            if(!$success){
+                throw new Verifier_Exception_VerificationSend();
+            }
+            // Add verification information to the object to be verified
+            $account->verification = $verification;
+        }
+        return $account;
     }
 
     /**
      * Updates information of specified user (by id)
+     * 
+     * This function almost is used to activate or deactivate an account manually.
+     * So the user calling this function should has owner permission.
      *
      * @param Pluf_HTTP_Request $request
      * @param array $match
@@ -105,4 +117,31 @@ class User_Views_Account
         // TODO: Hadi, 1397-05-26: delete credentials and profile
         return $usr;
     }
+
+    public static function activate($request, $match)
+    {
+        // Check verification code and activate the account
+        $account = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        $verification = Verifier_Service::getVerification($account, $account, $match['code']);
+        if (! Verifier_Service::validateVerification($verification, $match['code'])) {
+            throw new Verifier_Exception_VerificationFailed();
+        }
+        $account->is_active = true;
+        $account->update();
+        Verifier_Service::clearVerifications($account);
+        return $account;
+    }
+
+    public static function verify($request, $match)
+    {
+        // create verification code
+        $account = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
+        if($account->is_active){
+            // Account is activated already
+            return $account;
+        }
+        return self::doVerify($account);
+    }
+
 }
+
