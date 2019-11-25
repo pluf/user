@@ -91,10 +91,11 @@ class Verifier_Service
     {
         // get list
         $model = new User_Verification();
-        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s AND code=%s', array(
+        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s AND code=%s AND account_id=%s', array(
             $subject->_a['model'],
             $subject->id,
-            $code
+            $code,
+            $account->id
         ));
         $list = $model->getList(array(
             'filter' => $q->gen()
@@ -114,9 +115,16 @@ class Verifier_Service
      */
     public static function validateVerification($verification, $code)
     {
+        // Check null and false verification
+        if(!$verification){
+            return false;
+        }
         // XXX: hadi 2019: check expiry count
         // Check the code and expiry time
-        return ! $verification->isExpired() && $verification->code === $code;
+        if($verification->isExpired()){
+            throw new Verifier_Exception_VerificationFailed('Verification code is expired.');
+        }
+        return $verification->code === $code;
     }
 
     /**
