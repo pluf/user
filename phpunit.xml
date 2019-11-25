@@ -16,6 +16,9 @@
 			<directory>tests/User_Profile_API/</directory>
 			<directory>tests/User_Middleware/</directory>
 		</testsuite>
+		<testsuite name="Contacts">
+			<directory>tests/User_Email/</directory>
+		</testsuite>
 	</testsuites>
 
 	<filter>
