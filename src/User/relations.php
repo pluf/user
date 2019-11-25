@@ -22,5 +22,15 @@ return array (
         'relate_to' => array(
             'User_Account'
         )
+    ),
+    'User_Verification' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
+    ),
+    'User_Email' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
     )
 );

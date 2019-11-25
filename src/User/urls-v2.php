@@ -411,5 +411,57 @@ return array(
             'POST',
             'PUT'
         )
-    )
+    ),
+    
+    // ************************************************** Emails
+    
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails$#',
+        'model' => 'User_Views_Email',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails$#',
+        'model' => 'User_Views_Email',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    // ************************************************** Email Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)/verifications$#',
+        'model' => 'User_Views_Email',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)/verifications/(?P<code>[^/]+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
 );

@@ -30,60 +30,60 @@
 class User_Email extends Pluf_Model
 {
 
-    /**
-     * Cache of the Role.
-     */
-    public $_cache_perms = null;
-
     function init()
     {
         $this->_a['verbose'] = 'emails';
         $this->_a['table'] = 'user_emails';
         $this->_a['cols'] = array(
-            // It is mandatory to have an "id" column.
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
-                // It is automatically added.
-                'blank' => true,
+                'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
-            'address' => array(
+            'email' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
+                'is_null' => false,
                 'size' => 128,
-                'verbose' => 'Email address',
                 'editable' => true,
                 'readable' => true
             ),
-            'verified' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
-                'blank' => false,
-                'verbose' => 'Verified',
-                'editable' => true,
-                'readable' => true
-            ),
-            'verification_token' => array(
+            'type' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
-                'blank' => true,
-                'verbose' => 'Verification code',
-                'editable' => false,
-                'readable' => false
+                'is_null' => true,
+                'size' => 64,
+                'editable' => true,
+                'readable' => true
             ),
+            'is_verified' => array(
+                'type' => 'Pluf_DB_Field_Boolean',
+                'is_null' => false,
+                'editable' => false,
+                'readable' => true
+            ),
+            /*
+             * Relations
+             */
+            'account_id' => array(
+                'type' => 'Pluf_DB_Field_Foreignkey',
+                'model' => 'User_Account',
+                'name' => 'account',
+                'relate_name' => 'profiles',
+                'graphql_name' => 'account',
+                'is_null' => false,
+                'editable' => false
+            )
         );
-    }
-
-    /**
-     *
-     * {@inheritdoc}
-     * @see Pluf_Model::__toString()
-     */
-    function __toString()
-    {
-        $repr = $this->last_name;
-        if (strlen($this->first_name) > 0) {
-            $repr = $this->first_name . ' ' . $repr;
-        }
-        return $repr;
+        
+        $this->_a['idx'] = array(
+            'account_email_unique_idx' => array(
+                'col' => 'email, account_id, tenant',
+                'type' => 'normal', // normal, unique, fulltext, spatial
+                'index_type' => '', // hash, btree
+                'index_option' => '',
+                'algorithm_option' => '',
+                'lock_option' => ''
+            )
+        );
     }
 }
