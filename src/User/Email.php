@@ -45,7 +45,7 @@ class User_Email extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
                 'size' => 128,
-                'editable' => true,
+                'editable' => false,
                 'readable' => true
             ),
             'type' => array(
@@ -68,7 +68,7 @@ class User_Email extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
-                'relate_name' => 'profiles',
+                'relate_name' => 'emails',
                 'graphql_name' => 'account',
                 'is_null' => false,
                 'editable' => false

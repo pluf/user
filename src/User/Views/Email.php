@@ -38,7 +38,9 @@ class User_Views_Email extends Pluf_Views
         $user = self::checkAccess($request, $match);
         // Create email
         $data = $request->REQUEST;
-        $form = Pluf_ModelUtils::getCreateForm(new User_Email(), $data);
+        $email = new User_Email();
+        $email->_a['cols']['email']['editable'] = true;
+        $form = Pluf_ModelUtils::getCreateForm($email, $data);
         $email = $form->save(false);
         $email->account_id = $user;
         $email->create();
@@ -87,6 +89,48 @@ class User_Views_Email extends Pluf_Views
     }
     
     /**
+     * Updates information of the email of an account.
+     *
+     * Note that the email address could not be changed by updating process.
+     *
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
+     * @return User_Email
+     */
+    public function update($request, $match)
+    {
+        $usr = self::checkAccess($request, $match);
+        $match['parentId'] = $usr->id;
+        $match['modelId'] = $match['emailId'];
+        $p = array(
+            'parent' => 'User_Account',
+            'parentKey' => 'account_id',
+            'model' => 'User_Email'
+        );
+        return $this->updateManyToOne($request, $match, $p);
+    }
+    
+    /**
+     * Delete specified email of an account
+     *
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
+     * @return User_Email
+     */
+    public function delete($request, $match)
+    {
+        $usr = self::checkAccess($request, $match);
+        $match['parentId'] = $usr->id;
+        $match['modelId'] = $match['emailId'];
+        $p = array(
+            'parent' => 'User_Account',
+            'parentKey' => 'account_id',
+            'model' => 'User_Email'
+        );
+        return $this->deleteManyToOne($request, $match, $p);
+    }
+    
+    /**
      * Checks permission to change emails and returns account which its email will be changed.
      *
      * Checks the permission of the requester user to change emails of defined account in the request.
@@ -118,7 +162,7 @@ class User_Views_Email extends Pluf_Views
         }
         return $user;
     }
-
+    
     private static function doVerify($email)
     {
         // Load verifier engine and verify account
@@ -139,26 +183,6 @@ class User_Views_Email extends Pluf_Views
         // Add verification information to the object to be verified
         $email->verification = $verification;
         return $email;
-    }
-
-    /**
-     * Delete specified email of an account
-     *
-     * @param Pluf_HTTP_Request $request
-     * @param array $match
-     * @return User_Email
-     */
-    public function delete($request, $match)
-    {
-        $usr = self::checkAccess($request, $match);
-        $match['parentId'] = $usr->id;
-        $match['modelId'] = $match['emailId'];
-        $p = array(
-            'parent' => 'User_Account',
-            'parentKey' => 'account_id',
-            'model' => 'User_Email'
-        );
-        return $this->deleteManyToOne($request, $match, $p);
     }
     
     public static function activate($request, $match)
