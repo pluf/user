@@ -38,7 +38,7 @@ class Verifier_Service
     public static function createVerification($user, $subject)
     {
         $verification = new User_Verification();
-        $verification->code = Pluf_Utils::getRandomString(7);
+        $verification->code = Pluf_Utils::getRandomNumericString(7);
         $verification->subject_class = $subject->_a['model'];
         $verification->subject_id = $subject->id;
         $verification->account_id = $user;
