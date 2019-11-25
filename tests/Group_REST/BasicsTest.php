@@ -217,7 +217,6 @@ class Group_REST_BasicsTest extends TestCase
         $group->create();
 
         $role = User_Role::getFromString('tenant.owner');
-        $group->setAssoc($role);
 
         // Add role
         $response = self::$client->post('/api/v2/user/groups/' . $group->id . '/roles', array(
@@ -228,14 +227,17 @@ class Group_REST_BasicsTest extends TestCase
 
         $list = $group->get_roles_list();
         Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
+        
         $group->delAssoc($role);
-
+        
+        // Add role by another API
         $response = self::$client->post('/api/v2/user/groups/' . $group->id . '/roles/' . $role->id, array());
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
 
         $list = $group->get_roles_list();
         Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
+        
         $group->delete();
     }
 
@@ -251,18 +253,11 @@ class Group_REST_BasicsTest extends TestCase
         $group->create();
 
         $role = User_Role::getFromString('tenant.owner');
+        
+        // Add role to the group
         $group->setAssoc($role);
 
-        // Add role
-        $response = self::$client->post('/api/v2/user/groups/' . $group->id . '/roles', array(
-            'role_id' => $role->id
-        ));
-        Test_Assert::assertResponseNotNull($response, 'Find result is empty');
-        Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
-
-        $list = $group->get_roles_list();
-        Test_Assert::assertTrue(sizeof($list) > 0, 'No role in list');
-
+        // Delete role from group
         $response = self::$client->delete('/api/v2/user/groups/' . $group->id . '/roles/' . $role->id);
         Test_Assert::assertResponseNotNull($response, 'Find result is empty');
         Test_Assert::assertResponseStatusCode($response, 200, 'Find status code is not 200');
