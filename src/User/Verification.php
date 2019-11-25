@@ -70,7 +70,9 @@ class User_Verification extends Pluf_Model
             'account_id' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
-                'relate_name' => 'account',
+                'name' => 'account',
+                'relate_name' => 'profiles',
+                'graphql_name' => 'account',
                 'is_null' => false,
                 'editable' => false
             )
