@@ -442,6 +442,15 @@ return array(
             'User_Precondition::loginRequired'
         )
     ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
     array( // Delete
         'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
         'model' => 'User_Views_Email',
