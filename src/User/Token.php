@@ -74,7 +74,9 @@ class User_Token extends Pluf_Model
             'account_id' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
-                'relate_name' => 'account',
+                'name' => 'account',
+                'graphql_name' => 'account',
+                'relate_name' => 'tokens',
                 'is_null' => false,
                 'editable' => false
             )
