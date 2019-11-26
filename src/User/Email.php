@@ -78,7 +78,7 @@ class User_Email extends Pluf_Model
         $this->_a['idx'] = array(
             'account_email_unique_idx' => array(
                 'col' => 'email, account_id, tenant',
-                'type' => 'normal', // normal, unique, fulltext, spatial
+                'type' => 'unique', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',
                 'algorithm_option' => '',

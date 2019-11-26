@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
-Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
-Pluf::loadFunction('User_Shortcuts_GetListCount');
 
 /**
  * Manage emails of account
@@ -154,7 +152,7 @@ class User_Views_Email extends Pluf_Views
         if (array_key_exists('accountId', $match)) {
             // Check user is owner
             if ($request->user->id != $match['accountId'] && ! User_Precondition::isOwner($request)) {
-                throw new Pluf_Exception_Forbidden('Not allowed to change others emails');
+                throw new Pluf_Exception_Forbidden('Not allowed to change others` emails');
             }
             $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['accountId']);
         } else {
