@@ -18,6 +18,7 @@
 		</testsuite>
 		<testsuite name="Contacts">
 			<directory>tests/User_Email/</directory>
+			<directory>tests/User_Phone/</directory>
 		</testsuite>
 	</testsuites>
 
