@@ -13,7 +13,8 @@
 		"User_Space",
 		"User_Verification",
 		"User_Email",
-		"User_Phone"
+		"User_Phone",
+		"User_Address"
 	],
 	"init": {
 		"User_Role": [

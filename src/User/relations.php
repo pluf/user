@@ -37,5 +37,10 @@ return array (
         'relate_to' => array(
             'User_Account'
         )
+    ),
+    'User_Address' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
     )
 );
