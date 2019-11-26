@@ -32,5 +32,10 @@ return array (
         'relate_to' => array(
             'User_Account'
         )
+    ),
+    'User_Phone' => array(
+        'relate_to' => array(
+            'User_Account'
+        )
     )
 );

@@ -12,7 +12,8 @@
 		"User_Avatar",
 		"User_Space",
 		"User_Verification",
-		"User_Email"
+		"User_Email",
+		"User_Phone"
 	],
 	"init": {
 		"User_Role": [

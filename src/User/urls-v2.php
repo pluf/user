@@ -473,4 +473,66 @@ return array(
         'method' => 'activate',
         'http-method' => 'POST'
     ),
+    
+    // ************************************************** Phones
+    
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    // ************************************************** Phone Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)/verifications$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)/verifications/(?P<code>[^/]+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
 );
+
