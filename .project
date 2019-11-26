@@ -29,12 +29,12 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1574747383443</id>
+			<id>1574757562012</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments></arguments>
+				<arguments>1.0-name-matches-false-false-vendor</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>
