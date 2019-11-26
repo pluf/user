@@ -26,7 +26,6 @@ Pluf::loadFunction('User_Shortcuts_GetListCount');
  */
 class User_Views_Account
 {
-
     /**
      * Creates new account (register new user) and a credential for it
      *
@@ -55,8 +54,26 @@ class User_Views_Account
         if (! $success) {
             throw new Pluf_Exception('An internal error is occured while create credential');
         }
+        // XXX: hadi, 1398: create email,phone and address entities if are existed
+        // Create profile
+        $profile = new User_Profile();
+        $form = Pluf_ModelUtils::getCreateForm($profile, $data);
+        $profile = $form->save(false);
+        $profile->account_id = $cuser;
+        $profile->create();
+        $cuser->profile = $profile;
+        // Create email
+        if (array_key_exists('email', $data)) {
+            $email = new User_Email();
+            $form = Pluf_ModelUtils::getCreateForm($email, $data);
+            $email = $form->save(false);
+            $email->account_id = $cuser;
+            $email->create();
+            $cuser->email = $email;
+        }
         // Verifying account
         $cuser = self::doVerify($cuser);
+        // Add all data to returning object
         return $cuser;
     }
 
@@ -65,7 +82,7 @@ class User_Views_Account
         // Load verifier engine and verify account
         $type = class_exists('Tenant_Service') ? Tenant_Service::setting('account.verifier.engine', 'noverify') : //
         Pluf::f('account.verifier.engine', 'noverify');
-        if($type === 'manual'){
+        if ($type === 'manual') {
             return $account;
         }
         if ($type === 'noverify') {
@@ -75,7 +92,7 @@ class User_Views_Account
             $engine = Verifier_Service::getEngine($type);
             $verification = Verifier_Service::createVerification($account, $account);
             $success = $engine->send($verification);
-            if(!$success){
+            if (! $success) {
                 throw new Verifier_Exception_VerificationSend();
             }
             // Add verification information to the object to be verified
@@ -86,7 +103,7 @@ class User_Views_Account
 
     /**
      * Updates information of specified user (by id)
-     * 
+     *
      * This function almost is used to activate or deactivate an account manually.
      * So the user calling this function should has owner permission.
      *
@@ -136,12 +153,11 @@ class User_Views_Account
     {
         // create verification code
         $account = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        if($account->is_active){
+        if ($account->is_active) {
             // Account is activated already
             return $account;
         }
         return self::doVerify($account);
     }
-
 }
 
