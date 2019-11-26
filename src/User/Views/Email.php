@@ -38,6 +38,9 @@ class User_Views_Email extends Pluf_Views
         $user = self::checkAccess($request, $match);
         // Create email
         $data = $request->REQUEST;
+        if(!Pluf_Utils::isValidEmail($data['email'])){
+            throw new Pluf_Exception_BadRequest('Email is not a valid email address.');
+        }
         $email = new User_Email();
         $email->_a['cols']['email']['editable'] = true;
         $form = Pluf_ModelUtils::getCreateForm($email, $data);
