@@ -109,4 +109,15 @@ class User_Verification extends Pluf_Model
         $expire = new Datetime($this->expiry_dtime);
         return $now >= $expire;
     }
+    
+    /**
+     * Returns the subject of the verification.
+     * 
+     * @return Pluf_Model
+     */
+    public function getSubject(){
+        $model = $this->subject_class;
+        $id = $this->subject_id;
+        return new $model($id);
+    }
 }

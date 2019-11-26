@@ -26,6 +26,7 @@ Pluf::loadFunction('User_Shortcuts_GetListCount');
  */
 class User_Views_Account
 {
+
     /**
      * Creates new account (register new user) and a credential for it
      *
@@ -65,11 +66,31 @@ class User_Views_Account
         // Create email
         if (array_key_exists('email', $data)) {
             $email = new User_Email();
+            $email->_a['cols']['email']['editable'] = true;
             $form = Pluf_ModelUtils::getCreateForm($email, $data);
             $email = $form->save(false);
             $email->account_id = $cuser;
             $email->create();
             $cuser->email = $email;
+        }
+        // Create phone
+        if (array_key_exists('phone', $data)) {
+            $phone = new User_Phone();
+            $phone->_a['cols']['phone']['editable'] = true;
+            $form = Pluf_ModelUtils::getCreateForm($phone, $data);
+            $phone = $form->save(false);
+            $phone->account_id = $cuser;
+            $phone->create();
+            $cuser->phone = $phone;
+        }
+        // Create address
+        if (array_key_exists('country', $data) || array_key_exists('province', $data) || array_key_exists('city', $data) || array_key_exists('address', $data) || array_key_exists('address', $data) || array_key_exists('location', $data) || array_key_exists('postal_code', $data)) {
+            $adr = new User_Address();
+            $form = Pluf_ModelUtils::getCreateForm($adr, $data);
+            $adr = $form->save(false);
+            $adr->account_id = $cuser;
+            $adr->create();
+            $cuser->address = $adr;
         }
         // Verifying account
         $cuser = self::doVerify($cuser);
@@ -90,6 +111,9 @@ class User_Views_Account
             $account->update();
         } else {
             $engine = Verifier_Service::getEngine($type);
+            if (! $engine) {
+                throw new Verifier_Exception_EngineLoad('Defined verifier engine does not exist.');
+            }
             $verification = Verifier_Service::createVerification($account, $account);
             $success = $engine->send($verification);
             if (! $success) {
