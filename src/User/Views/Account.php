@@ -115,12 +115,14 @@ class User_Views_Account
                 throw new Verifier_Exception_EngineLoad('Defined verifier engine does not exist.');
             }
             $verification = Verifier_Service::createVerification($account, $account);
-            $success = $engine->send($verification);
-            if (! $success) {
+            $engineResponse = $engine->send($verification);
+            if (! $engineResponse) {
                 throw new Verifier_Exception_VerificationSend();
             }
             // Add verification information to the object to be verified
             $account->verification = $verification;
+            // Add response of the engine to the objeect to be verified
+            $account->verifier_response = $engineResponse;
         }
         return $account;
     }

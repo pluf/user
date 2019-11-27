@@ -177,12 +177,13 @@ class User_Views_Email extends Pluf_Views
         $engine = Verifier_Service::getEngine($type);
         $user = $email->get_account();
         $verification = Verifier_Service::createVerification($user, $email);
-        $success = $engine->send($verification);
-        if (! $success) {
+        $engineResponse = $engine->send($verification);
+        if (! $engineResponse) {
             throw new Verifier_Exception_VerificationSend();
         }
         // Add verification information to the object to be verified
         $email->verification = $verification;
+        $email->verifier_response = $engineResponse;
         return $email;
     }
     

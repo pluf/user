@@ -174,12 +174,13 @@ class User_Views_Phone extends Pluf_Views
         $engine = Verifier_Service::getEngine($type);
         $user = $phone->get_account();
         $verification = Verifier_Service::createVerification($user, $phone);
-        $success = $engine->send($verification);
-        if (! $success) {
+        $engineReponse = $engine->send($verification);
+        if (! $engineReponse) {
             throw new Verifier_Exception_VerificationSend();
         }
         // Add verification information to the object to be verified
         $phone->verification = $verification;
+        $phone->engineResponse = $engineReponse;
         return $phone;
     }
     
