@@ -25,6 +25,10 @@
  */
 class Verifier_Engine_SmsIr extends Verifier_Engine
 {
+    const ENGINE_PARAMETER_API_KEY = 'verifier.engine.SmsIr.ApiKey';
+    const ENGINE_PARAMETER_SECRET_KEY = 'verifier.engine.SmsIr.SecretKey';
+    const ENGINE_PARAMETER_TEMPLATE_ID = 'verifier.engine.SmsIr.TemplateId';
+    
     /*
      *
      */
@@ -83,8 +87,8 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
     {
         $backend = 'http://RestfulSms.com';
         $path = '/api/Token';
-        $apiKey = Tenant_Service::setting('verifier.engine.SmsIr.ApiKey', '');
-        $secKey = Tenant_Service::setting('verifier.engine.SmsIr.SecretKey', '');
+        $apiKey = Tenant_Service::setting(self::ENGINE_PARAMETER_API_KEY, '');
+        $secKey = Tenant_Service::setting(self::ENGINE_PARAMETER_SECRET_KEY, '');
         $param = array(
             'UserApiKey' => $apiKey,
             'SecretKey' => $secKey
@@ -111,7 +115,7 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
             'x-sms-ir-secure-token' => $token,
             'Content-Type' => 'application/json'
         );
-        $templateId = (int) Tenant_Service::setting('verifier.engine.SmsIr.TemplateId', 0);
+        $templateId = (int) Tenant_Service::setting(self::ENGINE_PARAMETER_TEMPLATE_ID, 0);
         $path = $templateId > 0 ? '/api/UltraFastSend' : '/api/VerificationCode';
         $param = array();
         if ($templateId > 0) {
