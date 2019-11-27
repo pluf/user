@@ -25,7 +25,6 @@
  */
 class Verifier_Engine_SmsIr extends Verifier_Engine
 {
-
     /*
      *
      */
@@ -54,7 +53,7 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
     {
         // Get mobile number
         $mobile = $this->getMobile($verification);
-        if(!$mobile){
+        if (! $mobile) {
             throw new Verifier_Exception_VerificationSend('There is no phone related to user to send verification SMS.');
         }
         // Get token
@@ -63,13 +62,14 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
         $response = $this->sendSms($verification, $mobile, $token);
         return $response;
     }
-    
-    private function getMobile($verification){
+
+    private function getMobile($verification)
+    {
         $subject = $verification->getSubject();
-        switch ($subject->_a['model']){
+        switch ($subject->_a['model']) {
             case 'User_Account':
                 $phones = $subject->get_phones_list();
-                if(!$phones || count($phones) === 0){
+                if (! $phones || count($phones) === 0) {
                     return false;
                 }
                 return $phones[0]->phone;
@@ -78,44 +78,61 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
         }
         return null;
     }
-    
-    private function getToken(){
+
+    private function getToken()
+    {
         $backend = 'http://RestfulSms.com';
         $path = '/api/Token';
+        $apiKey = Tenant_Service::setting('verifier.engine.SmsIr.ApiKey', '');
+        $secKey = Tenant_Service::setting('verifier.engine.SmsIr.SecretKey', '');
         $param = array(
-            'UserApiKey' => Tenant_Service::setting('verifier.engine.SmsIr.ApiKey', ''),
-            'SecretKey' => Tenant_Service::setting('verifier.engine.SmsIr.SecretKey', '')
+            'UserApiKey' => $apiKey,
+            'SecretKey' => $secKey
         );
         $client = new GuzzleHttp\Client();
         $response = $client->request('POST', $backend . $path, [
-            'headers' => ['Content-Type' => 'application/json'],
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ],
             'body' => json_encode($param)
         ]);
-        if($response->getStatusCode() < 200 || $response->getStatusCode() >= 300){
-            throw new Pluf_Exception($response->getBody()->getContents());
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
+            throw new Verifier_Exception_VerificationSend($response->getBody()->getContents());
         }
         $contents = $response->getBody()->getContents();
         $result = json_decode($contents, true);
         return $result['TokenKey'];
     }
 
-    private function sendSms($verification, $mobile, $token){
+    private function sendSms($verification, $mobile, $token)
+    {
         $backend = 'http://RestfulSms.com';
-        $path = '/api/VerificationCode';
         $headers = array(
             'x-sms-ir-secure-token' => $token,
             'Content-Type' => 'application/json'
         );
-        $param = array(
-            'Code' => $verification->code,
-            'MobileNumber' => $mobile
-        );
+        $templateId = (int) Tenant_Service::setting('verifier.engine.SmsIr.TemplateId', 0);
+        $path = $templateId > 0 ? '/api/UltraFastSend' : '/api/VerificationCode';
+        $param = array();
+        if ($templateId > 0) {
+            $param['MobileNumber'] = $mobile;
+            $param['TemplateId'] = $templateId;
+            $param['ParameterArray'] = array(
+                array(
+                    'Parameter' => 'VerificationCode',
+                    'ParameterValue' => $verification->code
+                )
+            );
+        } else {
+            $param['MobileNumber'] = $mobile;
+            $param['Code'] = $verification->code;
+        }
         $client = new GuzzleHttp\Client();
         $response = $client->request('POST', $backend . $path, [
             'headers' => $headers,
             'body' => json_encode($param)
         ]);
-        if($response->getStatusCode() < 200 || $response->getStatusCode() >= 300){
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
             throw new Pluf_Exception($response->getBody()->getContents());
         }
         $contents = $response->getBody()->getContents();
