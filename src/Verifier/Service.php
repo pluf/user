@@ -186,7 +186,8 @@ class Verifier_Service
         return array(
             new Verifier_Engine_NoVerify(),
             new Verifier_Engine_Manual(),
-            new Verifier_Engine_SmsIr()
+            new Verifier_Engine_SmsIr(),
+            new Verifier_Engine_GamaSmsIr()
         );
     }
 }
