@@ -30,7 +30,7 @@ function User_Shortcuts_CheckPassword($pass)
 /**
  * Deletes avatar of given user.
  *
- * @param User $user            
+ * @param User_Account $user            
  * @return Pluf_HTTP_Response_Json
  */
 function User_Shortcuts_DeleteAvatar($user)
@@ -45,7 +45,7 @@ function User_Shortcuts_DeleteAvatar($user)
 /**
  * Returns avatar of given user if is existed.
  *
- * @param User $user            
+ * @param User_Account $user            
  */
 function User_Shortcuts_GetAvatar($user)
 {
@@ -61,7 +61,7 @@ function User_Shortcuts_GetAvatar($user)
 
 /**
  * Sets (updates or creates) avatar for given user
- * @param User $user
+ * @param User_Account $user
  * @param array $data
  * @return Pluf_HTTP_Response_Json
  */

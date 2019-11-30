@@ -102,7 +102,6 @@ class User_REST_AccountActivationTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
-        $this->assertTrue(!isset($actual['is_active']) || $actual['is_active'] == false);
         
         // auto activation -> true
         static::$config['user_account_auto_activate'] = true;
@@ -176,8 +175,6 @@ class User_REST_AccountActivationTest extends TestCase
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
-        $this->assertTrue(!isset($actual['is_active']) || $actual['is_active'] == false);
-        
         
         // logout
         $response = self::$client->post('/api/v2/user/logout');

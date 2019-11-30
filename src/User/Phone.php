@@ -19,21 +19,18 @@
  */
 
 /**
- * User data model
- *
- * این مدل داده‌ای، یک مدل داده‌ای کلی است و همواره به صورت پیش فرض استفاده
- * می‌شود.
- * در صورت تمایل می‌توان از ساختارهای داده‌ای دیگر به عنوان مدل داده‌ای برای
- * کاربران
- * استفاده کرد.
+ * User phone data model
+ * 
+ * It is used to store information of different type of calls 
+ * contains phone numbers and mobile numbers of a user. 
  */
-class User_Email extends Pluf_Model
+class User_Phone extends Pluf_Model
 {
 
     function init()
     {
-        $this->_a['verbose'] = 'emails';
-        $this->_a['table'] = 'user_emails';
+        $this->_a['verbose'] = 'phones';
+        $this->_a['table'] = 'user_phones';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
@@ -41,10 +38,10 @@ class User_Email extends Pluf_Model
                 'editable' => false,
                 'readable' => true
             ),
-            'email' => array(
+            'phone' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
-                'size' => 128,
+                'size' => 32,
                 'editable' => false,
                 'readable' => true
             ),
@@ -68,7 +65,7 @@ class User_Email extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
-                'relate_name' => 'emails',
+                'relate_name' => 'phones',
                 'graphql_name' => 'account',
                 'is_null' => false,
                 'editable' => false
@@ -76,8 +73,8 @@ class User_Email extends Pluf_Model
         );
         
         $this->_a['idx'] = array(
-            'account_email_unique_idx' => array(
-                'col' => 'email, account_id, tenant',
+            'account_phone_unique_idx' => array(
+                'col' => 'phone, account_id, tenant',
                 'type' => 'unique', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',

@@ -10,7 +10,11 @@
 		"User_Group",
 		"User_Message",
 		"User_Avatar",
-		"User_Space"
+		"User_Space",
+		"User_Verification",
+		"User_Email",
+		"User_Phone",
+		"User_Address"
 	],
 	"init": {
 		"User_Role": [

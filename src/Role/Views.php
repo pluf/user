@@ -31,8 +31,8 @@ class Role_Views extends Pluf_Views
     /**
      * Creates new role.
      *
-     * @param unknown_type $request
-     * @param unknown_type $match
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function create($request, $match)
     {
@@ -44,8 +44,8 @@ class Role_Views extends Pluf_Views
     /**
      * Returns information of a role.
      *
-     * @param unknown_type $request
-     * @param unknown_type $match
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public function get($request, $match)
     {
@@ -55,8 +55,8 @@ class Role_Views extends Pluf_Views
     /**
      * Updates information of a role.
      *
-     * @param unknown_type $request
-     * @param unknown_type $match
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public static function update($request, $match)
     {
@@ -70,8 +70,8 @@ class Role_Views extends Pluf_Views
     /**
      * Deletes a role.
      *
-     * @param unknown_type $request
-     * @param unknown_type $match
+     * @param Pluf_HTTP_Request $request
+     * @param array $match
      */
     public function delete($request, $match)
     {

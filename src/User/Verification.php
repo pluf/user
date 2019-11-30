@@ -19,21 +19,16 @@
  */
 
 /**
- * User data model
+ * Verification data model
  *
- * این مدل داده‌ای، یک مدل داده‌ای کلی است و همواره به صورت پیش فرض استفاده
- * می‌شود.
- * در صورت تمایل می‌توان از ساختارهای داده‌ای دیگر به عنوان مدل داده‌ای برای
- * کاربران
- * استفاده کرد.
  */
-class User_Email extends Pluf_Model
+class User_Verification extends Pluf_Model
 {
 
     function init()
     {
-        $this->_a['verbose'] = 'emails';
-        $this->_a['table'] = 'user_emails';
+        $this->_a['verbose'] = 'verifications';
+        $this->_a['table'] = 'user_verifications';
         $this->_a['cols'] = array(
             'id' => array(
                 'type' => 'Pluf_DB_Field_Sequence',
@@ -41,34 +36,42 @@ class User_Email extends Pluf_Model
                 'editable' => false,
                 'readable' => true
             ),
-            'email' => array(
+            'code' => array(
                 'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
-                'size' => 128,
-                'editable' => false,
-                'readable' => true
-            ),
-            'type' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
-                'is_null' => true,
                 'size' => 64,
-                'editable' => true,
-                'readable' => true
+                'readable' => false
             ),
-            'is_verified' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+            'subject_class' => array(
+                'type' => 'Pluf_DB_Field_Varchar',
                 'is_null' => false,
-                'editable' => false,
-                'readable' => true
+                'size' => 64,
+                'readable' => false
             ),
-            /*
-             * Relations
-             */
+            'subject_id' => array(
+                'type' => 'Pluf_DB_Field_Integer',
+                'is_null' => false,
+                'readable' => false
+            ),
+            'expiry_count' => array(
+                'type' => 'Pluf_DB_Field_Integer',
+                'editable' => false
+            ),
+            'expiry_dtime' => array(
+                'type' => 'Pluf_DB_Field_Datetime',
+                'editable' => false
+            ),
+            'creation_dtime' => array(
+                'type' => 'Pluf_DB_Field_Datetime',
+                'is_null' => false,
+                'editable' => false
+            ),
+            // Foreign keys
             'account_id' => array(
                 'type' => 'Pluf_DB_Field_Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
-                'relate_name' => 'emails',
+                'relate_name' => 'verifications',
                 'graphql_name' => 'account',
                 'is_null' => false,
                 'editable' => false
@@ -76,8 +79,8 @@ class User_Email extends Pluf_Model
         );
         
         $this->_a['idx'] = array(
-            'account_email_unique_idx' => array(
-                'col' => 'email, account_id, tenant',
+            'verification_code_unique_idx' => array(
+                'col' => 'subject_class, subject_id, code',
                 'type' => 'unique', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',
@@ -85,5 +88,36 @@ class User_Email extends Pluf_Model
                 'lock_option' => ''
             )
         );
+    }
+
+    function preSave($create = false)
+    {
+        if ($this->id == '') {
+            $this->creation_dtime = gmdate('Y-m-d H:i:s');
+            $this->expiry_dtime = gmdate('Y-m-d H:i:s', time() + 15 * 60);
+        }
+    }
+
+    /**
+     * Check if the verification is expired
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $now = new DateTime(gmdate('Y-m-d H:i:s'));
+        $expire = new Datetime($this->expiry_dtime);
+        return $now >= $expire;
+    }
+    
+    /**
+     * Returns the subject of the verification.
+     * 
+     * @return Pluf_Model
+     */
+    public function getSubject(){
+        $model = $this->subject_class;
+        $id = $this->subject_id;
+        return new $model($id);
     }
 }

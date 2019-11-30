@@ -129,6 +129,20 @@ return array(
         ),
         'http-method' => 'DELETE'
     ),
+    
+    // ************************************************** Account Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<userId>\d+)/verifications$#',
+        'model' => 'User_Views_Account',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<userId>\d+)/verifications/(?P<code>[^/]+)$#',
+        'model' => 'User_Views_Account',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
 
     // ************************************************** Groups
 
@@ -397,5 +411,174 @@ return array(
             'POST',
             'PUT'
         )
-    )
+    ),
+    
+    // ************************************************** Emails
+    
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails$#',
+        'model' => 'User_Views_Email',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails$#',
+        'model' => 'User_Views_Email',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    // ************************************************** Email Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)/verifications$#',
+        'model' => 'User_Views_Email',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<accountId>\d+)/emails/(?P<emailId>\d+)/verifications/(?P<code>[^/]+)$#',
+        'model' => 'User_Views_Email',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
+    
+    // ************************************************** Phones
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    // ************************************************** Phone Verification
+    array( // create verification
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)/verifications$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'verify',
+        'http-method' => 'POST'
+    ),
+    array( // verify
+        'regex' => '#^/accounts/(?P<accountId>\d+)/phones/(?P<phoneId>\d+)/verifications/(?P<code>[^/]+)$#',
+        'model' => 'User_Views_Phone',
+        'method' => 'activate',
+        'http-method' => 'POST'
+    ),
+    
+    // ************************************************** Addresses
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/addresses$#',
+        'model' => 'User_Views_Address',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/addresses$#',
+        'model' => 'User_Views_Address',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/addresses/(?P<addressId>\d+)$#',
+        'model' => 'User_Views_Address',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Update
+        'regex' => '#^/accounts/(?P<accountId>\d+)/addresses/(?P<addressId>\d+)$#',
+        'model' => 'User_Views_Address',
+        'method' => 'update',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/addresses/(?P<addressId>\d+)$#',
+        'model' => 'User_Views_Address',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
 );
+
