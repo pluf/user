@@ -191,4 +191,3 @@ class Verifier_Service
         );
     }
 }
-
