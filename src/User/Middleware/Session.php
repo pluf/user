@@ -52,6 +52,7 @@ class User_Middleware_Session
             }
         }
         $request->user = new User_Account();
+        $request->user->id = 0;
         return false;
     }
 

@@ -42,7 +42,6 @@ class User_Account extends Pluf_Model
                 'type' => 'Pluf_DB_Field_Sequence',
                 // It is automatically added.
                 'is_null' => true,
-                'default' => 0,
                 'editable' => false,
                 'readable' => true
             ),
