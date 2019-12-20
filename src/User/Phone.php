@@ -74,7 +74,7 @@ class User_Phone extends Pluf_Model
         
         $this->_a['idx'] = array(
             'account_phone_unique_idx' => array(
-                'col' => 'phone, account_id, tenant',
+                'col' => 'phone, account_id',
                 'type' => 'unique', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',
