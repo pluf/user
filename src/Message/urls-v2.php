@@ -24,6 +24,20 @@ return array(
         'http-method' => 'GET',
         'precond' => array(
             'User_Precondition::loginRequired'
+        ),
+        // Cache apram
+        'cacheable' => true,
+        'revalidate' => false,
+        'intermediate_cache' => true,
+        'max_age' => 31536000, // 365*24*60*60
+    ),
+    array(
+        'regex' => '#^/schema$#',
+        'model' => 'Message_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Message'
         )
     ),
     array(
