@@ -91,7 +91,7 @@ class User_Views_Profile
         $profile = null;
         if (array_key_exists('profileId', $match)) {
             $profile = Pluf_Shortcuts_GetObjectOr404('User_Profile', $match['profileId']);
-            if($profile->account_id !== $user->id){
+            if(!User_Precondition::isOwner($request) && $profile->account_id !== $user->id){
                 throw new Pluf_HTTP_Error404('You are not allowed to change this profile.');
             }
             $form = Pluf_Shortcuts_GetFormForUpdateModel($profile, $request->REQUEST, array());
