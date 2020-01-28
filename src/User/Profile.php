@@ -63,7 +63,7 @@ class User_Profile extends Pluf_Model
                 'is_null' => true,
                 // @note: hadi, 1395-07-14: change email is done by
                 // another process.
-                'editable' => false,
+                'editable' => true,
                 'readable' => true
             ),
             'language' => array(
