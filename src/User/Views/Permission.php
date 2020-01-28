@@ -69,7 +69,8 @@ class User_Views_Permission
         // XXX: maso, 1395: check user access.
         // Hadi, 1396: check user access
         $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $request->REQUEST['role']);
+        $roleId = array_key_exists('id', $request->REQUEST) ? $request->REQUEST['id'] : $request->REQUEST['role'];
+        $perm = Pluf_Shortcuts_GetObjectOr404('User_Role', $roleId);
         $user->setAssoc($perm);
         return $user;
     }
