@@ -68,7 +68,9 @@ class User_Views_Group extends Pluf_Views
     public function add($request, $match)
     {
         $user = Pluf_Shortcuts_GetObjectOr404('User_Account', $match['userId']);
-        if (array_key_exists('group_id', $request->REQUEST)) {
+        if (array_key_exists('id', $request->REQUEST)) {
+            $group = Pluf_Shortcuts_GetObjectOr404('User_Group', $request->REQUEST['id']);
+        } elseif (array_key_exists('group_id', $request->REQUEST)) {
             $group = Pluf_Shortcuts_GetObjectOr404('User_Group', $request->REQUEST['group_id']);
         } elseif (array_key_exists('group', $request->REQUEST)) {
             $group = Pluf_Shortcuts_GetObjectOr404('User_Group', $request->REQUEST['group']);
