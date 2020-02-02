@@ -119,7 +119,7 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
         $path = $templateId > 0 ? '/api/UltraFastSend' : '/api/VerificationCode';
         $param = array();
         if ($templateId > 0) {
-            $param['MobileNumber'] = $mobile;
+            $param['Mobile'] = $mobile;
             $param['TemplateId'] = $templateId;
             $param['ParameterArray'] = array(
                 array(
