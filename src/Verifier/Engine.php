@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,15 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\User\Verifier;
+
+use JsonSerializable;
+use Pluf\User\Verification;
 
 /**
- * Defines a general verifier engine. Different verifier engines should impelement this class.
+ * Defines a general verifier engine.
+ * Different verifier engines should impelement this class.
  *
  * @author hadi
  *        
  */
-class Verifier_Engine implements JsonSerializable
+abstract class Engine implements JsonSerializable
 {
+
     const ENGINE_PREFIX = 'verifier_engine_';
 
     /**
@@ -36,10 +41,10 @@ class Verifier_Engine implements JsonSerializable
     {
         $name = strtolower(get_class($this));
         // NOTE: hadi, 2019: all verifier backend sould be placed in the determined folder
-        if (strpos($name, Verifier_Engine::ENGINE_PREFIX) !== 0) {
-            throw new Verifier_Exception_EngineLoad('VerifierEngine class must be placed in engine package.');
+        if (strpos($name, self::ENGINE_PREFIX) !== 0) {
+            throw new EngineLoadException('VerifierEngine class must be placed in engine package.');
         }
-        return substr($name, strlen(Verifier_Engine::ENGINE_PREFIX));
+        return substr($name, strlen(self::ENGINE_PREFIX));
     }
 
     /**
@@ -55,29 +60,24 @@ class Verifier_Engine implements JsonSerializable
      *
      * @return string
      */
-    public function getTitle()
-    {
-        return '';
-    }
+    public abstract function getTitle(): string;
 
     /**
      *
      * @return string
      */
-    public function getDescription()
-    {
-        return '';
-    }
+    public abstract function getDescription(): string;
 
     /**
      * Sends verification to its related account.
-     * 
+     *
      * This function should be overrided by implementors.
-     * 
-     * @param User_Verification $verification
+     *
+     * @param Verification $verification
      * @return boolean true if sending verification is successful else false.
      */
-    public function send($verification){
+    public function send(Verification $verification): bool
+    {
         return true;
     }
 
@@ -102,7 +102,7 @@ class Verifier_Engine implements JsonSerializable
      *
      * Each verifier engine needs some parameters which should be provided by the creator.
      * This function returns these parameters as an array.
-     * 
+     *
      * The returned value of this function is a list of property descriptors.
      */
     public function getParameters()
@@ -133,7 +133,7 @@ class Verifier_Engine implements JsonSerializable
 
     /**
      * Returns a list of the general parameters.
-     * 
+     *
      * @return
      *
      */
@@ -187,9 +187,9 @@ class Verifier_Engine implements JsonSerializable
 
     /**
      * Returns a list of the extra parameters.
-     * 
+     *
      * This functions should be overrided by implementors which have some other parameters other than general parameters.
-     * 
+     *
      * @return array
      */
     public function getExtraParam()

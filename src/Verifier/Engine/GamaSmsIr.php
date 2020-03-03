@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,13 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\User\Verifier\Engine;
+
+use Pluf\User\Verifier\Engine;
+use Pluf\User\Verifier\VerificationSendException;
+use Pluf\Exception;
+use GuzzleHttp\Client;
 
 /**
  *
  * @author hadi
  *        
  */
-class Verifier_Engine_GamaSmsIr extends Verifier_Engine
+class GamaSmsIr extends Engine
 {
     const ENGINE_PARAMETER_USERNAME = 'verifier.engine.GamaSmsIr.username';
     const ENGINE_PARAMETER_PASSWORD = 'verifier.engine.GamaSmsIr.password';
@@ -64,7 +69,7 @@ class Verifier_Engine_GamaSmsIr extends Verifier_Engine
         // Get mobile number
         $mobile = $this->getMobile($verification);
         if (! $mobile) {
-            throw new Verifier_Exception_VerificationSend('There is no phone related to user to send verification SMS.');
+            throw new VerificationSendException('There is no phone related to user to send verification SMS.');
         }
         // Send SMS
         $response = $this->sendSms($verification, $mobile);
@@ -95,13 +100,13 @@ class Verifier_Engine_GamaSmsIr extends Verifier_Engine
             'Content-Type' => 'application/x-www-form-urlencoded'
         );
         $param = $this->initParameters($verification->code, $mobile);
-        $client = new GuzzleHttp\Client();
+        $client = new Client();
         $response = $client->request('POST', $backend . $path, [
             'headers' => $headers,
             'form_params' => $param
         ]);
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
-            throw new Pluf_Exception($response->getBody()->getContents());
+            throw new Exception($response->getBody()->getContents());
         }
         $contents = $response->getBody()->getContents();
         return json_decode($contents, true);

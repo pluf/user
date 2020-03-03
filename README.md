@@ -49,3 +49,13 @@ Add the following:
 #### rename `user_groups`
 
 #### rename `user_messages`
+
+
+## Module configurations
+
+user_avatar_default
+user_avatar_max_size
+
+user_profile_class
+
+user_role_autoCreate

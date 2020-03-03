@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -16,45 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\User\Verifier\Engine;
+namespace Pluf\User\Verifier;
 
-use Pluf\User\Verifier\Engine;
+use Pluf\Exception;
 
 /**
  *
  * @author hadi
  *        
  */
-class NoVerify extends Engine
+class VerificationFailedException extends Exception
 {
 
-    /*
+    /**
      *
+     * @param string $message
+     * @param Exception $previous
+     * @param string $link
+     * @param string $developerMessage
      */
-    public function getTitle()
+    public function __construct($message = "Verification failed.", $previous = null, $link = null, $developerMessage = null)
     {
-        return 'No Verify';
-    }
-
-    /*
-     *
-     */
-    public function getDescription()
-    {
-        return 'This verifier do nothing to verify an entity. The verification is not needed.';
-    }
-
-    public function send($verification)
-    {
-        // Do nothing
-        return true;
-    }
-
-    /*
-     *
-     */
-    public function getExtraParam()
-    {
-        return array();
+        // XXX: maso, 1395: تعیین کد خطا
+        parent::__construct($message, 400, $previous, 400, $link, $developerMessage);
     }
 }

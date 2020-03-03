@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,33 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\User\Verifier;
+
+use Pluf\Model;
+use Pluf\SQL;
+use Pluf\Utils;
+use Pluf\User\Account;
+use Pluf\User\Verification;
 
 /**
  *
  * @author hadi
  *        
  */
-class Verifier_Service
+class Service
 {
 
     /**
      * Creates a new verification.
      *
-     * @param User_Account $user
+     * @param Account $user
      *            the account who is owner of the verification
-     * @param Pluf_Model $subject
+     * @param Model $subject
      *            the model which should be verified
-     * @return User_Verification
+     * @return Verification
      */
-    public static function createVerification($user, $subject)
+    public static function createVerification(Account $user, Model $subject): Verification
     {
-        $verification = new User_Verification();
-        $verification->code = Pluf_Utils::getRandomNumericString(7);
+        $verification = new Verification();
+        $verification->code = Utils::getRandomNumericString(7);
         $verification->subject_class = $subject->_a['model'];
         $verification->subject_id = $subject->id;
         $verification->account_id = $user;
         if (true !== $verification->create()) {
-            throw new Verifier_Exception_VerificationGenerate();
+            throw new VerificationGenerateException();
         }
         return $verification;
     }
@@ -51,13 +57,13 @@ class Verifier_Service
     /**
      * Returns list of verifications to verify given subject
      *
-     * @param Pluf_Model|string $subject
+     * @param Model|string $subject
      * @param integer $subjectId
      */
     public static function findVerifications($subject, $subjectId = null)
     {
         // get class
-        if ($subject instanceof Pluf_Model) { // Pluf module
+        if ($subject instanceof Model) { // Pluf module
             $subjectClass = $subject->getClass();
             $subjectId = $subject->getId();
         } elseif (! is_null($subject)) { // model
@@ -65,8 +71,8 @@ class Verifier_Service
         }
 
         // get list
-        $verification = new User_Verification();
-        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s', array(
+        $verification = new Verification();
+        $q = new SQL('subject_class=%s AND subject_id=%s', array(
             $subjectClass,
             $subjectId
         ));
@@ -79,19 +85,19 @@ class Verifier_Service
     /**
      * Returns the verification with given code which is created to verify the given subject.
      *
-     * @param User_Account $account
+     * @param Account $account
      *            the account which is the owner of the verification
-     * @param Pluf_Model $subject
+     * @param Model $subject
      *            the model to verify
      * @param string $code
      *            the code of the verification
-     * @return User_Verification
+     * @return Verification
      */
     public static function getVerification($account, $subject, $code)
     {
         // get list
-        $model = new User_Verification();
-        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s AND code=%s AND account_id=%s', array(
+        $model = new Verification();
+        $q = new SQL('subject_class=%s AND subject_id=%s AND code=%s AND account_id=%s', array(
             $subject->_a['model'],
             $subject->id,
             $code,
@@ -109,20 +115,20 @@ class Verifier_Service
     /**
      * Checks if given code and verification is acceptable
      *
-     * @param User_Verification $verification
+     * @param Verification $verification
      * @param string $code
      * @return boolean
      */
     public static function validateVerification($verification, $code)
     {
         // Check null and false verification
-        if(!$verification){
+        if (! $verification) {
             return false;
         }
         // XXX: hadi 2019: check expiry count
         // Check the code and expiry time
-        if($verification->isExpired()){
-            throw new Verifier_Exception_VerificationFailed('Verification code is expired.');
+        if ($verification->isExpired()) {
+            throw new VerificationFailedException('Verification code is expired.');
         }
         return $verification->code === $code;
     }
@@ -130,22 +136,22 @@ class Verifier_Service
     /**
      * Clears verifications created to verify the given subject
      *
-     * @param Pluf_Model|string $subject
+     * @param Model|string $subject
      * @param integer $subjectId
      * @return boolean true if the process is successful.
      */
     public static function clearVerifications($subject, $subjectId = null)
     {
         // get class
-        if ($subject instanceof Pluf_Model) { // Pluf module
+        if ($subject instanceof Model) { // Pluf module
             $subjectClass = $subject->getClass();
             $subjectId = $subject->getId();
         } elseif (! is_null($subject)) { // model
             $subjectClass = $subject;
         }
         // get list
-        $verification = new User_Verification();
-        $q = new Pluf_SQL('subject_class=%s AND subject_id=%s', array(
+        $verification = new Verification();
+        $q = new SQL('subject_class=%s AND subject_id=%s', array(
             $subjectClass,
             $subjectId
         ));
@@ -158,12 +164,12 @@ class Verifier_Service
         }
         return true;
     }
-    
+
     /**
      * Find engine
      *
      * @param string $type
-     * @return Verifier_Engine engine
+     * @return Engine engine
      */
     public static function getEngine($type)
     {
@@ -184,10 +190,10 @@ class Verifier_Service
     public static function engines()
     {
         return array(
-            new Verifier_Engine_NoVerify(),
-            new Verifier_Engine_Manual(),
-            new Verifier_Engine_SmsIr(),
-            new Verifier_Engine_GamaSmsIr()
+            new Engine\NoVerify(),
+            new Engine\Manual(),
+            new Engine\SmsIr(),
+            new Engine\GamaSmsIr()
         );
     }
 }

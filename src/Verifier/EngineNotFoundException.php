@@ -16,45 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\User\Verifier\Engine;
+namespace Pluf\User\Verifier;
 
-use Pluf\User\Verifier\Engine;
+use Pluf\Exception;
 
 /**
  *
- * @author hadi
+ * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class NoVerify extends Engine
+class EngineNotFoundException extends Exception
 {
 
-    /*
+    /**
      *
+     * @param string $message
+     * @param Exception $previous
+     * @param string $link
+     * @param string $developerMessage
      */
-    public function getTitle()
+    public function __construct($message = "Verifier engine not found.", $previous = null, $link = null, $developerMessage = null)
     {
-        return 'No Verify';
-    }
-
-    /*
-     *
-     */
-    public function getDescription()
-    {
-        return 'This verifier do nothing to verify an entity. The verification is not needed.';
-    }
-
-    public function send($verification)
-    {
-        // Do nothing
-        return true;
-    }
-
-    /*
-     *
-     */
-    public function getExtraParam()
-    {
-        return array();
+        // XXX: maso, 1395: تعیین کد خطا
+        parent::__construct($message, 4401, $previous, 404, $link, $developerMessage);
     }
 }

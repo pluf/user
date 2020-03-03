@@ -16,14 +16,21 @@
 		}
 	],
 	"require" : {
-		"pluf/collection" : "5.12.x"
+		"pluf/core" : "^6"
 	},
 	"require-dev" : {
-		"pluf/test" : "5.12.x"
+		"pluf/test" : "^6"
 	},
-	"include-path" : [
-		"src/"
-	],
+	"autoload" : {
+		"psr-4" : {
+			"Pluf\\User\\" : "src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Pluf\\UserTest\\" : "tests/"
+		}
+	},
 	"homepage" : "https://github.com/pluf/user",
 	"support" : {
 		"email" : "info@pluf.ir",

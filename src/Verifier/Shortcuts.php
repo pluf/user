@@ -16,22 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\User\Verifier;
 
- /**
- * Finds a verification engine
- *
- * @param string $type
- * @throws Verifier_Exception_EngineNotFound
- * @return Verifier_Engine
- */
-function Verifier_Shortcuts_GetEngineOr404($type)
+class Shortcuts
 {
-    $items = Verifier_Service::engines();
-    foreach ($items as $item) {
-        if ($item->getType() === $type) {
-            return $item;
+
+    /**
+     * Finds a verification engine
+     *
+     * @param string $type
+     * @throws EngineNotFoundException
+     * @return Engine
+     */
+    function getEngineOr404(string $type)
+    {
+        $items = Service::engines();
+        foreach ($items as $item) {
+            if ($item->getType() === $type) {
+                return $item;
+            }
         }
+        throw new EngineNotFoundException("Verifier engine not found: " . $type);
     }
-    throw new Verifier_Exception_EngineNotFound("Verifier engine not found: " . $type);
 }
 

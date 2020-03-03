@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -16,45 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\User\Verifier\Engine;
-
-use Pluf\User\Verifier\Engine;
+namespace Pluf\User\OAuth2Engines;
 
 /**
+ * Default view
  *
- * @author hadi
- *        
+ * @author maso<mostafa.barmshory@dpq.co.ir>
  */
-class NoVerify extends Engine
+class Linkedin extends \Pluf\User\OAuth2Engines
 {
-
-    /*
-     *
-     */
-    public function getTitle()
-    {
-        return 'No Verify';
-    }
-
-    /*
-     *
-     */
-    public function getDescription()
-    {
-        return 'This verifier do nothing to verify an entity. The verification is not needed.';
-    }
-
-    public function send($verification)
-    {
-        // Do nothing
-        return true;
-    }
-
-    /*
-     *
-     */
-    public function getExtraParam()
-    {
-        return array();
-    }
+    // TODO://
 }

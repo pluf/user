@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
- * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
+ * Copyright (C) 2010-2020 Phoinex Scholars Co. http://dpq.co.ir
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,45 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\User\Verifier\Engine;
-
-use Pluf\User\Verifier\Engine;
+namespace Pluf\User;
 
 /**
+ * User notification service
  *
- * @author hadi
+ * @author maso
  *        
  */
-class NoVerify extends Engine
+class Notify
 {
 
-    /*
+    /**
+     * Push message for the user
      *
+     * @param Account $user
+     * @param array $templates
+     * @param array $context
      */
-    public function getTitle()
+    public static function push($user, $templates, $context)
     {
-        return 'No Verify';
-    }
-
-    /*
-     *
-     */
-    public function getDescription()
-    {
-        return 'This verifier do nothing to verify an entity. The verification is not needed.';
-    }
-
-    public function send($verification)
-    {
-        // Do nothing
-        return true;
-    }
-
-    /*
-     *
-     */
-    public function getExtraParam()
-    {
-        return array();
+        if (defined('IN_UNIT_TESTS')) {
+            return;
+        }
+        foreach ($templates as $engineName => $template) {
+            $engineClass = 'User_Notify_Engine_' . $engineName;
+            $engine = new $engineClass();
+            $engine->push($user, $template, $context);
+        }
     }
 }
