@@ -49,14 +49,14 @@ class OAuth2Server extends Model
         $this->_a['cols'] = array(
             // شناسه‌ها
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'blank' => false,
                 'verbose' => 'first name',
                 'help_text' => 'id',
                 'editable' => false
             ),
             'title' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 250,
                 'default' => 'no title',
@@ -65,7 +65,7 @@ class OAuth2Server extends Model
                 'editable' => true
             ),
             'description' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 2048,
                 'default' => 'auto created content',
@@ -75,7 +75,7 @@ class OAuth2Server extends Model
             ),
 
             'client_id' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 1024,
                 'default' => 'application/octet-stream',
@@ -84,7 +84,7 @@ class OAuth2Server extends Model
                 'editable' => true
             ),
             'client_secret' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 1024,
                 'default' => 'application/octet-stream',
@@ -94,7 +94,7 @@ class OAuth2Server extends Model
                 'editable' => true
             ),
             'url_authorize' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 1024,
                 'default' => 'application/octet-stream',
@@ -103,7 +103,7 @@ class OAuth2Server extends Model
                 'editable' => true
             ),
             'url_access_token' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 1024,
                 'default' => 'application/octet-stream',
@@ -112,7 +112,7 @@ class OAuth2Server extends Model
                 'editable' => true
             ),
             'url_resource_owner_details' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'blank' => true,
                 'size' => 1024,
                 'default' => 'application/octet-stream',

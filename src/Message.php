@@ -45,15 +45,15 @@ class Message extends Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 // It is automatically added.
                 'blank' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
-                'model' => 'User_Account',
+                'type' => '\Pluf\DB\Field\Foreignkey',
+                'model' => '\Pluf\User\Account',
                 'name' => 'account',
                 'graphql_name' => 'account',
                 'relate_name' => 'messages',
@@ -61,13 +61,13 @@ class Message extends Model
                 'editable' => false
             ),
             'message' => array(
-                'type' => 'Pluf_DB_Field_Text',
+                'type' => '\Pluf\DB\Field\Text',
                 'is_null' => false,
                 'editable' => false,
                 'readable' => true
             ),
             'creation_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true

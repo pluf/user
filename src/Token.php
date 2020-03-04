@@ -44,56 +44,56 @@ class Token extends Model
         $this->_a['table'] = 'user_tokens';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'is_null' => false,
                 'editable' => false,
                 'readable' => true
             ),
             'token' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 150,
                 'unique' => true,
                 'editable' => false
             ),
             'agent' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 100,
                 'editable' => false
             ),
             'agent_address' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 250,
                 'editable' => false
             ),
             'type' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 50,
                 'is_null' => false,
                 'editable' => false
             ),
             'expiry_count' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => '\Pluf\DB\Field\Integer',
                 'editable' => false
             ),
             'expiry_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'editable' => false
             ),
             'creation_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
             'is_deleted' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => '\Pluf\DB\Field\Boolean',
                 'is_null' => false,
                 'default' => false,
                 'editable' => false
             ),
             // Foreign keys
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => '\Pluf\DB\Field\Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'graphql_name' => 'account',

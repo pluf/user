@@ -1,48 +1,83 @@
 <?php 
+$cfg = include 'sqlite.conf.php';
 
-// $cfg = include 'mysql.config.php';
-$cfg = include 'sqlite.config.php';
-
-$cfg['test'] = false;
-$cfg['timezone'] = 'Europe/Berlin';
-// Set the debug variable to true to force the recompilation of all
-// the templates each time during development
+/*
+ * **************************************************************************
+ * Core
+ * **************************************************************************
+ */
+$cfg['test'] = true;
 $cfg['debug'] = true;
+$cfg['timezone'] = 'Europe/Berlin';
 $cfg['installed_apps'] = array(
     'Pluf',
-    'Collection',
-    'User',
-    'Group',
-    'Role'
+    'User'
+);
+$cfg['app_base'] = '/testapp';
+$cfg['tmp_folder'] = dirname(__FILE__) . '/../tmp';
+$cfg['upload_path'] = __DIR__ . '/../storage/tenant';
+$cfg['mimetype'] = 'text/html';
+
+$cfg['secret_key'] = '5a8d7e0f2aad8bdab8f6eef725412850';
+$cfg['middleware_classes'] = array(
+    '\Pluf\Middleware\Session',
+    '\User\Middleware\Session'
+);
+/*
+ * **************************************************************************
+ * Template engine
+ * **************************************************************************
+ */
+$cfg['template_tags'] = array(
+    // Buildin tags
+    'aperm' => '\Pluf\Template\Tag\APerm',
+    'cfg' => '\Pluf\Template\Tag\Cfg',
+    'cycle' => '\Pluf\Template\Tag\Cycle',
+    'firstof' => '\Pluf\Template\Tag\Firstof',
+    'media' => '\Pluf\Template\Tag\MediaUrl',
+    'getmsgs' => '\Pluf\Template\Tag\Messages',
+    'now' => '\Pluf\Template\Tag\Now',
+    'regroup' => '\Pluf\Template\Tag\Regroup',
+    'amedia' => '\Pluf\Template\Tag\RmediaUrl',
+    'aurl' => '\Pluf\Template\Tag\Rurl',
+    'tenant' => '\Pluf\Template\Tag\Tenant',
+    'url' => '\Pluf\Template\Tag\Url',
+);
+
+$cfg['templates_folder'] = array(
+    dirname(__FILE__) . '/../templates'
 );
 
 /*
- * Middlewares
+ * **************************************************************************
+ * Tenants
+ * **************************************************************************
  */
-$cfg['middleware_classes'] = array(
-    'Pluf_Middleware_Session',
-    'User_Middleware_Session'
-);
+$cfg['tenant_root_level'] = 10;
+$cfg['tenant_root_title'] = 'Tenant title';
+$cfg['tenant_root_description'] = 'Default tenant in single mode';
+$cfg['tenant_root_domain'] = 'pluf.ir';
+$cfg['tenant_root_subdomain'] = 'www';
+$cfg['tenant_root_validate'] = 1;
 
-$cfg['secret_key'] = '5a8d7e0f2aad8bdab8f6eef725412850';
+/*
+ * **************************************************************************
+ * Logger
+ * **************************************************************************
+ */
+$cfg['log_level'] = \Pluf\Log::OFF;
+$cfg['log_delayed'] = false;
+$cfg['log_handler'] = '\Pluf\Log\Console';
 
-// Temporary folder where the script is writing the compiled templates,
-// cached data and other temporary resources.
-// It must be writeable by your webserver instance.
-// It is mandatory if you are using the template system.
-$cfg['tmp_folder'] = __DIR__ . '/../tmp';
-$cfg['upload_path'] = __DIR__ . '/../storage/tenant';
 
-// The folder in which the templates of the application are located.
-$cfg['template_folders'] = array(
-    __DIR__ . '/../templates'
-);
-
-// Default mimetype of the document your application is sending.
-// It can be overwritten for a given response if needed.
-$cfg['mimetype'] = 'text/html';
-
+/*
+ * **************************************************************************
+ * User
+ * **************************************************************************
+ */
+//
 // Default user avatar
+//
 $cfg['user_avatar_default'] = __DIR__ . '/avatar.svg';
 
 return $cfg;

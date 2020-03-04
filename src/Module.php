@@ -20,4 +20,51 @@ namespace Pluf\User;
 
 class Module
 {
+    const moduleJsonPath = __DIR__ . '/module.json';
+    
+    const relations =  array (
+        
+        '\Pluf\User\Account' => array(
+            'relate_to_many' => array(
+                '\Pluf\User\Group',
+                '\Pluf\User\Role'
+            ),
+            
+        ),
+        '\Pluf\User\Message' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Profile' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Avatar' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Verification' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Email' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Phone' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        ),
+        '\Pluf\User\Address' => array(
+            'relate_to' => array(
+                '\Pluf\User\Account'
+            )
+        )
+    );
 }

@@ -43,19 +43,19 @@ class Group extends Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'blank' => true,
                 'readable' => true,
                 'editable' => false
             ),
             'name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 50,
                 'verbose' => 'name',
             ),
             'description' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => true,
                 'size' => 250,
                 'verbose' => 'description',
@@ -64,29 +64,29 @@ class Group extends Model
              * Relations
              */
             'roles' => array(
-                'type' => 'Pluf_DB_Field_Manytomany',
-                'model' => 'User_Role',
+                'type' => '\Pluf\DB\Field\Manytomany',
+                'model' => '\Pluf\User\Role',
                 'is_null' => true,
                 'editable' => false,
                 'relate_name' => 'groups',
                 'graphql_name' => 'roles'
             )
         );
-        /*
-         * Views
-         */
-        $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
-        $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Account');
-        $t_group = $this->_con->pfx . $this->_a['table'];
-        $group_fk = Pluf_Shortcuts_GetForeignKeyName('User_Group');
-        $this->_a['views'] = array(
-            'join_user' => array(
-                'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_group . '.id=' . $group_fk
-            ),
-            'join_role' => array(
-                'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_group . '.id=' . $group_fk
-            )
-        );
+//         /*
+//          * Views
+//          */
+//         $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
+//         $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Account');
+//         $t_group = $this->_con->pfx . $this->_a['table'];
+//         $group_fk = Pluf_Shortcuts_GetForeignKeyName('User_Group');
+//         $this->_a['views'] = array(
+//             'join_user' => array(
+//                 'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_group . '.id=' . $group_fk
+//             ),
+//             'join_role' => array(
+//                 'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_group . '.id=' . $group_fk
+//             )
+//         );
     }
 
     /**

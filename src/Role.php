@@ -21,6 +21,7 @@ namespace Pluf\User;
 use Pluf\Model;
 use Pluf\SQL;
 use Pluf\Bootstrap;
+use Pluf\ModelUtils;
 
 /**
  *
@@ -36,40 +37,41 @@ class Role extends Model
     {
         $this->_a['verbose'] = 'roles';
         $this->_a['table'] = 'user_roles';
+        $this->tableName = 'user_roles';
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 // It is automatically added.
                 'blank' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 50,
-                'verbose' => __('name')
+                'verbose' => 'name'
             ),
             'description' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => true,
                 'size' => 250,
-                'verbose' => __('description')
+                'verbose' => 'description'
             ),
             'application' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 150,
                 'is_null' => false,
-                'verbose' => __('application'),
-                'help_text' => __('The application using this permission, for example "YourApp", "CMS" or "SView".')
+                'verbose' => 'application',
+                'help_text' => 'The application using this permission, for example "YourApp", "CMS" or "SView".'
             ),
             'code_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 100,
-                'verbose' => __('code name'),
-                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".')
+                'verbose' => 'code name',
+                'help_text' => 'The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".'
             )
         );
         /*
@@ -96,10 +98,10 @@ class Role extends Model
         /*
          * Views
          */
-        $g_asso = $this->_con->pfx . Shortcuts::getAssociationTableName('\Pluf\User\Group', '\Pluf\User\Role');
-        $u_asso = $this->_con->pfx . Shortcuts::getAssociationTableName('\Pluf\User\Account', '\Pluf\User\Role');
-        $t_perm = $this->_con->pfx . $this->_a['table'];
-        $role_fk = Shortcuts::getForeignKeyName('\Pluf\User\Role');
+        $g_asso = ModelUtils::getAssocTable(new Group(), $this);
+        $u_asso = ModelUtils::getAssocTable(new Account(), $this);
+        $t_perm = ModelUtils::getTable($this);
+        $role_fk = Shortcuts::getForeignKeyName($this);
         $this->_a['views'] = array(
             'join_group' => array(
                 'join' => 'LEFT JOIN ' . $g_asso . ' ON ' . $t_perm . '.id=' . $role_fk

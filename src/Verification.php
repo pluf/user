@@ -34,44 +34,44 @@ class Verification extends Model
         $this->_a['table'] = 'user_verifications';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'code' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 64,
                 'readable' => false
             ),
             'subject_class' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 64,
                 'readable' => false
             ),
             'subject_id' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => '\Pluf\DB\Field\Integer',
                 'is_null' => false,
                 'readable' => false
             ),
             'expiry_count' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => '\Pluf\DB\Field\Integer',
                 'editable' => false
             ),
             'expiry_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'editable' => false
             ),
             'creation_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
             // Foreign keys
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => '\Pluf\DB\Field\Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'relate_name' => 'verifications',

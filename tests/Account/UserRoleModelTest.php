@@ -16,43 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\User\AccountTest;
+
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
+use Pluf\Bootstrap;
+use Pluf\Exception;
+use Pluf\Migration;
+use Pluf\User\Account;
+use Pluf\User\Credential;
+use Pluf\User\Group;
+use Pluf\User\Role;
 
-require_once 'Pluf.php';
-
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_UserTest extends TestCase
+class UserRoleModelTest extends TestCase
 {
 
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'User_Group',
-            'User_Account',
-            'User_Role',
-            'User_Credential',
-            'User_Message'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-            if (true !== ($res = $schema->createTables())) {
-                throw new Exception($res);
-            }
-        }
+        Bootstrap::start(__DIR__ . '/../conf/config.php');
+        $m = new Migration();
+        $m->install();
+        $m->init();
+
         $perms = array();
         for ($i = 1; $i <= 10; $i ++) {
-            $perm = new User_Role();
+            $perm = new Role();
             $perm->application = 'DummyModel';
             $perm->code_name = 'code-' . $i;
             $perm->name = 'code-' . $i;
@@ -62,7 +53,7 @@ class User_UserTest extends TestCase
         }
         $groups = array();
         for ($i = 1; $i <= 10; $i ++) {
-            $group = new User_Group();
+            $group = new Group();
             $group->name = 'Group ' . $i;
             $group->description = 'Group ' . $i;
             $group->create();
@@ -75,16 +66,16 @@ class User_UserTest extends TestCase
         $groups[1]->setAssoc($perms[0]); // again perm "1"
         $groups[0]->setAssoc($perms[4]);
         $groups[0]->setAssoc($perms[5]);
-        
+
         // Test user
-        $user = new User_Account();
+        $user = new Account();
         $user->login = 'test';
         $user->is_active = true;
         if (true !== $user->create()) {
             throw new Exception();
         }
         // Credential of user
-        $credit = new User_Credential();
+        $credit = new Credential();
         $credit->setFromFormData(array(
             'account_id' => $user->id
         ));
@@ -92,7 +83,7 @@ class User_UserTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $user->setAssoc($groups[0]);
         $user->setAssoc($groups[1]);
         $user->setAssoc($perms[7]);
@@ -100,56 +91,49 @@ class User_UserTest extends TestCase
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
     {
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'User_Group',
-            'User_Account',
-            'User_Role',
-            'User_Credential',
-            'User_Message'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-        }
+        $m = new Migration();
+        $m->unInstall();
     }
 
     /**
+     *
      * @test
      */
     public function testGetPermissions()
     {
-        $user = new User_Account();
+        $user = new Account();
         $user = $user->getUser('test');
         $a = $user->getAllRoles();
         $this->assertEquals(8, count($a));
     }
 
     /**
+     *
      * @test
      */
     public function testHasPermission()
     {
-        $user = new User_Account();
+        $user = new Account();
         $user = $user->getUser('test');
         $this->assertEquals(true, $user->hasPerm('DummyModel.code-5'));
         $this->assertEquals(false, $user->hasPerm('DummyModel.code-7'));
-        
+
         $user->is_active = false;
         $this->assertEquals(false, $user->hasPerm('DummyModel.code-5'));
     }
 
     /**
+     *
      * @test
      */
     public function testHasAppPermissions()
     {
-        $user = new User_Account();
+        $user = new Account();
         $user = $user->getUser('test');
         $this->assertEquals(true, $user->hasAppPerms('DummyModel'));
         $this->assertEquals(false, $user->hasPerm('DummyModel2'));

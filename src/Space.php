@@ -45,16 +45,16 @@ class Space extends Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 // It is automatically added.
                 'blank' => true
             ),
             'space_data' => array(
-                'type' => 'Pluf_DB_Field_Text',
+                'type' => '\Pluf\DB\Field\Text',
                 'blank' => false
             ),
             'user' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => '\Pluf\DB\Field\Foreignkey',
                 'model' => 'User',
                 'blank' => false,
                 'editable' => false

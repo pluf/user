@@ -43,41 +43,41 @@ class Avatar extends Model
         $this->_a['table'] = 'user_avatars';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'blank' => true,
                 'editable' => false
             ),
             'fileName' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'filePath' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'fileSize' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => '\Pluf\DB\Field\Integer',
                 'is_null' => false,
-                'verbose' => __('validate'),
+                'verbose' => 'validate',
                 'editable' => false
             ),
             'mimeType' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => false,
                 'size' => 50,
                 'editable' => false
             ),
             'creationTime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
             'modifTime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => '\Pluf\DB\Field\Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
@@ -85,7 +85,7 @@ class Avatar extends Model
              * Foreign key
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => '\Pluf\DB\Field\Foreignkey',
                 'model' => 'User_Account',
                 'unique' => true,
                 'name' => 'account',

@@ -18,11 +18,10 @@
  */
 namespace Pluf\User;
 
-use Pluf\Exception;
-use Pluf\HTTP\Response;
-use Pluf\FileUtil;
 use Pluf\Bootstrap;
-use Pluf\HTTP\Request;
+use Pluf\Exception;
+use Pluf\FileUtil;
+use Pluf\HTTP\Response;
 
 class Shortcuts extends \Pluf\Shortcuts
 {
@@ -102,36 +101,16 @@ class Shortcuts extends \Pluf\Shortcuts
         $avatar = new Avatar();
         $avatar->getOne('account_id=' . $user->id);
         if ($avatar) {
-            $form = new Form\Avatar($data, array(
+            $form = new Form\AvatarCrudForm($data, array(
                 'model' => $avatar,
                 'user' => $user
             ));
         } else {
-            $form = new Form\Avatar($data, array(
+            $form = new Form\AvatarCrudForm($data, array(
                 'model' => new Avatar(),
                 'user' => $user
             ));
         }
         return $form->save();
-    }
-
-    /**
-     * Returns list count for given request.
-     *
-     * If count is not set in request or count is more than a threshold (50) returns a default value (50).
-     *
-     * @param Request $request
-     * @return number
-     */
-    function getListCount($request)
-    {
-        $count = 50;
-        if (array_key_exists('_px_ps', $request->GET)) {
-            $count = $request->GET['_px_ps'];
-            if ($count == 0 || $count > 50) {
-                $count = 50;
-            }
-        }
-        return $count;
     }
 }

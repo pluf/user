@@ -41,60 +41,60 @@ class Address extends Model
         $this->_a['verbose'] = 'User Address';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => '\Pluf\DB\Field\Sequence',
                 'is_null' => true,
                 'editable' => false
             ),
             'country' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 64,
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'province' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 64,
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'city' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 64,
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'address' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 512,
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'postal_code' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'size' => 16,
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'location' => array(
-                'type' => 'Pluf_DB_Field_Geometry',
+                'type' => '\Pluf\DB\Field\Geometry',
                 'is_null' => true,
                 'editable' => true,
                 'readable' => true
             ),
             'type' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => '\Pluf\DB\Field\Varchar',
                 'is_null' => true,
                 'size' => 64,
                 'editable' => true,
                 'readable' => true
             ),
             'is_verified' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => '\Pluf\DB\Field\Boolean',
                 'is_null' => false,
                 'editable' => false,
                 'readable' => true
@@ -103,7 +103,7 @@ class Address extends Model
              * Relations
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => '\Pluf\DB\Field\Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'relate_name' => 'addresses',

@@ -2,22 +2,22 @@
 	"name": "User",
 	"title": "User Management",
 	"model": [
-		"User_Account",
-		"User_Profile",
-		"User_Credential",
-		"User_Token",
-		"User_Role",
-		"User_Group",
-		"User_Message",
-		"User_Avatar",
-		"User_Space",
-		"User_Verification",
-		"User_Email",
-		"User_Phone",
-		"User_Address"
+		"\\Pluf\\User\\Account",
+		"\\Pluf\\User\\Profile",
+		"\\Pluf\\User\\Credential",
+		"\\Pluf\\User\\Token",
+		"\\Pluf\\User\\Role",
+		"\\Pluf\\User\\Group",
+		"\\Pluf\\User\\Message",
+		"\\Pluf\\User\\Avatar",
+		"\\Pluf\\User\\Space",
+		"\\Pluf\\User\\Verification",
+		"\\Pluf\\User\\Email",
+		"\\Pluf\\User\\Phone",
+		"\\Pluf\\User\\Address"
 	],
 	"init": {
-		"User_Role": [
+		"\\Pluf\\User\\Role": [
 			{
 				"name": "ownership",
 				"application": "tenant",
@@ -43,7 +43,7 @@
 				"description": "Permission given to users allowed to manager users of a tenant."
 			}
 		],
-		"User_Account": [
+		"\\Pluf\\User\\Account": [
 			{
 				"login": "admin",
 				"first_name": "admin",
@@ -52,6 +52,6 @@
 				"is_active": "true"
 			}
 		],
-		"User_Group": []
+		"\\Pluf\\User\\Group": []
 	}
 }
