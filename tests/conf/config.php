@@ -16,8 +16,6 @@ $cfg['timezone'] = 'Europe/Berlin';
 $cfg['installed_apps'] = array(
     'Pluf',
     'User',
-    'Group',
-    'Role'
 );
 
 // Default mimetype of the document your application is sending.
@@ -32,6 +30,18 @@ $cfg['url_format'] = 'simple';
 // It must be writeable by your webserver instance.
 // It is mandatory if you are using the template system.
 $cfg['tmp_folder'] = '/tmp';
+
+
+/*
+ * Middlewares
+ */
+$cfg['middleware_classes'] = array(
+    'Pluf_Middleware_Session',
+    'User_Middleware_Session'
+);
+
+$cfg['secret_key'] = '5a8d7e0f2aad8bdab8f6eef725412850';
+
 
 // -------------------------------------------------------------------------
 // Template manager and compiler
@@ -93,10 +103,14 @@ $cfg['log_appender'] = '\Pluf\LoggerAppender\Console';
 // -------------------------------------------------------------------------
 
 
+// multitenant
+
+
 
 // -------------------------------------------------------------------------
 // user
 // -------------------------------------------------------------------------
 
-// multitenant
+$cfg['user_account_auto_activate'] = true;
+
 return $cfg;

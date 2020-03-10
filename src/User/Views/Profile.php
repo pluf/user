@@ -17,13 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 Pluf::loadFunction('Pluf_Shortcuts_GetObjectOr404');
-Pluf::loadFunction('Collection_Shortcuts_GetCollectionByName');
 
 /**
  * Manage profile information of users.
  *
  * This profile data model is default data model for profile which has some specific constant feilds.
- * To using dynamic profile see User_Views_CProfile (which saves feilds for profiles in some collection).
+ * To using dynamic profile see User_Views_Profile (which saves feilds for profiles in some collection).
  *
  * @author maso
  * @author hadi

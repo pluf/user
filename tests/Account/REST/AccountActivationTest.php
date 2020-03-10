@@ -16,31 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
-require_once 'Pluf.php';
+namespace Pluf\Test\Account\REST;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_REST_AccountActivationTest extends TestCase
+use Pluf\Test\TestCase;
+use Pluf\Test\Client;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use User_Role;
+use User_Group;
+use User_Account;
+use User_Credential;
+
+class AccountActivationTest extends TestCase
 {
 
     private static $client = null;
+
     private static $config = null;
-    
+
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
     {
-        static::$config = include(__DIR__ . '/../conf/config.php');
-        Pluf::start(static::$config);
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        Pluf::start(self::$config = include (__DIR__ . '/../../conf/config.php'));
+        $m = new Pluf_Migration();
         $m->install();
         $m->init();
-        
+
         // Test user
         $user = new User_Account();
         $user->login = 'test';
@@ -57,34 +62,29 @@ class User_REST_AccountActivationTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
-        
+
         $user = new User_Account();
         $user = $user->getUser('test');
-        Test_Assert::assertTrue($user->hasPerm('tenant.owner'));
-        
-        self::$client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/api/v2/user#',
-                'base' => '',
-                'sub' => include 'User/urls-v2.php'
-            )
-        ));
+        self::assertTrue($user->hasPerm('tenant.owner'));
+
+        self::$client = new Client();
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
     {
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
-        $m->unInstall();
+        $m = new Pluf_Migration();
+        $m->uninstall();
     }
 
     /**
+     *
      * @test
      */
     public function anonymouseCreateAccount()
@@ -92,26 +92,26 @@ class User_REST_AccountActivationTest extends TestCase
         // auto activation -> false
         static::$config['user_account_auto_activate'] = false;
         Pluf::start(static::$config);
-        
+
         $form = array(
             'login' => 'LoginName' . rand(),
             'password' => 'test',
             'is_active' => true
         );
-        $response = self::$client->post('/api/v2/user/accounts', $form);
+        $response = self::$client->post('/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
-        
+
         // auto activation -> true
         static::$config['user_account_auto_activate'] = true;
         Pluf::start(static::$config);
-        
+
         $form = array(
             'login' => 'LoginName' . rand(),
             'password' => 'test'
         );
-        $response = self::$client->post('/api/v2/user/accounts', $form);
+        $response = self::$client->post('/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
@@ -119,68 +119,66 @@ class User_REST_AccountActivationTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function ownerCreateAccount()
     {
         // login
-        $response = self::$client->post('/api/v2/user/login', array(
+        $response = self::$client->post('/user/login', array(
             'login' => 'test',
             'password' => 'test'
         ));
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
-        
-        
+
         // auto activation -> false, is_active is set
         static::$config['user_account_auto_activate'] = false;
         Pluf::start(static::$config);
-        
+
         $form = array(
             'login' => 'LoginName' . rand(),
             'password' => 'test',
             'is_active' => true
         );
-        $response = self::$client->post('/api/v2/user/accounts', $form);
+        $response = self::$client->post('/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
         $this->assertTrue($actual['is_active']);
-        
+
         // auto activation is true, is_active is not set
         static::$config['user_account_auto_activate'] = true;
         Pluf::start(static::$config);
-        
+
         $form = array(
             'login' => 'LoginName' . rand(),
             'password' => 'test'
         );
-        $response = self::$client->post('/api/v2/user/accounts', $form);
+        $response = self::$client->post('/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
         $this->assertTrue($actual['is_active']);
-        
-        
+
         // auto activation is true, is_active is false
         static::$config['user_account_auto_activate'] = true;
         Pluf::start(static::$config);
-        
+
         $form = array(
             'login' => 'LoginName' . rand(),
             'password' => 'test',
             'is_active' => false
         );
-        $response = self::$client->post('/api/v2/user/accounts', $form);
+        $response = self::$client->post('/user/accounts', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
-        
+
         // logout
-        $response = self::$client->post('/api/v2/user/logout');
+        $response = self::$client->post('/user/logout');
         $this->assertNotNull($response);
     }
-
 }
 
 

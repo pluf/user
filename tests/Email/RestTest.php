@@ -16,19 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
-require_once 'Pluf.php';
+namespace Pluf\Test\Email;
 
-/**
- *
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Address_RestTest extends TestCase
+use Pluf\Test\TestCase;
+use Pluf\Test\Client;
+use Pluf;
+use Pluf_Migration;
+use User_Account;
+use User_Credential;
+use User_Role;
+use User_Email;
+use Verifier_Service;
+
+class RestTest extends TestCase
 {
 
     var $client;
+
     private $account;
 
     /**
@@ -38,7 +42,7 @@ class User_Address_RestTest extends TestCase
     public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m = new Pluf_Migration();
         $m->install();
         $m->init();
 
@@ -58,9 +62,6 @@ class User_Address_RestTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-
-//         $per = User_Role::getFromString('tenant.owner');
-//         $user->setAssoc($per);
     }
 
     /**
@@ -79,14 +80,7 @@ class User_Address_RestTest extends TestCase
      */
     public function init()
     {
-        $this->client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/user#',
-                'base' => '',
-                'sub' => include 'User/urls-v2.php'
-            )
-        ));
+        $this->client = new Client();
         // login
         $this->client->post('/user/login', array(
             'login' => 'test',
@@ -103,52 +97,38 @@ class User_Address_RestTest extends TestCase
     public function createRestTest()
     {
         $form = array(
-            'country' => 'country-' . rand(),
-            'province' => 'province-' . rand(),
-            'city' => 'city-' . rand(),
-            'address' => 'address-' . rand(),
-            'postal_code' => rand(111111111,999999999) . '0',
-//             'location' => 'POINT(100 100.1)',
+            'email' => 'test_' . rand(1, 1000) . '@test.com',
             'type' => 'office'
         );
-        $response = $this->client->post('/user/accounts/' . $this->account->id . '/addresses', $form);
+        $response = $this->client->post('/user/accounts/' . $this->account->id . '/emails', $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
         $this->assertTrue($actual['id'] > 0);
-        $this->assertEquals($actual['country'], $form['country']);
-        $this->assertEquals($actual['province'], $form['province']);
-        $this->assertEquals($actual['city'], $form['city']);
-        $this->assertEquals($actual['address'], $form['address']);
-        $this->assertEquals($actual['postal_code'], $form['postal_code']);
-//         $this->assertEquals($actual['location'], $form['location']);
+        $this->assertEquals($actual['email'], $form['email']);
         $this->assertEquals($actual['type'], $form['type']);
     }
 
-    private function get_random_address(){
-        $item = new User_Address();
-        $item->country = 'Country';
-        $item->province = 'Province';
-        $item->city = 'City';
-        $item->address = 'Test Address';
-        $item->postal_code = rand(111111111,999999999) . '0';
-//         $item->location = 'POINT(100 100.1)';
-        $item->type = 'office';
+    private function get_random_email()
+    {
+        $item = new User_Email();
+        $item->email = 'test_' . rand(1, 100000) . '@test.com';
+        $item->type = 'home';
         $item->account_id = $this->account;
         return $item;
     }
-    
+
     /**
      *
      * @test
      */
     public function getRestTest()
     {
-        $item = $this->get_random_address();
+        $item = $this->get_random_email();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Address');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Email');
         // Get item
-        $response = $this->client->get('/user/accounts/' . $this->account->id . '/addresses/' . $item->id);
+        $response = $this->client->get('/user/accounts/' . $this->account->id . '/emails/' . $item->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -159,30 +139,19 @@ class User_Address_RestTest extends TestCase
      */
     public function updateRestTest()
     {
-        $item = $this->get_random_address();
+        $item = $this->get_random_email();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Address');
-        // Update address
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Email');
+        // Update email
         $form = array(
-            'country' => 'country-' . rand(),
-            'province' => 'province-' . rand(),
-            'city' => 'city-' . rand(),
-            'address' => 'address-' . rand(),
-            'postal_code' => rand(111111111,999999999) . '0',
-//             'location' => 'POINT(100 100.1)',
-            'type' => 'home'
+            'type' => 'office'
         );
-        $response = $this->client->post('/user/accounts/' . $this->account->id . '/addresses/' . $item->id, $form);
+        $response = $this->client->post('/user/accounts/' . $this->account->id . '/emails/' . $item->id, $form);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
         $actual = json_decode($response->content, true);
-        $this->assertTrue($actual['id'] > 0);
-        $this->assertEquals($actual['country'], $form['country']);
-        $this->assertEquals($actual['province'], $form['province']);
-        $this->assertEquals($actual['city'], $form['city']);
-        $this->assertEquals($actual['address'], $form['address']);
-        $this->assertEquals($actual['postal_code'], $form['postal_code']);
-//         $this->assertEquals($actual['location'], $form['location']);
+        $this->assertEquals($actual['id'], $item->id);
+        $this->assertEquals($actual['email'], $item->email);
         $this->assertEquals($actual['type'], $form['type']);
     }
 
@@ -192,11 +161,11 @@ class User_Address_RestTest extends TestCase
      */
     public function deleteRestTest()
     {
-        $item = $this->get_random_address();
+        $item = $this->get_random_email();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Address');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Email');
         // delete
-        $response = $this->client->delete('/user/accounts/' . $this->account->id . '/addresses/' . $item->id);
+        $response = $this->client->delete('/user/accounts/' . $this->account->id . '/emails/' . $item->id);
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
@@ -207,11 +176,36 @@ class User_Address_RestTest extends TestCase
      */
     public function findRestTest()
     {
-        $response = $this->client->get('/user/accounts/' . $this->account->id . '/addresses');
+        $response = $this->client->get('/user/accounts/' . $this->account->id . '/emails');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }
 
+    /**
+     *
+     * @test
+     */
+    public function verificationRestTest()
+    {
+        // Email
+        $item = $this->get_random_email();
+        $item->create();
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Email');
+
+        // Verificaion
+        $verification = Verifier_Service::createVerification($item->get_account(), $item);
+
+        // Verify email
+        $url = '/user/accounts/' . $this->account->id . '/emails/' . $item->id . '/verifications/' . $verification->code;
+        $response = $this->client->post($url);
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+        $actual = json_decode($response->content, true);
+        $this->assertEquals($actual['id'], $item->id);
+        $this->assertEquals($actual['email'], $item->email);
+        $this->assertEquals($actual['type'], $item->type);
+        $this->assertTrue($actual['is_verified']);
+    }
 }
 
 

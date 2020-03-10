@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+use Pluf\Test\TestCase;
 use PHPUnit\Framework\IncompleteTestError;
 
 require_once 'Pluf.php';
@@ -94,7 +94,7 @@ class User_Phone_ModelTest extends TestCase
     public function createNewPhone()
     {
         $orderItem = $this->get_random_phone();
-        Test_Assert::assertTrue($orderItem->create(), 'Impossible to create phone');
+        $this->assertTrue($orderItem->create(), 'Impossible to create phone');
     }
 
     /**
@@ -103,10 +103,10 @@ class User_Phone_ModelTest extends TestCase
     public function getAccountOfPhone()
     {
         $phone = $this->get_random_phone();
-        Test_Assert::assertTrue($phone->create(), 'Impossible to create phone');
+        $this->assertTrue($phone->create(), 'Impossible to create phone');
         
         $account = $phone->get_account();
-        Test_Assert::assertNotNull($account);
+        $this->assertNotNull($account);
     }
     
 }

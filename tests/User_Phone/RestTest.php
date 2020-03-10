@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+use Pluf\Test\TestCase;
 use PHPUnit\Framework\IncompleteTestError;
 require_once 'Pluf.php';
 
@@ -131,7 +131,7 @@ class User_Phone_RestTest extends TestCase
     {
         $item = $this->get_random_phone();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Phone');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Phone');
         // Get item
         $response = $this->client->get('/user/accounts/' . $this->account->id . '/phones/' . $item->id);
         $this->assertNotNull($response);
@@ -146,7 +146,7 @@ class User_Phone_RestTest extends TestCase
     {
         $item = $this->get_random_phone();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Phone');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Phone');
         // Update phone
         $form = array(
             'type' => 'office'
@@ -168,7 +168,7 @@ class User_Phone_RestTest extends TestCase
     {
         $item = $this->get_random_phone();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Phone');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Phone');
         // delete
         $response = $this->client->delete('/user/accounts/' . $this->account->id . '/phones/' . $item->id);
         $this->assertNotNull($response);
@@ -195,7 +195,7 @@ class User_Phone_RestTest extends TestCase
         // Phone
         $item = $this->get_random_phone();
         $item->create();
-        Test_Assert::assertFalse($item->isAnonymous(), 'Could not create User_Phone');
+        $this->assertFalse($item->isAnonymous(), 'Could not create User_Phone');
         
         // Verificaion
         $verification = Verifier_Service::createVerification($item->get_account(), $item);

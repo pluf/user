@@ -16,7 +16,7 @@
 //  * You should have received a copy of the GNU General Public License
 //  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 //  */
-// use PHPUnit\Framework\TestCase;
+// use Pluf\Test\TestCase;
 // use PHPUnit\Framework\IncompleteTestError;
 // require_once 'Pluf.php';
 
@@ -109,7 +109,7 @@
 //         $user = new User_Account();
 //         $user = $user->getUser('test');
 
-//         $profile = User_Views_CProfile::get_profile_document($user->id);
+//         $profile = User_Views_Profile::get_profile_document($user->id);
 
 //         $this->assertNotNull($profile);
 //     }

@@ -16,16 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
+namespace Pluf\Test\Middleware;
 
-require_once 'Pluf.php';
+use Pluf\Test\TestCase;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use Pluf_HTTP_Request;
+use User_Account;
+use User_Role;
+use User_Group;
+use User_Credential;
+use User_Middleware_BasicAuth;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Middleware_BasicAuthTest extends TestCase
+
+class BasicAuthTest extends TestCase
 {
 
     /**
@@ -34,12 +39,7 @@ class User_Middleware_BasicAuthTest extends TestCase
     public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration(array(
-            'Pluf',
-            'User',
-            'Group',
-            'Role'
-        ));
+        $m = new Pluf_Migration();
         $m->install();
         
         // Test user
@@ -68,13 +68,8 @@ class User_Middleware_BasicAuthTest extends TestCase
      */
     public static function removeDatabses()
     {
-        $m = new Pluf_Migration(array(
-            'Pluf',
-            'User',
-            'Group',
-            'Role'
-        ));
-        $m->unInstall();
+        $m = new Pluf_Migration();
+        $m->uninstall();
     }
 
     /**
@@ -83,7 +78,7 @@ class User_Middleware_BasicAuthTest extends TestCase
     public function shouldBeAclass()
     {
         $ba = new User_Middleware_BasicAuth();
-        Test_Assert::assertNotNull($ba);
+        $this->assertNotNull($ba);
     }
 
     /**
@@ -110,8 +105,8 @@ class User_Middleware_BasicAuthTest extends TestCase
         );
         
         $res = $ba->process_request($request);
-        Test_Assert::assertFalse($res, 'Middleware must not intropt the process');
-        Test_Assert::assertFalse($request->user->isAnonymous(), 'Authentication not work');
+        $this->assertFalse($res, 'Middleware must not intropt the process');
+        $this->assertFalse($request->user->isAnonymous(), 'Authentication not work');
     }
 
     /**
@@ -139,8 +134,8 @@ class User_Middleware_BasicAuthTest extends TestCase
         
         $request->user = new User_Account();
         $res = $ba->process_request($request);
-        Test_Assert::assertFalse($res, 'Middleware must not intropt the process');
-        Test_Assert::assertTrue($request->user->isAnonymous(), 'Authentication not work');
+        $this->assertFalse($res, 'Middleware must not intropt the process');
+        $this->assertTrue($request->user->isAnonymous(), 'Authentication not work');
     }
 
     /**
@@ -168,8 +163,8 @@ class User_Middleware_BasicAuthTest extends TestCase
         
         $request->user = new User_Account();
         $res = $ba->process_request($request);
-        Test_Assert::assertFalse($res, 'Middleware must not intropt the process');
-        Test_Assert::assertTrue($request->user->isAnonymous(), 'Authentication not work');
+        $this->assertFalse($res, 'Middleware must not intropt the process');
+        $this->assertTrue($request->user->isAnonymous(), 'Authentication not work');
     }
 }
 

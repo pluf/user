@@ -16,22 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
+namespace Pluf\Test\Address;
 
-require_once 'Pluf.php';
+use Pluf\Test\TestCase;
+use Pluf\Test\Client;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use User_Account;
+use User_Credential;
+use User_Address;
+use User_Role;
 
-Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
-
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Address_ModelTest extends TestCase
+class ModelTest extends TestCase
 {
+
     private $account;
-    
+
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
@@ -40,7 +43,7 @@ class User_Address_ModelTest extends TestCase
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         $m->init();
-        
+
         // Test user
         $user = new User_Account();
         $user->login = 'test';
@@ -57,13 +60,13 @@ class User_Address_ModelTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
-        
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
@@ -72,48 +75,51 @@ class User_Address_ModelTest extends TestCase
         $m->unInstall();
     }
 
-    private function get_random_address(){
+    private function get_random_address()
+    {
         $item = new User_Address();
         $item->country = 'Country';
         $item->province = 'Province';
         $item->city = 'City';
         $item->address = 'Test Address';
-        $item->postal_code = rand(111111111,999999999) . '0';
-//         $item->location = 'POINT(100 100.1)';
+        $item->postal_code = rand(111111111, 999999999) . '0';
+        // $item->location = 'POINT(100 100.1)';
         $item->type = 'office';
         $item->account_id = $this->account;
         return $item;
     }
 
     /**
-     * 
+     *
      * @before
      */
-    public function init(){
+    public function init()
+    {
         $this->account = User_Account::getUser('test');
     }
-    
+
     /**
+     *
      * @test
      */
     public function createNewAddress()
     {
         $ad = $this->get_random_address();
-        Test_Assert::assertTrue($ad->create(), 'Impossible to create address');
+        $this->assertTrue($ad->create(), 'Impossible to create address');
     }
 
     /**
+     *
      * @test
      */
     public function getAccountOfAddress()
     {
         $address = $this->get_random_address();
-        Test_Assert::assertTrue($address->create(), 'Impossible to create address');
-        
+        $this->assertTrue($address->create(), 'Impossible to create address');
+
         $account = $address->get_account();
-        Test_Assert::assertNotNull($account);
+        $this->assertNotNull($account);
     }
-    
 }
 
 

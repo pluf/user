@@ -15,6 +15,7 @@
 			"role" : "developer"
 		}
 	],
+	"minimum-stability" : "stable",
 	"require" : {
 		"pluf/core" : "6.x"
 	},
@@ -24,6 +25,16 @@
 	"include-path" : [
 		"src/"
 	],
+	"autoload" : {
+		"psr-4" : {
+			"Pluf\\User\\" : "src6/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"PlufTest\\" : "tests/"
+		}
+	},
 	"homepage" : "https://github.com/pluf/user",
 	"support" : {
 		"email" : "info@pluf.ir",
@@ -61,6 +72,5 @@
 				"symlink" : true
 			}
 		}
-	],
-	"minimum-stability" : "stable"
+	]
 }

@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\Test\Role;
+namespace Pluf\Test\Group\REST;
 
+use Pluf\Test\Client;
 use Pluf\Test\TestCase;
-use Pluf\Exception;
-use Pluf;
 use Pluf_Migration;
-use User_Role;
 
-class ModelTest extends TestCase
+class BasicsAnonymouseTest extends TestCase
 {
+
+    private static $client = null;
 
     /**
      *
@@ -33,9 +33,12 @@ class ModelTest extends TestCase
      */
     public static function createDataBase()
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
+        Pluf::start(__DIR__ . '/../../conf/config.php');
         $m = new Pluf_Migration();
         $m->install();
+        $m->init();
+
+        self::$client = new Client();
     }
 
     /**
@@ -45,22 +48,32 @@ class ModelTest extends TestCase
     public static function removeDatabses()
     {
         $m = new Pluf_Migration();
-        $m->uninstall();
+        $m->unInstall();
     }
 
     /**
      *
      * @test
      */
-    public function shouldPossibleCreateNew()
+    public function anonymousCanGetListOfGroups()
     {
-        $role = new User_Role();
-        $role->name = 'Random' . rand();
-        $role->application = 'test';
-        $role->code_name = 'codename_' . rand();
-        $role->description = 'Hi@test.com';
-        $this->assertTrue($role->create(), 'Impossible to create role');
+        $response = self::$client->get('/user/groups');
+        $this->assertResponseNotNull($response, 'Find result is empty');
+        $this->assertResponseStatusCode($response, 200, 'Find status code is not 200');
+        $this->assertResponsePaginateList($response, 'Find result is not JSON paginated list');
+    }
+
+    /**
+     *
+     * @test
+     */
+    public function anonymousCanGetSchemaOfGroups()
+    {
+        $response = self::$client->get('/user/groups/schema');
+        $this->assertResponseNotNull($response, 'Find result is empty');
+        $this->assertResponseStatusCode($response, 200, 'Find status code is not 200');
     }
 }
+
 
 
