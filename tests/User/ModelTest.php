@@ -16,12 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+use Pluf\Test\TestCase;
 use PHPUnit\Framework\IncompleteTestError;
-
-require_once 'Pluf.php';
-
-Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
 
 /**
  *
@@ -104,7 +100,7 @@ class User_ModelTest extends TestCase
         $user = new User_Account();
         $user->login = 'Random' . rand();
         $user->email = 'Hi@test.com';
-        Test_Assert::assertTrue($user->create(), 'Impossible to create user');
+        $this->assertTrue($user->create(), 'Impossible to create user');
     }
 
     /**
@@ -116,7 +112,7 @@ class User_ModelTest extends TestCase
         $user = new User_Account();
         $user = $user->getUser('test');
         $mess = $user->get_messages_list();
-        Test_Assert::assertEquals(0, $mess->count());
+        $this->assertEquals(0, $mess->count());
     }
 
     /**
@@ -128,7 +124,7 @@ class User_ModelTest extends TestCase
         $user = new User_Account();
         $user = $user->getUser('test');
         $roles = $user->get_roles_list();
-        Test_Assert::assertEquals(0, $roles->count());
+        $this->assertEquals(0, $roles->count());
     }
 
     /**
@@ -140,7 +136,7 @@ class User_ModelTest extends TestCase
         $user = new User_Account();
         $user = $user->getUser('test');
         $groups = $user->get_groups_list();
-        Test_Assert::assertEquals(0, $groups->count());
+        $this->assertEquals(0, $groups->count());
     }
 
     /**
@@ -170,7 +166,8 @@ class User_ModelTest extends TestCase
         $user = new User_Account();
         $user->login = 'test';
         $user->is_active = true;
-
+        
+        Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
         $form = Pluf_Shortcuts_GetFormForModel($user, $user->getData(), array());
         $form->save();
     }
