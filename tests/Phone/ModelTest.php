@@ -16,31 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Test\Phone;
+
 use Pluf\Test\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use User_Account;
+use User_Credential;
+use User_Role;
+use User_group;
+use User_Phone;
 
-require_once 'Pluf.php';
 
-Pluf::loadFunction('Pluf_Shortcuts_GetFormForModel');
-
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Phone_ModelTest extends TestCase
+class ModelTest extends TestCase
 {
+
     private $account;
-    
+
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m = new Pluf_Migration();
         $m->install();
         $m->init();
-        
+
         // Test user
         $user = new User_Account();
         $user->login = 'test';
@@ -57,38 +61,41 @@ class User_Phone_ModelTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
-        
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
     {
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
-        $m->unInstall();
+        $m = new Pluf_Migration();
+        $m->uninstall();
     }
 
-    private function get_random_phone(){
+    private function get_random_phone()
+    {
         $item = new User_Phone();
-        $item->phone = '0' . rand(1111111111,9999999999);
+        $item->phone = '0' . rand(1111111111, 9999999999);
         $item->type = 'office';
         $item->account_id = $this->account;
         return $item;
     }
 
     /**
-     * 
+     *
      * @before
      */
-    public function init(){
+    public function init()
+    {
         $this->account = User_Account::getUser('test');
     }
-    
+
     /**
+     *
      * @test
      */
     public function createNewPhone()
@@ -98,17 +105,17 @@ class User_Phone_ModelTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function getAccountOfPhone()
     {
         $phone = $this->get_random_phone();
         $this->assertTrue($phone->create(), 'Impossible to create phone');
-        
+
         $account = $phone->get_account();
         $this->assertNotNull($account);
     }
-    
 }
 
 

@@ -16,15 +16,21 @@
 //  * You should have received a copy of the GNU General Public License
 //  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 //  */
-// use Pluf\Test\TestCase;
-// use PHPUnit\Framework\IncompleteTestError;
-// require_once 'Pluf.php';
+// namespace Pluf\Test\PasswordToken;
 
-// /**
-//  * @backupGlobals disabled
-//  * @backupStaticAttributes disabled
-//  */
-// class User_Password_Token_MainTest extends TestCase
+// use Pluf\Test\TestCase;
+// use Pluf\Test\Client;
+// use Pluf\Exception;
+// use Pluf;
+// use Pluf_Migration;
+// use User_Account;
+// use User_Credential;
+// use User_Role;
+// use User_group;
+// use User_Phone;
+// use Verifier_Service;
+
+// class ChangePassTest extends TestCase
 // {
 
 //     /**
@@ -67,162 +73,106 @@
 //         $m->unInstall();
 //     }
 
-//     /**
-//      * @test
-//      */
-//     public function testCreateToken()
+//     public function testChangePassByOld()
 //     {
+//         // Create user
 //         $user = new User_Account();
-//         $user = $user->getUser('test');
+//         $user->login = 'test' . rand();
+//         $user->is_active = true;
+//         if (true !== $user->create()) {
+//             throw new Exception();
+//         }
+//         // Credential of user
+//         $credit = new User_Credential();
+//         $credit->setFromFormData(array(
+//             'account_id' => $user->id
+//         ));
+//         $credit->setPassword('test');
+//         if (true !== $credit->create()) {
+//             throw new Exception();
+//         }
         
-//         // creates new
+//         $view = new User_Views_Password();
+//         $newPassword = 'test' . rand();
+        
+//         // Create token by email
+//         $match = array();
+//         global $_REQUEST;
+//         global $_SERVER;
+//         $_REQUEST = array(
+//             'old' => 'test',
+//             'new' => $newPassword
+//         );
+//         $_SERVER['REQUEST_URI'] = 'http://localhost/test';
+//         $_SERVER['REQUEST_METHOD'] = 'POST';
+//         $_SERVER['REMOTE_ADDR'] = 'localhost';
+//         $request = new Pluf_HTTP_Request('/');
+//         $request->user = $user;
+        
+//         $res = $view->password($request, $match);
+//         $this->assertNotNull($res);
+        
+//         /**
+//          *
+//          * @var User $newUser
+//          */
+//         $newUser = Pluf::factory('User_Account', $user->id);
+//         $this->assertFalse($newUser->checkPassword('test'));
+//         $this->assertTrue($newUser->checkPassword($newPassword));
+//     }
+
+//     public function testChangePassByToken()
+//     {
+//         // Create user
+//         $user = new User_Account();
+//         $user->login = 'test' . rand();
+//         $user->is_active = true;
+//         if (true !== $user->create()) {
+//             throw new Exception();
+//         }
+//         // Credential of user
+//         $credit = new User_Credential();
+//         $credit->setFromFormData(array(
+//             'account_id' => $user->id
+//         ));
+//         $credit->setPassword('test');
+//         if (true !== $credit->create()) {
+//             throw new Exception();
+//         }
+        
 //         $token = new User_Token();
 //         $token->account_id = $user;
-//         $token->type = 'test';
-//         $token->create();
-//         $this->assertNotNull($token->id);
-        
-//         // get token user
-//         $tokenStored = new User_Token($token->id);
-//         $this->assertEquals($tokenStored->account_id, $user->id);
-//         $this->assertNotNull($tokenStored->token);
-//     }
-
-//     public function testCreateTokenForMail()
-//     {
-//         // Create user
-//         $user = new User_Account();
-//         $user->login = 'test' . rand();
-//         $user->is_active = true;
-//         if (true !== $user->create()) {
-//             throw new Exception();
-//         }
-//         // Credential of user
-//         $credit = new User_Credential();
-//         $credit->setFromFormData(array(
-//             'account_id' => $user->id
-//         ));
-//         $credit->setPassword('test');
-//         if (true !== $credit->create()) {
-//             throw new Exception();
+//         if (! $token->create()) {
+//             throw new Exception('Not able to create token');
 //         }
         
 //         $view = new User_Views_Password();
+//         $newPassword = 'test' . rand();
         
 //         // Create token by email
 //         $match = array();
 //         global $_REQUEST;
 //         global $_SERVER;
 //         $_REQUEST = array(
-//             'email' => $user->email
+//             'token' => $token->token,
+//             'new' => $newPassword
 //         );
 //         $_SERVER['REQUEST_URI'] = 'http://localhost/test';
 //         $_SERVER['REQUEST_METHOD'] = 'POST';
 //         $_SERVER['REMOTE_ADDR'] = 'localhost';
 //         $request = new Pluf_HTTP_Request('/');
-//         $request->user = new User_Account();
+//         $request->user = $user;
         
 //         $res = $view->password($request, $match);
 //         $this->assertNotNull($res);
         
-//         $token = new User_Token();
-//         $sql = new Pluf_SQL('account_id=%s', array(
-//             $user->id
-//         ));
-//         $token = $token->getOne($sql->gen());
-//         $this->assertNotNull($token);
-//     }
-
-//     public function testCreateTokenForLogin()
-//     {
-//         // Create user
-//         $user = new User_Account();
-//         $user->login = 'test' . rand();
-//         $user->is_active = true;
-//         if (true !== $user->create()) {
-//             throw new Exception();
-//         }
-//         // Credential of user
-//         $credit = new User_Credential();
-//         $credit->setFromFormData(array(
-//             'account_id' => $user->id
-//         ));
-//         $credit->setPassword('test');
-//         if (true !== $credit->create()) {
-//             throw new Exception();
-//         }
-        
-//         $view = new User_Views_Password();
-        
-//         // Create token by email
-//         $match = array();
-//         global $_REQUEST;
-//         global $_SERVER;
-//         $_REQUEST = array(
-//             'login' => $user->login
-//         );
-//         $_SERVER['REQUEST_URI'] = 'http://localhost/test';
-//         $_SERVER['REQUEST_METHOD'] = 'POST';
-//         $_SERVER['REMOTE_ADDR'] = 'localhost';
-//         $request = new Pluf_HTTP_Request('/');
-//         $request->user = new User_Account();
-        
-//         $res = $view->password($request, $match);
-//         $this->assertNotNull($res);
-        
-//         $token = new User_Token();
-//         $sql = new Pluf_SQL('account_id=%s', array(
-//             $user->id
-//         ));
-//         $token = $token->getOne($sql->gen());
-//         $this->assertNotNull($token);
-//     }
-
-//     public function testCreateDoubleTokenForLogin()
-//     {
-//         // Create user
-//         $user = new User_Account();
-//         $user->login = 'test' . rand();
-//         $user->is_active = true;
-//         if (true !== $user->create()) {
-//             throw new Exception();
-//         }
-//         // Credential of user
-//         $credit = new User_Credential();
-//         $credit->setFromFormData(array(
-//             'account_id' => $user->id
-//         ));
-//         $credit->setPassword('test');
-//         if (true !== $credit->create()) {
-//             throw new Exception();
-//         }
-        
-//         $view = new User_Views_Password();
-        
-//         // Create token by email
-//         $match = array();
-//         global $_REQUEST;
-//         global $_SERVER;
-//         $_REQUEST = array(
-//             'login' => $user->login
-//         );
-//         $_SERVER['REQUEST_URI'] = 'http://localhost/test';
-//         $_SERVER['REQUEST_METHOD'] = 'POST';
-//         $_SERVER['REMOTE_ADDR'] = 'localhost';
-//         $request = new Pluf_HTTP_Request('/');
-//         $request->user = new User_Account();
-        
-//         for ($i = 1; $i < 4; $i ++) {
-//             $res = $view->password($request, $match);
-//             $this->assertNotNull($res);
-            
-//             $token = new User_Token();
-//             $sql = new Pluf_SQL('account_id=%s', array(
-//                 $user->id
-//             ));
-//             $token = $token->getOne($sql->gen());
-//             $this->assertNotNull($token);
-//         }
+//         /**
+//          *
+//          * @var User $newUser
+//          */
+//         $newUser = Pluf::factory('User_Account', $user->id);
+//         $this->assertFalse($newUser->checkPassword('test'));
+//         $this->assertTrue($newUser->checkPassword($newPassword));
 //     }
 // }
 

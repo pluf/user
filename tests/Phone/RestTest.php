@@ -16,19 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use Pluf\Test\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
-require_once 'Pluf.php';
+namespace Pluf\Test\Phone;
 
-/**
- *
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Phone_RestTest extends TestCase
+use Pluf\Test\TestCase;
+use Pluf\Test\Client;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use User_Account;
+use User_Credential;
+use User_Role;
+use User_group;
+use User_Phone;
+use Verifier_Service;
+
+class RestTest extends TestCase
 {
 
     var $client;
+
     private $account;
 
     /**
@@ -38,7 +44,7 @@ class User_Phone_RestTest extends TestCase
     public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m = new Pluf_Migration();
         $m->install();
         $m->init();
 
@@ -58,9 +64,6 @@ class User_Phone_RestTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-
-//         $per = User_Role::getFromString('tenant.owner');
-//         $user->setAssoc($per);
     }
 
     /**
@@ -69,8 +72,8 @@ class User_Phone_RestTest extends TestCase
      */
     public static function removeDatabses()
     {
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
-        $m->unInstall();
+        $m = new Pluf_Migration();
+        $m->uninstall();
     }
 
     /**
@@ -79,14 +82,7 @@ class User_Phone_RestTest extends TestCase
      */
     public function init()
     {
-        $this->client = new Test_Client(array(
-            array(
-                'app' => 'User',
-                'regex' => '#^/user#',
-                'base' => '',
-                'sub' => include 'User/urls-v2.php'
-            )
-        ));
+        $this->client = new Client();
         // login
         $this->client->post('/user/login', array(
             'login' => 'test',
@@ -103,7 +99,7 @@ class User_Phone_RestTest extends TestCase
     public function createRestTest()
     {
         $form = array(
-            'phone' => '0' . rand(1111111111,9999999999),
+            'phone' => '0' . rand(1111111111, 9999999999),
             'type' => 'office'
         );
         $response = $this->client->post('/user/accounts/' . $this->account->id . '/phones', $form);
@@ -115,14 +111,15 @@ class User_Phone_RestTest extends TestCase
         $this->assertEquals($actual['type'], $form['type']);
     }
 
-    private function get_random_phone(){
+    private function get_random_phone()
+    {
         $item = new User_Phone();
-        $item->phone = '0' . rand(1111111111,9999999999);
+        $item->phone = '0' . rand(1111111111, 9999999999);
         $item->type = 'home';
         $item->account_id = $this->account;
         return $item;
     }
-    
+
     /**
      *
      * @test
@@ -196,10 +193,10 @@ class User_Phone_RestTest extends TestCase
         $item = $this->get_random_phone();
         $item->create();
         $this->assertFalse($item->isAnonymous(), 'Could not create User_Phone');
-        
+
         // Verificaion
         $verification = Verifier_Service::createVerification($item->get_account(), $item);
-        
+
         // Verify phone
         $url = '/user/accounts/' . $this->account->id . '/phones/' . $item->id . '/verifications/' . $verification->code;
         $response = $this->client->post($url);
@@ -211,7 +208,6 @@ class User_Phone_RestTest extends TestCase
         $this->assertEquals($actual['type'], $item->type);
         $this->assertTrue($actual['is_verified']);
     }
-    
 }
 
 

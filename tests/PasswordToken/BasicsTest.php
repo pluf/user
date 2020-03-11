@@ -16,26 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use Pluf\Test\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
-require_once 'Pluf.php';
+namespace Pluf\Test\PasswordToken;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class User_Password_Token_BasicsTest extends TestCase
+use Pluf\Test\TestCase;
+use Pluf\Test\Client;
+use Pluf\Exception;
+use Pluf;
+use Pluf_Migration;
+use User_Account;
+use User_Credential;
+use User_Role;
+use User_group;
+use User_Phone;
+use Verifier_Service;
+
+class BasicsTest extends TestCase
 {
 
     /**
+     *
      * @test
      */
     public function testQuerySpring()
     {
-        $ids = array(1, 2);
+        $ids = array(
+            1,
+            2
+        );
         $format = 'group_id IN (%s)';
-        
-        $result = vsprintf($format, array(implode(', ', $ids)));
+
+        $result = vsprintf($format, array(
+            implode(', ', $ids)
+        ));
         $this->assertEquals('group_id IN (1, 2)', $result);
     }
 }
