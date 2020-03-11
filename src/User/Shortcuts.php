@@ -50,7 +50,8 @@ function User_Shortcuts_DeleteAvatar($user)
 function User_Shortcuts_GetAvatar($user)
 {
     // get avatar
-    $avatar = Pluf::factory('User_Avatar')->getOne('account_id=' . $user->id);
+    $avatar = new User_Avatar();
+    $avatar = $avatar->getOne('account_id=' . $user->id);
     if ($avatar) {
         return new Pluf_HTTP_Response_File($avatar->getAbsloutPath(), $avatar->mimeType);
     }

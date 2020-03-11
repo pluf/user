@@ -28,6 +28,9 @@
 	"autoload" : {
 		"psr-4" : {
 			"Pluf\\User\\" : "src6/"
+		},
+		"psr-0" : {
+			"" : "src"
 		}
 	},
 	"autoload-dev" : {

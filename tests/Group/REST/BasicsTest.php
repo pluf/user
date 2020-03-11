@@ -19,7 +19,6 @@
 namespace Pluf\Test\Group\REST;
 
 use Pluf\Test\TestCase;
-use Pluf\Test\Test_Assert;
 use Pluf\Exception;
 use Pluf;
 use Pluf_Migration;

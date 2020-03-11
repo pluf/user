@@ -18,15 +18,10 @@
  */
 namespace Plfu\Test\Role\REST;
 
-use Pluf\Exception;
+use Pluf\Test\Client;
 use Pluf\Test\TestCase;
 use Pluf;
 use Pluf_Migration;
-use User_Account;
-use User_Role;
-use User_Group;
-use User_Credential;
-use Pluf\Test\Client;
 
 class BasicsAnonymouseTest extends TestCase
 {

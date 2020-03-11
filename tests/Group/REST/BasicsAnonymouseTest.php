@@ -20,6 +20,7 @@ namespace Pluf\Test\Group\REST;
 
 use Pluf\Test\Client;
 use Pluf\Test\TestCase;
+use Pluf;
 use Pluf_Migration;
 
 class BasicsAnonymouseTest extends TestCase

@@ -19,16 +19,6 @@
 namespace Pluf\Test\PasswordToken;
 
 use Pluf\Test\TestCase;
-use Pluf\Test\Client;
-use Pluf\Exception;
-use Pluf;
-use Pluf_Migration;
-use User_Account;
-use User_Credential;
-use User_Role;
-use User_group;
-use User_Phone;
-use Verifier_Service;
 
 class BasicsTest extends TestCase
 {

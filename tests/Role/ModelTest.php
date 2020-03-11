@@ -19,7 +19,6 @@
 namespace Pluf\Test\Role;
 
 use Pluf\Test\TestCase;
-use Pluf\Exception;
 use Pluf;
 use Pluf_Migration;
 use User_Role;
