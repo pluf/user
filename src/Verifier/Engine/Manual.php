@@ -54,7 +54,7 @@ class Verifier_Engine_Manual extends Verifier_Engine
     {
         // Do nothing
         return true;
-// //         $request = $GLOBALS['_PX_request'];
+// //         $request = Pluf_HTTP_Request::getCurrent();
 // //         $obj = null;
 // //         switch ($verification->subject_class) {
 // //             case 'User_Account':
