@@ -36,7 +36,7 @@
 	},
 	"autoload-dev" : {
 		"psr-4" : {
-			"PlufTest\\" : "tests/"
+			"Pluf\\Test\\" : "tests/"
 		}
 	},
 	"homepage" : "https://github.com/pluf/user",
