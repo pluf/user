@@ -39,7 +39,7 @@
 //     public static function createDataBase()
 //     {
 //         Pluf::start(__DIR__ . '/../conf/config.php');
-//         $m = new Pluf_Migration(Pluf::f('installed_apps'));
+//         $m = new Pluf_Migration();
 //         $m->install();
 //         $m->init();
         
@@ -69,7 +69,7 @@
 //      */
 //     public static function removeDatabses()
 //     {
-//         $m = new Pluf_Migration(Pluf::f('installed_apps'));
+//         $m = new Pluf_Migration();
 //         $m->uninstall();
 //     }
 
