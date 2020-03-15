@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true">
+<phpunit 
+	bootstrap="./vendor/autoload.php"
+	stopOnWarning="false"
+	verbose="false"
+	backupGlobals="false"
+	backupStaticAttributes="false"
+	colors="true">
 	<testsuites>
-		<testsuite name="Group">
-			<directory>tests/Group/</directory>
-			<directory>tests/Group_REST/</directory>
-		</testsuite>
-		<testsuite name="Role">
-			<directory>tests/Role/</directory>
-			<directory>tests/Role_REST/</directory>
-		</testsuite>
-		<testsuite name="Account">
-			<directory>tests/User/</directory>
-			<directory>tests/User_Password_Token/</directory>
-			<directory>tests/User_REST/</directory>
-			<directory>tests/User_Profile_API/</directory>
-			<directory>tests/User_Middleware/</directory>
-		</testsuite>
-		<testsuite name="Contacts">
-			<directory>tests/User_Email/</directory>
-			<directory>tests/User_Phone/</directory>
-			<directory>tests/User_Address/</directory>
+		<testsuite name="User">
+			<directory>tests/</directory>
 		</testsuite>
 	</testsuites>
 
+	<!-- Code coverage -->
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">src</directory>
+			<directory suffix=".php">./src</directory>
+			<directory suffix=".php">./src6</directory>
 		</whitelist>
 	</filter>
-	<logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-	</logging>
+    <logging>
+		<log 
+			type="coverage-html" 
+			target="build/tmp/report" 
+			lowUpperBound="35" 
+			highLowerBound="70"/>
+		<log 
+			type="coverage-clover" 
+			target="build/tmp/coverage.xml"/>
+		<log 
+			type="junit" 
+			target="build/tmp/logfile.xml"/>
+    </logging>
 </phpunit>

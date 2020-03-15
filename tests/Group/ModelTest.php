@@ -16,60 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\IncompleteTestError;
+namespace Pluf\Test\Group;
 
-require_once 'Pluf.php';
+use Pluf\Test\TestCase;
+use Pluf;
+use Pluf_Migration;
+use User_Group;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class Group_ModelTest extends TestCase
+class ModelTest extends TestCase
 {
 
     /**
+     *
      * @beforeClass
      */
     public static function createDataBase()
     {
         Pluf::start(__DIR__ . '/../conf/config.php');
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'User_Group',
-            'User_Account',
-            'User_Role'
-        );
-        
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-            if (true !== ($res = $schema->createTables())) {
-                throw new Exception($res);
-            }
-        }
+        $m = new Pluf_Migration();
+        $m->install();
     }
 
     /**
+     *
      * @afterClass
      */
     public static function removeDatabses()
     {
-        $db = Pluf::db();
-        $schema = Pluf::factory('Pluf_DB_Schema', $db);
-        $models = array(
-            'User_Group',
-            'User_Account',
-            'User_Role'
-        );
-        foreach ($models as $model) {
-            $schema->model = Pluf::factory($model);
-            $schema->dropTables();
-        }
+        $m = new Pluf_Migration();
+        $m->uninstall();
     }
 
     /**
+     *
      * @test
      */
     public function shouldPossibleCreateNew()
@@ -77,7 +56,7 @@ class Group_ModelTest extends TestCase
         $group = new User_Group();
         $group->name = 'Random' . rand();
         $group->description = 'Hi@test.com';
-        Test_Assert::assertTrue($group->create(), 'Impossible to create group');
+        $this->assertTrue($group->create(), 'Impossible to create group');
     }
 }
 

@@ -16,49 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\Test\Role;
+namespace Pluf\Test\PasswordToken;
 
 use Pluf\Test\TestCase;
-use Pluf;
-use Pluf_Migration;
-use User_Role;
 
-class ModelTest extends TestCase
+class BasicsTest extends TestCase
 {
-
-    /**
-     *
-     * @beforeClass
-     */
-    public static function createDataBase()
-    {
-        Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration();
-        $m->install();
-    }
-
-    /**
-     *
-     * @afterClass
-     */
-    public static function removeDatabses()
-    {
-        $m = new Pluf_Migration();
-        $m->uninstall();
-    }
 
     /**
      *
      * @test
      */
-    public function shouldPossibleCreateNew()
+    public function testQuerySpring()
     {
-        $role = new User_Role();
-        $role->name = 'Random' . rand();
-        $role->application = 'test';
-        $role->code_name = 'codename_' . rand();
-        $role->description = 'Hi@test.com';
-        $this->assertTrue($role->create(), 'Impossible to create role');
+        $ids = array(
+            1,
+            2
+        );
+        $format = 'group_id IN (%s)';
+
+        $result = vsprintf($format, array(
+            implode(', ', $ids)
+        ));
+        $this->assertEquals('group_id IN (1, 2)', $result);
     }
 }
 

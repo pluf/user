@@ -1,5 +1,6 @@
 {
 	"name" : "pluf/user",
+	"version" : "6.0.5",
 	"description" : "A module for Pluf to manage user profiles and user accounts",
 	"type" : "library",
 	"license" : "MIT",
@@ -15,15 +16,29 @@
 			"role" : "developer"
 		}
 	],
+	"minimum-stability" : "stable",
 	"require" : {
-		"pluf/collection" : "5.13.x"
+		"pluf/core" : "6.x"
 	},
 	"require-dev" : {
-		"pluf/test" : "5.13.x"
+		"pluf/test" : "6.x"
 	},
 	"include-path" : [
 		"src/"
 	],
+	"autoload" : {
+		"psr-4" : {
+			"Pluf\\User\\" : "src6/"
+		},
+		"psr-0" : {
+			"" : "src"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Pluf\\Test\\" : "tests/"
+		}
+	},
 	"homepage" : "https://github.com/pluf/user",
 	"support" : {
 		"email" : "info@pluf.ir",
@@ -38,5 +53,28 @@
 		"user",
 		"profile",
 		"account"
+	],
+	"repositories" : [{
+			"type" : "path",
+			"url" : "../core",
+			"name" : "pluf/core",
+			"options" : {
+				"symlink" : true
+			}
+		}, {
+			"type" : "path",
+			"url" : "../test",
+			"name" : "pluf/test",
+			"options" : {
+				"symlink" : true
+			}
+		}, {
+			"type" : "path",
+			"url" : "../http2",
+			"name" : "pluf/http2",
+			"options" : {
+				"symlink" : true
+			}
+		}
 	]
 }
