@@ -1,26 +1,18 @@
-# Pluf/User
+# User
 
-
-### Develop
-
-[![Build Status](https://travis-ci.org/pluf/user.svg?branch=develop)](https://travis-ci.org/pluf/user)
-[![codecov](https://codecov.io/gh/pluf/user/branch/develop/graph/badge.svg)](https://codecov.io/gh/pluf/user)
-[![Coverage Status](https://coveralls.io/repos/github/pluf/user/badge.svg?branch=develop)](https://coveralls.io/github/pluf/user?branch=develop)
-
-### Master
-
-[![Build Status](https://travis-ci.org/pluf/user.svg?branch=master)](https://travis-ci.org/pluf/user)
+[![Build Status](https://travis-ci.com/pluf/user.svg?branch=master)](https://travis-ci.com/pluf/user)
 [![codecov](https://codecov.io/gh/pluf/user/branch/master/graph/badge.svg)](https://codecov.io/gh/pluf/user)
-[![Coverage Status](https://coveralls.io/repos/github/pluf/user/badge.svg?branch=master)](https://coveralls.io/github/pluf/user?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/pluf/user/badge.svg)](https://coveralls.io/github/pluf/user)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9e1457dbf2f0bcc8b953/maintainability)](https://codeclimate.com/github/pluf/user/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9e1457dbf2f0bcc8b953/test_coverage)](https://codeclimate.com/github/pluf/user/test_coverage)
+
 
 
 این پروژه یک ماژول برای سرورهای pluf است که امکانات مدیریت پروفایل‌ها و حساب‌های کاربری را فراهم می‌کند.
 
 این ماژول به ماژول‌های زیر وابستگی دارد:
 
-- pluf/core
+- pluf/user
 - pluf/collection
 
 از نکات مهم این ماژول این است که ساختار پروفایل ثابت نیست و می‌تواند در سیستم‌های مختلف متفاوت باشد
