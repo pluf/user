@@ -189,7 +189,7 @@ class AccountModelTest extends TestCase
 
     /**
      *
-     * @expectedException Pluf_Exception
+     * @expectedException \Pluf\Exception
      * @test
      */
     public function testUniqueLogin()
@@ -205,7 +205,7 @@ class AccountModelTest extends TestCase
     /**
      * TODO: maso, 2017: must throw Pluf_Exception_Form
      *
-     * @expectedException Pluf_Exception
+     * @expectedException \Pluf\Exception
      * @test
      */
     public function testValidationUnique()

@@ -17,13 +17,13 @@ function User_Shortcuts_UserDataFactory($object)
  * بررسی حالت پسورد جدید
  * 
  * @param String $pass
- * @throws Pluf_Exception
+ * @throws \Pluf\Exception
  * @return String
  */
 function User_Shortcuts_CheckPassword($pass)
 {
     if ($pass == null || ! isset($pass))
-        throw new Pluf_Exception("Pasword must not be null");
+        throw new \Pluf\Exception("Pasword must not be null");
     return $pass;
 }
 

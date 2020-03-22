@@ -33,7 +33,7 @@ class User_Notify_Engine_Mail implements User_Notify_Engine
         }
         $res = $email->sendMail();
         if (is_a($res, 'PEAR_Error')) {
-            throw new Pluf_Exception($res);
+            throw new \Pluf\Exception($res);
         }
     }
 }

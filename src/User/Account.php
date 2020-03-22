@@ -322,7 +322,7 @@ class User_Account extends Pluf_Model
         $m->account_id = $this;
         $m->message = $message;
         if (! $m->create()) {
-            throw new Pluf_Exception(__("not possible to create a message"));
+            throw new \Pluf\Exception(__("not possible to create a message"));
         }
         return $m;
     }

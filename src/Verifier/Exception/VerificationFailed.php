@@ -23,13 +23,13 @@
  * @author hadi
  *        
  */
-class Verifier_Exception_VerificationFailed extends Pluf_Exception
+class Verifier_Exception_VerificationFailed extends \Pluf\Exception
 {
 
     /**
      *
      * @param string $message
-     * @param Pluf_Exception $previous
+     * @param \Pluf\Exception $previous
      * @param string $link
      * @param string $developerMessage
      */

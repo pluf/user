@@ -22,13 +22,13 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *
  */
-class Verifier_Exception_EngineNotFound extends Pluf_Exception
+class Verifier_Exception_EngineNotFound extends \Pluf\Exception
 {
 
     /**
      *
      * @param string $message            
-     * @param Pluf_Exception $previous            
+     * @param \Pluf\Exception $previous            
      * @param string $link            
      * @param string $developerMessage            
      */

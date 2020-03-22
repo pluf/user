@@ -41,7 +41,7 @@ class User_Views_Account
         $data = array_merge($request->REQUEST, $request->FILES);
         $usr = User_Account::getUser($data['login']);
         if ($usr) {
-            throw new Pluf_Exception('Username is existed already.', 400);
+            throw new \Pluf\Exception('Username is existed already.', 400);
         }
         $form = new User_Form_Account($data, $extra);
         $cuser = $form->save();
@@ -53,7 +53,7 @@ class User_Views_Account
         $credit->setPassword($data['password']);
         $success = $credit->create();
         if (! $success) {
-            throw new Pluf_Exception('An internal error is occured while create credential');
+            throw new \Pluf\Exception('An internal error is occured while create credential');
         }
         // XXX: hadi, 1398: create email,phone and address entities if are existed
         // Create profile
