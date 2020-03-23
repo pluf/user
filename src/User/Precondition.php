@@ -45,7 +45,7 @@ class User_Precondition
                     'login is required, or cocki is not enabled');
         }
         if (! $request->user->isActive()) {
-            throw new Pluf_Exception('user is not active', 4002, null, 400, '', 
+            throw new \Pluf\Exception('user is not active', 4002, null, 400, '', 
                     'user is not active');
         }
         return true;
@@ -89,7 +89,7 @@ class User_Precondition
         if ($request->user->hasPerm($permission)) {
             return true;
         }
-        throw new Pluf_Exception('you do not have permission', 4005, null, 400, 
+        throw new \Pluf\Exception('you do not have permission', 4005, null, 400, 
                 '', 'you do not have permission');
     }
 

@@ -17,7 +17,7 @@ $cfg['app_base'] = '/testapp';
 $cfg['url_format'] = 'simple';
 $cfg['tmp_folder'] = '/tmp';
 $cfg['middleware_classes'] = array(
-    'Pluf_Middleware_Session',
+    '\Pluf\Middleware\Session',
     'User_Middleware_Session'
 );
 $cfg['secret_key'] = '5a8d7e0f2aad8bdab8f6eef725412850';

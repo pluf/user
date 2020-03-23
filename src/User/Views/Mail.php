@@ -41,7 +41,7 @@ class User_Views_Mail
         $key = $match[1];
         list ($email, $id, $time) = User_Form_UserChangeEmail::validateKey($key);
         if ($id != $request->user->id) {
-            throw new Pluf_Exception('user not match');
+            throw new \Pluf\Exception('user not match');
         }
         // Now we have a change link coming from the right user.
         if ($request->user->email == $email) {

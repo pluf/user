@@ -137,7 +137,7 @@ class Verifier_Engine_SmsIr extends Verifier_Engine
             'body' => json_encode($param)
         ]);
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
-            throw new Pluf_Exception($response->getBody()->getContents());
+            throw new \Pluf\Exception($response->getBody()->getContents());
         }
         $contents = $response->getBody()->getContents();
         return json_decode($contents, true);

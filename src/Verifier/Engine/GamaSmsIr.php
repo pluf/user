@@ -101,7 +101,7 @@ class Verifier_Engine_GamaSmsIr extends Verifier_Engine
             'form_params' => $param
         ]);
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
-            throw new Pluf_Exception($response->getBody()->getContents());
+            throw new \Pluf\Exception($response->getBody()->getContents());
         }
         $contents = $response->getBody()->getContents();
         return json_decode($contents, true);

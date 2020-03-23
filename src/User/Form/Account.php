@@ -76,7 +76,7 @@ class User_Form_Account extends Pluf_Form
         $this->user_data->setFromFormData($this->cleaned_data);
         if ($commit) {
             if (! $this->user_data->create()) {
-                throw new Pluf_Exception(__('Fail to create new user.'));
+                throw new \Pluf\Exception(__('Fail to create new user.'));
             }
         }
         return $this->user_data;
@@ -85,12 +85,12 @@ class User_Form_Account extends Pluf_Form
     /**
      * داده‌های کاربر را به روز می‌کند.
      *
-     * @throws Pluf_Exception
+     * @throws \Pluf\Exception
      */
     function update($commit = true)
     {
         if (! $this->isValid()) {
-            throw new Pluf_Exception(__('Cannot save the model from an invalid form.'));
+            throw new \Pluf\Exception(__('Cannot save the model from an invalid form.'));
         }
         $this->user_data->setFromFormData($this->cleaned_data);
         if ($commit) {
