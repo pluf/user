@@ -38,37 +38,37 @@ class User_Role extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 // It is automatically added.
                 'blank' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 50,
-                'verbose' => __('name'),
+                'verbose' => __('name')
             ),
             'description' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 250,
-                'verbose' => __('description'),
+                'verbose' => __('description')
             ),
             'application' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'size' => 150,
                 'is_null' => false,
                 'verbose' => __('application'),
-                'help_text' => __('The application using this permission, for example "YourApp", "CMS" or "SView".'),
+                'help_text' => __('The application using this permission, for example "YourApp", "CMS" or "SView".')
             ),
             'code_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 100,
                 'verbose' => __('code name'),
-                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".'),
+                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".')
             )
         );
         /*
@@ -92,23 +92,30 @@ class User_Role extends Pluf_Model
                 'lock_option' => ''
             )
         );
+    }
+
+    public function loadViews(): array
+    {
+        $engine = $this->getEngine();
+        $schema = $engine->getSchema();
+
         /*
          * Views
          */
-        $g_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
-        $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Role');
-        $t_perm = $this->_con->pfx . $this->_a['table'];
-        $role_fk = Pluf_Shortcuts_GetForeignKeyName('User_Role');
-        $this->_a['views'] = array(
+        $g_asso = $schema->getRelationTable(new User_Group(), $this);
+        $u_asso = $schema->getRelationTable(new User_Account(), $this);
+        $t_perm = $schema->getTableName($this);
+
+        $role_fk = $schema->getAssocField($this);
+        return array(
             'join_group' => array(
-                'join' => 'LEFT JOIN '.$g_asso.' ON ' . $t_perm . '.id=' . $role_fk
+                'join' => 'LEFT JOIN ' . $g_asso . ' ON ' . $t_perm . '.id=' . $role_fk
             ),
             'join_user' => array(
-                'join' => 'LEFT JOIN '.$u_asso.' ON ' . $t_perm . '.id=' . $role_fk
+                'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_perm . '.id=' . $role_fk
             )
-        );        
+        );
     }
-
 
     /**
      * Get the matching permission object from the permission string.
@@ -129,10 +136,10 @@ class User_Role extends Pluf_Model
             'filter' => $sql->gen()
         ));
         if ($perms->count() != 1) { // permission does not exist
-            if(Pluf::f('core_permession_autoCreate', true)){
+            if (Pluf::f('core_permession_autoCreate', true)) {
                 $permModel->code_name = $code;
                 $permModel->application = $app;
-                if($permModel->create()){
+                if ($permModel->create()) {
                     return $permModel;
                 }
             }
@@ -142,8 +149,8 @@ class User_Role extends Pluf_Model
     }
 
     /**
-     * 
-     * {@inheritDoc}
+     *
+     * {@inheritdoc}
      * @see Pluf_Model::__toString()
      */
     public function __toString()

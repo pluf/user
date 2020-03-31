@@ -39,7 +39,7 @@ class User_Space extends Pluf_Model
     // {
     // parent::_init();
     // }
-    
+
     /**
      * ساختارهای داده‌ای مورد نیاز برای اطلاعات خاص کاربر را تعیین می‌کند.
      *
@@ -53,16 +53,16 @@ class User_Space extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 // It is automatically added.
                 'blank' => true
             ),
             'space_data' => array(
-                'type' => 'Pluf_DB_Field_Text',
+                'type' => 'Text',
                 'blank' => false
             ),
             'user' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User',
                 'blank' => false,
                 'editable' => false
@@ -74,9 +74,6 @@ class User_Space extends Pluf_Model
                 'col' => 'user'
             )
         );
-        
-        $this->_admin = array();
-        $this->_a['views'] = array();
     }
 
     /**

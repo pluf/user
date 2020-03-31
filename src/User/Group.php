@@ -42,28 +42,28 @@ class User_Group extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 'blank' => true,
                 'readable' => true,
                 'editable' => false
             ),
             'name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 50,
-                'verbose' => 'name',
+                'verbose' => 'name'
             ),
             'description' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 250,
-                'verbose' => 'description',
+                'verbose' => 'description'
             ),
             /*
              * Relations
              */
             'roles' => array(
-                'type' => 'Pluf_DB_Field_Manytomany',
+                'type' => 'Manytomany',
                 'model' => 'User_Role',
                 'is_null' => true,
                 'editable' => false,
@@ -71,14 +71,22 @@ class User_Group extends Pluf_Model
                 'graphql_name' => 'roles'
             )
         );
+    }
+
+    public function loadViews(): array
+    {
+        $engine = $this->getEngine();
+        $schema = $engine->getSchema();
+
         /*
          * Views
          */
-        $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Role');
-        $u_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Group', 'User_Account');
-        $t_group = $this->_con->pfx . $this->_a['table'];
-        $group_fk = Pluf_Shortcuts_GetForeignKeyName('User_Group');
-        $this->_a['views'] = array(
+        $r_asso = $schema->getRelationTable($this, new User_Role());
+        $u_asso = $schema->getRelationTable($this, new User_Account());
+        $t_group = $schema->getTableName($this);
+
+        $group_fk = $schema->getAssocField($this);
+        return array(
             'join_user' => array(
                 'join' => 'LEFT JOIN ' . $u_asso . ' ON ' . $t_group . '.id=' . $group_fk
             ),

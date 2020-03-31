@@ -1,4 +1,6 @@
 <?php
+use Pluf\Db\Engine;
+
 Pluf::loadFunction('Pluf_Shortcuts_GetAssociationTableName');
 Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
 
@@ -27,6 +29,7 @@ Pluf::loadFunction('Pluf_Shortcuts_GetForeignKeyName');
  */
 class User_Account extends Pluf_Model
 {
+
     /**
      * Cache of the Role.
      */
@@ -39,57 +42,57 @@ class User_Account extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => Engine::SEQUENCE,
                 // It is automatically added.
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'login' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => Engine::VARCHAR,
                 'is_null' => false,
                 'unique' => true,
                 'size' => 50,
-                'editable' => false,
+                'editable' => true,
                 'readable' => true
             ),
             'date_joined' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'is_null' => true,
                 'editable' => false
             ),
             'last_login' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'is_null' => true,
                 'editable' => false
             ),
             'is_active' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => 'Boolean',
                 'is_null' => false,
                 'default' => false,
-                'editable' => false
+                'editable' => true
             ),
             'is_deleted' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => 'Boolean',
                 'is_null' => false,
                 'default' => false,
                 'editable' => false
             ),
-//             /*
-//              * Foreign keys
-//              */
-//             'profile_id' => array(
-//                 'type' => 'Pluf_DB_Field_Foreignkey',
-//                 'model' => 'User_Profile',
-//                 'relate_name' => 'profile',
-//                 'is_null' => true,
-//                 'editable' => false
-//             ),
+            // /*
+            // * Foreign keys
+            // */
+            // 'profile_id' => array(
+            // 'type' => 'Foreignkey',
+            // 'model' => 'User_Profile',
+            // 'relate_name' => 'profile',
+            // 'is_null' => true,
+            // 'editable' => false
+            // ),
             /*
              * Relations
              */
             'groups' => array(
-                'type' => 'Pluf_DB_Field_Manytomany',
+                'type' => 'Manytomany',
                 'blank' => true,
                 'model' => 'User_Group',
                 'relate_name' => 'accounts',
@@ -98,7 +101,7 @@ class User_Account extends Pluf_Model
                 'readable' => true
             ),
             'roles' => array(
-                'type' => 'Pluf_DB_Field_Manytomany',
+                'type' => 'Manytomany',
                 'blank' => true,
                 'relate_name' => 'accounts',
                 'editable' => false,
@@ -107,13 +110,21 @@ class User_Account extends Pluf_Model
                 'readable' => true
             )
         );
+    }
+
+    public function loadViews(): array
+    {
+        $engine = $this->getEngine();
+        $schema = $engine->getSchema();
 
         // Assoc. table
-        $g_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Group');
-        $r_asso = $this->_con->pfx . Pluf_Shortcuts_GetAssociationTableName('User_Account', 'User_Role');
-        $t_user = $this->_con->pfx . $this->_a['table'];
-        $user_fk = Pluf_Shortcuts_GetForeignKeyName('User_Account');
-        $this->_a['views'] = array(
+        $g_asso = $schema->getRelationTable($this, new User_Group());
+        $r_asso = $schema->getRelationTable($this, new User_Role());
+        $t_user = $schema->getTableName($this);
+
+        $user_fk = $schema->getAssocField($this);
+
+        return array(
             'join_role' => array(
                 'join' => 'LEFT JOIN ' . $r_asso . ' ON ' . $t_user . '.id=' . $user_fk
             ),
@@ -281,7 +292,7 @@ class User_Account extends Pluf_Model
         }
         $perms = $this->getAllRoles(false);
         // Note: Permission 'Pluf.owner' is deprecated. It is used here for backward compatibility.
-        if(in_array('tenant.owner', $perms) || in_array('Pluf.owner', $perms)){
+        if (in_array('tenant.owner', $perms) || in_array('Pluf.owner', $perms)) {
             // Owner has all permissions
             return true;
         }

@@ -40,26 +40,26 @@ class User_Profile extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 // It is automatically added.
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'first_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 100,
                 'editable' => true
             ),
             'last_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 100,
                 'editable' => true
             ),
             'public_email' => array(
-                'type' => 'Pluf_DB_Field_Email',
+                'type' => 'Email',
                 'is_null' => true,
                 // @note: hadi, 1395-07-14: change email is done by
                 // another process.
@@ -67,14 +67,14 @@ class User_Profile extends Pluf_Model
                 'readable' => true
             ),
             'language' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'default' => $langs[0],
                 'size' => 5,
                 'editable' => true
             ),
             'timezone' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'default' => date_default_timezone_get(),
                 'size' => 45,
@@ -83,24 +83,24 @@ class User_Profile extends Pluf_Model
                 'editable' => true
             ),
             'national_code' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 32,
                 'editable' => true
             ),
             'gender' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 16,
                 'editable' => true
             ),
             'weight' => array(
-                'type' => 'Pluf_DB_Field_Float',
+                'type' => 'Float',
                 'is_null' => true,
                 'editable' => true
             ),
             'birthday' => array(
-                'type' => 'Pluf_DB_Field_Date',
+                'type' => 'Date',
                 'default' => '0000-00-00',
                 'is_null' => true,
                 'editable' => true
@@ -109,7 +109,7 @@ class User_Profile extends Pluf_Model
              * Foreign keys
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'relate_name' => 'profiles',

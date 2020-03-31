@@ -33,14 +33,14 @@ class User_Credential extends Pluf_Model
         $this->_a['cols'] = array(
             // It is mandatory to have an "id" column.
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 // It is automatically added.
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'password' => array(
-                'type' => 'Pluf_DB_Field_Password',
+                'type' => 'Password',
                 'blank' => false,
                 'size' => 150,
                 'help_text' => __('Format: [algo]:[salt]:[hash]'),
@@ -48,39 +48,42 @@ class User_Credential extends Pluf_Model
                 'readable' => false
             ),
             'expiry_count' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => 'Integer',
                 'editable' => false
             ),
             'expiry_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'editable' => false
             ),
             'creation_dtime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
             'is_deleted' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => 'Boolean',
                 'is_null' => false,
                 'default' => false,
                 'editable' => false
             ),
             // Foreign keys
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User_Account',
                 'relate_name' => 'account',
                 'is_null' => false,
                 'editable' => false
             )
         );
+    }
 
+    function loadViews(): array
+    {
         // Assoc. table
         $accountModel = new User_Account();
         $accountTable = $this->_con->pfx . $accountModel->_a['table'];
         $credentialTable = $this->_con->pfx . $this->_a['table'];
-        $this->_a['views'] = array(
+        return array(
             'join_credential_account' => array(
                 'join' => 'LEFT JOIN ' . $accountTable . ' ON ' . $credentialTable . '.account_id=' . $accountTable . 'id'
             )
@@ -130,6 +133,7 @@ class User_Credential extends Pluf_Model
 
     /**
      * Returns credential for given account id
+     *
      * @param int $userId
      * @return boolean|User_Credential
      */
@@ -145,7 +149,7 @@ class User_Credential extends Pluf_Model
         }
         return $creds[0];
     }
-    
+
     /**
      * Check if the login creditential is valid.
      *
@@ -160,7 +164,7 @@ class User_Credential extends Pluf_Model
         $account = User_Account::getUser($login);
         $credit = new User_Credential();
         $credit = $credit->getOne("account_id=" . $account->id);
-        if(!$credit){
+        if (! $credit) {
             return false;
         }
         return $credit->checkPassword($password);
