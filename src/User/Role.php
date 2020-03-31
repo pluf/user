@@ -71,10 +71,14 @@ class User_Role extends Pluf_Model
                 'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".')
             )
         );
+    }
+
+    public function loadIndexes(): array
+    {
         /*
          * Indeces
          */
-        $this->_a['idx'] = array(
+        return array(
             'code_name_idx' => array(
                 'type' => 'normal',
                 'col' => 'code_name'
