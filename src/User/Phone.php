@@ -33,27 +33,27 @@ class User_Phone extends Pluf_Model
         $this->_a['table'] = 'user_phones';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'phone' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 32,
                 'editable' => false,
                 'readable' => true
             ),
             'type' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 64,
                 'editable' => true,
                 'readable' => true
             ),
             'is_verified' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => 'Boolean',
                 'is_null' => false,
                 'editable' => false,
                 'readable' => true
@@ -62,7 +62,7 @@ class User_Phone extends Pluf_Model
              * Relations
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'relate_name' => 'phones',

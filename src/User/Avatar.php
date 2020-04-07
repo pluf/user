@@ -22,41 +22,41 @@ class User_Avatar extends Pluf_Model
         $this->_a['table'] = 'user_avatars';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 'blank' => true,
                 'editable' => false
             ),
             'fileName' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'filePath' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'unique' => false,
                 'editable' => false
             ),
             'fileSize' => array(
-                'type' => 'Pluf_DB_Field_Integer',
+                'type' => 'Integer',
                 'is_null' => false,
                 'verbose' => __('validate'),
                 'editable' => false
             ),
             'mimeType' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 50,
                 'editable' => false
             ),
             'creationTime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
             'modifTime' => array(
-                'type' => 'Pluf_DB_Field_Datetime',
+                'type' => 'Datetime',
                 'is_null' => false,
                 'editable' => false
             ),
@@ -64,7 +64,7 @@ class User_Avatar extends Pluf_Model
              * Foreign key
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User_Account',
                 'unique' => true,
                 'name' => 'account',

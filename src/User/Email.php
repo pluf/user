@@ -36,27 +36,27 @@ class User_Email extends Pluf_Model
         $this->_a['table'] = 'user_emails';
         $this->_a['cols'] = array(
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 'is_null' => true,
                 'editable' => false,
                 'readable' => true
             ),
             'email' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => false,
                 'size' => 128,
                 'editable' => false,
                 'readable' => true
             ),
             'type' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'is_null' => true,
                 'size' => 64,
                 'editable' => true,
                 'readable' => true
             ),
             'is_verified' => array(
-                'type' => 'Pluf_DB_Field_Boolean',
+                'type' => 'Boolean',
                 'is_null' => false,
                 'editable' => false,
                 'readable' => true
@@ -65,7 +65,7 @@ class User_Email extends Pluf_Model
              * Relations
              */
             'account_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User_Account',
                 'name' => 'account',
                 'relate_name' => 'emails',

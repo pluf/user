@@ -39,7 +39,7 @@ class OAuth2_Connection extends Pluf_Model
         $this->_a['cols'] = array(
             // شناسه‌ها
             'id' => array(
-                'type' => 'Pluf_DB_Field_Sequence',
+                'type' => 'Sequence',
                 'blank' => false,
                 'verbose' => 'first name',
                 'help_text' => 'id',
@@ -47,7 +47,7 @@ class OAuth2_Connection extends Pluf_Model
             ),
             // فیلدها
             'user_name' => array(
-                'type' => 'Pluf_DB_Field_Varchar',
+                'type' => 'Varchar',
                 'blank' => false,
                 'size' => 64,
                 'unique' => true,
@@ -56,7 +56,7 @@ class OAuth2_Connection extends Pluf_Model
                 'editable' => true
             ),
             'user_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'User',
                 'blank' => false,
                 'editable' => false,
@@ -64,7 +64,7 @@ class OAuth2_Connection extends Pluf_Model
                 'relate_name' => 'user'
             ),
             'server_id' => array(
-                'type' => 'Pluf_DB_Field_Foreignkey',
+                'type' => 'Foreignkey',
                 'model' => 'OAuth2_Server',
                 'blank' => false,
                 'editable' => false,
