@@ -194,9 +194,9 @@ class User_Account extends Pluf_Model
     public static function getUser($login)
     {
         $model = new User_Account();
-        $where = 'login = ' . $model->_toDb($login, 'login');
+        $where = new Pluf_SQL('login = %s', array($model->_toDb($login, 'login')));
         $users = $model->getList(array(
-            'filter' => $where
+            'filter' => $where->gen()
         ));
         if ($users === false or count($users) !== 1) {
             return false;
