@@ -228,6 +228,15 @@ return array(
 
     // ************************************************** Profiles (current user)
 
+    array( // schema
+        'regex' => '#^/profiles/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Profile'
+        )
+    ),
     array( // Create / Update
         'regex' => '#^/profiles$#',
         'model' => 'User_Views_Profile',
@@ -415,6 +424,15 @@ return array(
     
     // ************************************************** Emails
     
+    array( // schema
+        'regex' => '#^/emails/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Email'
+        )
+    ),
     array( // Create
         'regex' => '#^/accounts/(?P<accountId>\d+)/emails$#',
         'model' => 'User_Views_Email',
@@ -475,6 +493,15 @@ return array(
     ),
     
     // ************************************************** Phones
+    array( // schema
+        'regex' => '#^/phones/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Phone'
+        )
+    ),
     array( // Create
         'regex' => '#^/accounts/(?P<accountId>\d+)/phones$#',
         'model' => 'User_Views_Phone',
@@ -535,6 +562,15 @@ return array(
     ),
     
     // ************************************************** Addresses
+    array( // schema
+        'regex' => '#^/addresses/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_Address'
+        )
+    ),
     array( // Create
         'regex' => '#^/accounts/(?P<accountId>\d+)/addresses$#',
         'model' => 'User_Views_Address',
