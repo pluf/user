@@ -84,7 +84,12 @@ class User_Views_Account
             $cuser->phone = $phone;
         }
         // Create address
-        if (array_key_exists('country', $data) || array_key_exists('province', $data) || array_key_exists('city', $data) || array_key_exists('address', $data) || array_key_exists('address', $data) || array_key_exists('location', $data) || array_key_exists('postal_code', $data)) {
+        if (array_key_exists('country', $data) || 
+            array_key_exists('province', $data) || 
+            array_key_exists('city', $data) || 
+            array_key_exists('address', $data) || 
+            array_key_exists('location', $data) || 
+            array_key_exists('postal_code', $data)) {
             $adr = new User_Address();
             $form = Pluf_ModelUtils::getCreateForm($adr, $data);
             $adr = $form->save(false);

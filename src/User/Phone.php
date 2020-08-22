@@ -54,7 +54,8 @@ class User_Phone extends Pluf_Model
             ),
             'is_verified' => array(
                 'type' => 'Boolean',
-                'is_null' => false,
+                'is_null' => true,
+                'default' => false,
                 'editable' => false,
                 'readable' => true
             ),

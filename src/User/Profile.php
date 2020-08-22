@@ -54,7 +54,7 @@ class User_Profile extends Pluf_Model
             ),
             'last_name' => array(
                 'type' => 'Varchar',
-                'is_null' => false,
+                'is_null' => true,
                 'size' => 100,
                 'editable' => true
             ),
