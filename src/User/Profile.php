@@ -66,6 +66,30 @@ class User_Profile extends Pluf_Model
                 'editable' => true,
                 'readable' => true
             ),
+            'instagram' => array(
+                'type' => 'Varchar',
+                'is_null' => true,
+                'size' => 128,
+                'editable' => true
+            ),
+            'facebook' => array(
+                'type' => 'Varchar',
+                'is_null' => true,
+                'size' => 128,
+                'editable' => true
+            ),
+            'linkedin' => array(
+                'type' => 'Varchar',
+                'is_null' => true,
+                'size' => 128,
+                'editable' => true
+            ),
+            'twitter' => array(
+                'type' => 'Varchar',
+                'is_null' => true,
+                'size' => 128,
+                'editable' => true
+            ),
             'language' => array(
                 'type' => 'Varchar',
                 'is_null' => true,
