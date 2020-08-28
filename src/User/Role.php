@@ -47,28 +47,22 @@ class User_Role extends Pluf_Model
             'name' => array(
                 'type' => 'Varchar',
                 'is_null' => false,
-                'size' => 50,
-                'verbose' => __('name')
+                'size' => 50
             ),
             'description' => array(
                 'type' => 'Varchar',
                 'is_null' => true,
-                'size' => 250,
-                'verbose' => __('description')
+                'size' => 250
             ),
             'application' => array(
                 'type' => 'Varchar',
                 'size' => 150,
-                'is_null' => false,
-                'verbose' => __('application'),
-                'help_text' => __('The application using this permission, for example "YourApp", "CMS" or "SView".')
+                'is_null' => false
             ),
             'code_name' => array(
                 'type' => 'Varchar',
                 'is_null' => false,
-                'size' => 100,
-                'verbose' => __('code name'),
-                'help_text' => __('The code name must be unique for each application. Standard permissions to manage a model in the interface are "Model_Name-create", "Model_Name-update", "Model_Name-list" and "Model_Name-delete".')
+                'size' => 100
             )
         );
     }
@@ -143,6 +137,7 @@ class User_Role extends Pluf_Model
             if (Pluf::f('core_permession_autoCreate', true)) {
                 $permModel->code_name = $code;
                 $permModel->application = $app;
+                $permModel->name = "$app $code";
                 if ($permModel->create()) {
                     return $permModel;
                 }
