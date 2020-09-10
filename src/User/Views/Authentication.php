@@ -43,14 +43,15 @@ class User_Views_Authentication
             return $request->user;
         }
         
-        $backends = Pluf::f('auth_backends', array(
-            'User_Auth_ModelBackend'
+        $backends = Pluf::f('user_auth_backends', array(
+            'User_Auth_ModelBackend',
+            'User_Auth_OAuth2Backend'
         ));
         foreach ($backends as $backend) {
             $user = call_user_func(array(
                 $backend,
                 'authenticate'
-            ), $request->POST);
+            ), $request);
             if ($user !== false) {
                 break;
             }

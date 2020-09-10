@@ -1,5 +1,5 @@
 <?php
-
+use Pluf\Db\Engine;
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -33,9 +33,12 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class OAuth2_Server extends Pluf_Model
+class User_OAuth2Server extends Pluf_Model
 {
 
+    public $data = array();
+    public $touched = false;
+    
     /**
      * Load data models
      *
@@ -43,86 +46,85 @@ class OAuth2_Server extends Pluf_Model
      */
     function init()
     {
-        $this->_a['table'] = 'oauth2_servers';
+        $this->_a['table'] = 'user_oauth2_servers';
         $this->_a['cols'] = array(
             // شناسه‌ها
             'id' => array(
-                'type' => 'Sequence',
-                'blank' => false,
-                'verbose' => 'first name',
-                'help_text' => 'id',
+                'type' => Engine::SEQUENCE,
+                'is_null' => false,
                 'editable' => false
             ),
             'title' => array(
-                'type' => 'Varchar',
-                'blank' => true,
-                'size' => 250,
+                'type' => Engine::VARCHAR,
+                'is_null' => true,
+                'size' => 256,
                 'default' => 'no title',
-                'verbose' => 'title',
-                'help_text' => 'OAuth2 server title',
                 'editable' => true
             ),
             'description' => array(
-                'type' => 'Varchar',
-                'blank' => true,
+                'type' => Engine::VARCHAR,
+                'is_null' => true,
                 'size' => 2048,
-                'default' => 'auto created content',
-                'verbose' => 'description',
-                'help_text' => 'OAuth2 content description',
+                'default' => '',
                 'editable' => true
             ),
-
+            'symbol' => array(
+                'type' => Engine::VARCHAR,
+                'is_null' => true,                
+                'size' => 256,
+                'default' => ''
+            ),
             'client_id' => array(
-                'type' => 'Varchar',
-                'blank' => true,
-                'size' => 1024,
-                'default' => 'application/octet-stream',
-                'verbose' => 'Client ID',
-                'help_text' => 'Client ID',
-                'editable' => true
+                'type' => Engine::VARCHAR,
+                'is_null' => false,
+                'size' => 256,
+                'secure' => true,
+                'editable' => false,
+                'readable' => false
             ),
             'client_secret' => array(
-                'type' => 'Varchar',
-                'blank' => true,
+                'type' => Engine::VARCHAR,
+                'is_null' => false,
                 'size' => 1024,
-                'default' => 'application/octet-stream',
-                'verbose' => 'Client secret',
-                'help_text' => 'content mime type',
+                'secure' => true,
+                'editable' => false,
+                'readable' => false
+            ),
+            'meta' => array(
+                'type' => Engine::VARCHAR,
+                'is_null' => true,
+                'size' => 3000,
+                'secure' => true,
+                'editable' => false,
+                'readable' => false
+            ),
+            'engine' => array(
+                'type' => Engine::VARCHAR,
+                'is_null' => false,
+                'size' => 64
+            ),
+            'deleted' => array(
+                'type' => Engine::BOOLEAN,
+                'is_null' => false,
+                'default' => false,
                 'readable' => true,
-                'editable' => true,
+                'editable' => false
             ),
-            'url_authorize' => array(
-                'type' => 'Varchar',
-                'blank' => true,
-                'size' => 1024,
-                'default' => 'application/octet-stream',
-                'verbose' => 'URL authorize',
-                'help_text' => 'URL authorize',
-                'editable' => true
+            'creation_dtime' => array(
+                'type' => 'Datetime',
+                'is_null' => true,
+                'verbose' => 'creation date'
             ),
-            'url_access_token' => array(
-                'type' => 'Varchar',
-                'blank' => true,
-                'size' => 1024,
-                'default' => 'application/octet-stream',
-                'verbose' => 'URL access token',
-                'help_text' => 'URL authorize',
-                'editable' => true
-            ),
-            'url_resource_owner_details' => array(
-                'type' => 'Varchar',
-                'blank' => true,
-                'size' => 1024,
-                'default' => 'application/octet-stream',
-                'verbose' => 'URL resource owner',
-                'help_text' => 'URL resource owner',
-                'editable' => true
-            ),
+            'modif_dtime' => array(
+                'type' => 'Datetime',
+                'is_null' => true,
+                'verbose' => 'modification date'
+            )
         );
 
         $this->_a['idx'] = array(
-            'oauth_server' => array(
-                'col' => 'type',
+            'oauth2server_engine_idx' => array(
+                'col' => 'engine',
                 'type' => 'normal', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',
@@ -131,4 +133,96 @@ class OAuth2_Server extends Pluf_Model
             )
         );
     }
+    
+    /*
+     * @see Pluf_Model::preSave()
+     */
+    function preSave($create = false)
+    {
+        $this->meta = serialize($this->data);
+        if ($this->id == '') {
+            $this->creation_dtime = gmdate('Y-m-d H:i:s');
+        }
+        $this->modif_dtime = gmdate('Y-m-d H:i:s');
+    }
+    
+    /**
+     * داده‌های ذخیره شده را بازیابی می‌کند
+     *
+     * تمام داده‌هایی که با کلید payMeta ذخیره شده را بازیابی می‌کند.
+     */
+    function restore()
+    {
+        $this->data = unserialize($this->meta);
+    }
+    
+    /**
+     * تمام داده‌های موجود در نشت را پاک می‌کند.
+     *
+     * تمام داده‌های ذخیره شده در نشست را پاک می‌کند.
+     */
+    function clear()
+    {
+        $this->data = array();
+        $this->touched = true;
+    }
+    
+    /**
+     * تعیین یک داده در نشست
+     *
+     * با استفاده از این فراخوانی می‌توان یک داده با کلید جدید در نشست ایجاد
+     * کرد. این کلید برای دستیابی‌های
+     * بعد مورد استفاده قرار خواهد گرفت.
+     *
+     * @param
+     *            کلید داده
+     * @param
+     *            داده مورد نظر. در صورتی که مقدار آن تهی باشد به معنی
+     *            حذف است.
+     */
+    function setMeta($key, $value = null)
+    {
+        if (is_null($value)) {
+            unset($this->data[$key]);
+        } else {
+            $this->data[$key] = $value;
+        }
+        $this->touched = true;
+    }
+    
+    /**
+     * داده معادل با کلید تعیین شده را برمی‌گرداند
+     *
+     * در صورتی که داده تعیین نشده بود مقدار پیش فرض تعیین شده به عنوان نتیجه
+     * این فراخوانی
+     * برگردانده خواهد شد.
+     */
+    function getMeta($key = null, $default = '')
+    {
+        if (is_null($key)) {
+            return parent::getData();
+        }
+        if (isset($this->data[$key])) {
+            return $this->data[$key];
+        } else {
+            return $default;
+        }
+    }
+    
+    /**
+     *
+     * @return User_OAuth2_Engine
+     */
+    public function get_engine()
+    {
+        Pluf::loadFunction('User_OAuth2_Shortcuts_GetEngineOr404');
+        return User_OAuth2_Shortcuts_GetEngineOr404($this->engine);
+    }
+    
+    public function authenticate($request){
+        $engine = $this->get_engine();
+        $request->REQUEST['server_id'] = $this->getId();
+        return $engine->authenticate($request);
+    }
 }
+

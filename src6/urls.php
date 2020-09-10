@@ -616,7 +616,52 @@ return array(
             'User_Precondition::loginRequired'
         )
     ),
-    
+    // ************************************************** OAuth2Connections
+    array( // schema
+        'regex' => '#^/oauth2connections/schema$#',
+        'model' => 'User_Views',
+        'method' => 'getSchema',
+        'http-method' => 'GET',
+        'params' => array(
+            'model' => 'User_OAuth2Connection'
+        )
+    ),
+    array( // Create
+        'regex' => '#^/accounts/(?P<accountId>\d+)/oauth2connections$#',
+        'model' => 'User_Views_OAuth2Connection',
+        'method' => 'create',
+        'http-method' => 'POST',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read (list)
+        'regex' => '#^/accounts/(?P<accountId>\d+)/oauth2connections$#',
+        'model' => 'User_Views_OAuth2Connection',
+        'method' => 'find',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Read
+        'regex' => '#^/accounts/(?P<accountId>\d+)/oauth2connections/(?P<oauth2connId>\d+)$#',
+        'model' => 'User_Views_OAuth2Connection',
+        'method' => 'get',
+        'http-method' => 'GET',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
+    array( // Delete
+        'regex' => '#^/accounts/(?P<accountId>\d+)/oauth2connections/(?P<oauth2connId>\d+)$#',
+        'model' => 'User_Views_OAuth2Connection',
+        'method' => 'delete',
+        'http-method' => 'DELETE',
+        'precond' => array(
+            'User_Precondition::loginRequired'
+        )
+    ),
     
     /******************************************************************************
      * Group
@@ -639,6 +684,20 @@ return array(
     array(
         'regex' => '#^/messages#',
         'sub' => include 'urls-messages.php'
+    ),
+    /******************************************************************************
+     * Authentication engines
+     ******************************************************************************/
+    array(
+        'regex' => '#^/oauth2engines#',
+        'sub' => include 'urls-oauth-engines.php'
+    ),
+    /******************************************************************************
+     * Authentication backends
+     ******************************************************************************/
+    array(
+        'regex' => '#^/oauth2servers#',
+        'sub' => include 'urls-oauth-servers.php'
     ),
 );
 

@@ -18,7 +18,9 @@
 	],
 	"minimum-stability" : "stable",
 	"require" : {
-		"pluf/core" : "6.x"
+		"pluf/core" : "6.x",
+		"league/oauth2-google": "^3.0",
+		"mustache/mustache": "^2.13"
 	},
 	"require-dev" : {
 		"pluf/test" : "6.x"

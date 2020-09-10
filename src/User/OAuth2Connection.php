@@ -1,4 +1,5 @@
 <?php
+use Pluf\Db\Engine;
 
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
@@ -25,7 +26,7 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class OAuth2_Connection extends Pluf_Model
+class User_OAuth2Connection extends Pluf_Model
 {
 
     /**
@@ -35,47 +36,54 @@ class OAuth2_Connection extends Pluf_Model
      */
     function init()
     {
-        $this->_a['table'] = 'oauth2_connections';
+        $this->_a['table'] = 'user_oauth2_connections';
         $this->_a['cols'] = array(
             // شناسه‌ها
             'id' => array(
-                'type' => 'Sequence',
-                'blank' => false,
-                'verbose' => 'first name',
-                'help_text' => 'id',
-                'editable' => false
+                'type' => Engine::SEQUENCE,
+                'is_null' => false,
+                'editable' => false,
+                'readable' => true
             ),
             // فیلدها
-            'user_name' => array(
-                'type' => 'Varchar',
-                'blank' => false,
-                'size' => 64,
-                'unique' => true,
-                'verbose' => 'name',
-                'help_text' => 'content name',
+            'username' => array(
+                // Note: the username on the oauth2 server
+                'type' => Engine::VARCHAR,
+                'is_null' => false,
+                'size' => 128,
                 'editable' => true
             ),
-            'user_id' => array(
+            'account_id' => array(
                 'type' => 'Foreignkey',
-                'model' => 'User',
-                'blank' => false,
-                'editable' => false,
-                'readable' => true,
-                'relate_name' => 'user'
+                'model' => 'User_Account',
+                'name' => 'account',
+                'relate_name' => 'oauth2_connections',
+                'graphql_name' => 'account',
+                'is_null' => false,
+                'editable' => false
             ),
             'server_id' => array(
                 'type' => 'Foreignkey',
-                'model' => 'OAuth2_Server',
-                'blank' => false,
-                'editable' => false,
-                'readable' => true,
-                'relate_name' => 'user'
+                'model' => 'User_OAuth2Server',
+                'name' => 'server',
+                'relate_name' => 'connections',
+                'graphql_name' => 'server',
+                'is_null' => false,
+                'editable' => false
             ),
         );
         
         $this->_a['idx'] = array(
-            'content_server_user_id' => array(
-                'col' => 'user_name, user_id, server_id,',
+            'oauth2connection_account_server_idx' => array(
+                'col' => 'account_id, server_id',
+                'type' => 'unique', // normal, unique, fulltext, spatial
+                'index_type' => '', // hash, btree
+                'index_option' => '',
+                'algorithm_option' => '',
+                'lock_option' => ''
+            ),
+            'oauth2connection_username_server_idx' => array(
+                'col' => 'username, server_id',
                 'type' => 'unique', // normal, unique, fulltext, spatial
                 'index_type' => '', // hash, btree
                 'index_option' => '',

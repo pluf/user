@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -19,11 +18,24 @@
  */
 
 /**
- * Default view
+ * 
  *
- * @author maso<mostafa.barmshory@dpq.co.ir>
  */
-class OAuth2_Engines_Fake implements OAuth2_Engines
+class User_OAuth2_Exception_EngineLoad extends \Pluf\Exception
 {
-    // TODO:// 
+
+    /**
+     * یک نمونه از این کلاس ایجاد می‌کند.
+     *
+     * @param string $message            
+     * @param \Pluf\Exception $previous            
+     * @param string $link            
+     * @param string $developerMessage            
+     */
+    public function __construct ($message = "Impossible to load engine.", $previous = null, $link = null, 
+            $developerMessage = null)
+    {
+        parent::__construct($message, 4401, $previous, 500, $link, 
+                $developerMessage);
+    }
 }

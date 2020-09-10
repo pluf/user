@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -19,11 +18,35 @@
  */
 
 /**
- * Default view
+ * Finds and returns an authentication engine by given type
  *
- * @author maso<mostafa.barmshory@dpq.co.ir>
+ * @param string $type
+ * @throws Pluf_Exception_DoesNotExist
+ * @return User_OAuth2_Engine
  */
-class OAuth2_Engines_Goolge implements OAuth2_Engines
+function User_OAuth2_Shortcuts_GetEngineOr404($type)
 {
-    // TODO:// 
+    $items = User_OAuth2_Service::engines();
+    foreach ($items as $item) {
+        if ($item->getType() === $type) {
+            return $item;
+        }
+    }
+    throw new User_OAuth2_Exception_EngineNotFound("Authentication engine not found: " . $type);
 }
+
+/**
+ *
+ * @param number $id
+ * @throws Pluf_HTTP_Error404
+ * @return User_OAuth2Server
+ */
+function User_OAuth2_Shortcuts_GetServerOr404($id)
+{
+    $item = new User_OAuth2Server($id);
+    if ((int) $id > 0 && $item->id == $id) {
+        return $item;
+    }
+    throw new Pluf_HTTP_Error404("Authentication server not found (" . $id . ")");
+}
+

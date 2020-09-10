@@ -14,7 +14,9 @@
 		"User_Verification",
 		"User_Email",
 		"User_Phone",
-		"User_Address"
+		"User_Address",
+		"User_OAuth2Connection",
+		"User_OAuth2Server"
 	],
 	"init": {
 		"User_Role": [

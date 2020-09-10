@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -19,11 +18,25 @@
  */
 
 /**
- * Default view
+ * 
  *
- * @author maso<mostafa.barmshory@dpq.co.ir>
  */
-interface OAuth2_Engines
+class User_OAuth2_Exception_EngineNotFound extends  \Pluf\Exception
 {
-    // TODO: maso,
+
+    /**
+     * یک نمونه از این کلاس ایجاد می‌کند.
+     *
+     * @param string $message            
+     * @param \Pluf\Exception $previous            
+     * @param string $link            
+     * @param string $developerMessage            
+     */
+    public function __construct ($message = "Engine not found.", $previous = null, $link = null, 
+            $developerMessage = null)
+    {
+        // XXX: maso, 1395: تعیین کد خطا
+        parent::__construct($message, 4401, $previous, 404, $link, 
+                $developerMessage);
+    }
 }

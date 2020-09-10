@@ -57,8 +57,12 @@ class User_Auth_ModelBackend
     /**
      * Given an array with the authentication data, auth the user and return it.
      */
-    public static function authenticate($auth_data)
+    public static function authenticate($request)
     {
+        $auth_data = $request->REQUEST;
+        if(!isset($auth_data['password']) || !isset($auth_data['login'])){
+            return false;
+        }
         $password = $auth_data['password'];
         $login = $auth_data['login'];
         $user = self::getUser($login);
@@ -69,7 +73,6 @@ class User_Auth_ModelBackend
             return false;
         }
         return User_Credential::checkCredential($login, $password) ? $user : false;
-//         return ($user->checkPassword($password)) ? $user : false;
     }
 }
 

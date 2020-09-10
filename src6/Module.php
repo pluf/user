@@ -72,6 +72,12 @@ class Module extends \Pluf\Module
                 'User_Role',
             )
         ),
+        'User_OAuth2Connection' => array(
+            'relate_to' => array(
+                'User_Account',
+                'User_OAuth2Server'
+            )
+        ),
     );
 
     const urlsPath = __DIR__ . '/urls.php';
