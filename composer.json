@@ -20,7 +20,7 @@
 	"require" : {
 		"pluf/core" : "6.x",
 		"league/oauth2-google": "^3.0",
-		"mustache/mustache": "^2.13"
+		"mustache/mustache": "2.12.x"
 	},
 	"require-dev" : {
 		"pluf/test" : "6.x"
