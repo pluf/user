@@ -59,7 +59,10 @@ class User_Auth_ModelBackend
      */
     public static function authenticate($request)
     {
-        $auth_data = $request->REQUEST;
+        $auth_data = [
+            'login' => array_key_exists('PHP_AUTH_USER', $request->SERVER) ? $request->SERVER['PHP_AUTH_USER'] : null,
+            'password' => array_key_exists('PHP_AUTH_PW' , $request->SERVER) ? $request->SERVER['PHP_AUTH_PW'] : null
+        ];
         if(!isset($auth_data['password']) || !isset($auth_data['login'])){
             return false;
         }
