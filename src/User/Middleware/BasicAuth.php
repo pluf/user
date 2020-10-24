@@ -25,11 +25,8 @@ class User_Middleware_BasicAuth
         if (! isset($request->SERVER['PHP_AUTH_USER'])) {
             return false;
         }
-        
-        $auth = array(
-                'login' => $request->SERVER['PHP_AUTH_USER'],
-                'password' => $request->SERVER['PHP_AUTH_PW']
-        );
+        $request->REQUEST['login'] = $request->SERVER['PHP_AUTH_USER'];
+        $request->REQUEST['password'] = $request->SERVER['PHP_AUTH_PW'];
         foreach (Pluf::f('auth_backends', 
                 array(
                         'User_Auth_ModelBackend'
@@ -38,7 +35,7 @@ class User_Middleware_BasicAuth
                     array(
                             $backend,
                             'authenticate'
-                    ), $auth);
+                    ), $request);
             if ($user !== false) {
                 break;
             }
