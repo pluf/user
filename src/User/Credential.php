@@ -41,7 +41,7 @@ class User_Credential extends Pluf_Model
             ),
             'password' => array(
                 'type' => 'Password',
-                'blank' => false,
+                'is_null' => false,
                 'size' => 150,
                 'help_text' => __('Format: [algo]:[salt]:[hash]'),
                 'editable' => false,
@@ -49,10 +49,12 @@ class User_Credential extends Pluf_Model
             ),
             'expiry_count' => array(
                 'type' => 'Integer',
+                'is_null' => true,
                 'editable' => false
             ),
             'expiry_dtime' => array(
                 'type' => 'Datetime',
+                'is_null' => true,
                 'editable' => false
             ),
             'creation_dtime' => array(
