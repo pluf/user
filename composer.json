@@ -1,6 +1,6 @@
 {
 	"name" : "pluf/user",
-	"version" : "6.0.21",
+	"version" : "6.0.22",
 	"description" : "A module for Pluf to manage user profiles and user accounts",
 	"type" : "library",
 	"license" : "MIT",
